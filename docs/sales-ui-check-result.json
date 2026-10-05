@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-05T16:47:46.924Z",
+  "mode": "real read-only + browser-intercepted retail fixture",
+  "checks": [
+    "Real local POS loads without any retail writes",
+    "Ambiguous create freezes inputs and replays the same key/payload",
+    "POS draft review -> submit uses server total, debt 50,000, and selected customer",
+    "Preorder deliberately converts cart to order without posting stock; approval cancellation is disabled",
+    "Sales lists are filtered on server by document type and display empty state",
+    "Mobile 390px sales workspace has no root horizontal overflow"
+  ],
+  "runtimeErrors": [],
+  "operationalRetailWrites": 0
+}

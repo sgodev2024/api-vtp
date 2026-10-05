@@ -1,0 +1,79 @@
+# AICRM — Sales Platform
+
+Ứng dụng quản lý bán hàng, mua hàng, kho, sản phẩm, CRM và kế toán nội bộ trên Java Core. Repository dự án: https://github.com/sgodev2024/java-aicrm.
+
+- Khởi động local: [AICRM_LOCAL.md](./AICRM_LOCAL.md).
+- BA: [BA_HE_THONG_v2.0.md](./docs/BA_HE_THONG_v2.0.md). SRS: [SRS_HE_THONG_v2.0.md](./docs/SRS_HE_THONG_v2.0.md).
+- Phân công intern: [TASK_INTERN_v2.0.md](./docs/TASK_INTERN_v2.0.md).
+- Tiến độ Bán hàng và hiện trạng backend: [TIEN_DO_MODULE_BAN_HANG.md](./docs/TIEN_DO_MODULE_BAN_HANG.md).
+- Nền Core gốc được ghi tại `CORE_BASELINE`; các cấu hình/mật khẩu mẫu chỉ phục vụ local. Chưa triển khai server.
+
+Phần mô tả Core dưới đây được kế thừa từ nền ban đầu; tài liệu nghiệp vụ hiện hành là các liên kết AICRM phía trên.
+
+## Java Core Platform
+
+Java Core Platform is a business-neutral modular application foundation for building independent customer solutions. The repository contains the approved architecture documents, a Java 21/Spring Boot runtime slice, PostgreSQL migrations, the Control Plane frontend and Ubuntu deployment assets.
+
+## Repository layout
+
+- `backend/` — Spring Boot runtime, local identity, MFA, hashed sessions, audit and Control Plane API
+- `frontend/` — Core Platform Control Plane UI
+- `backend/src/main/java/vn/coreplatform/demo/` và `frontend/app/demo/` — module/chunk minh họa chỉ bật bằng profile `demo`/`test`, không thuộc Production Core
+- `deploy/ubuntu20/` — systemd, Nginx, environment and deployment/rollback assets
+- `technical-delivery-pack-v1.0/` — implementation specification, backlog and quality gates
+- `core-platform-ba-requirements-v1.1.md` — approved BA and unified frontend baseline (FE-BA-01..13)
+- `core-platform-runtime-architecture-v1.0.md`, `core-platform-database-architecture-v1.0.md` — approved runtime and database architecture
+- `docs/navigation-registry.md` — unified section/menu manifest, assignment visibility, security and extension contract
+- `docs/technical-change-register.md` — sổ thay đổi kỹ thuật và lịch sử tự động từ Git
+- `docs/core-to-project-implementation-standard-v1.0.md` — tiêu chuẩn tách Core, khởi tạo Git dự án, phát triển, release và bàn giao full source
+- `templates/domain-module/` và `scripts/new-domain-module.ps1` — template tạo module code-first tách khỏi package Core
+
+## Local start
+
+```text
+docker compose up --build
+```
+
+Ba service sẽ chạy: PostgreSQL 17 (`:5432`), backend (`:8080`), Control Plane UI (`:3000`).
+
+Database dùng hai credential (E2): `core_admin` cho migration/DDL (`DB_MIGRATION_USER`) và `core_app` cho runtime (`DB_USER`, chỉ DML + chịu RLS theo tenant). Thay đổi roles/seed xong cần `docker compose down -v` để tạo lại volume.
+
+- UI: `http://localhost:3000` — đăng nhập `admin@core.local` / `Core@2026`, mã MFA `123456` khi `CORE_MFA_ENABLED=true` (chỉ dùng cho môi trường demo local).
+- Backend readiness: `http://localhost:8080/actuator/health/readiness`
+- Backend OpenAPI: `http://localhost:8080/swagger-ui`
+
+Frontend dùng Next.js standalone chuẩn. Có thể build trực tiếp hoặc truyền API URL khi build Docker:
+
+```text
+cd frontend
+NEXT_PUBLIC_CORE_API_URL=http://localhost:8080 npm run build
+docker build --build-arg NEXT_PUBLIC_CORE_API_URL=http://localhost:8080 -t core-platform-frontend ./frontend
+```
+
+## Build and test
+
+Backend (Java 21, PostgreSQL qua Testcontainers; máy không có Docker xem `backend/README.md`):
+
+```text
+cd backend && ./mvnw verify
+```
+
+Frontend (Node 22+, build + SSR smoke test):
+
+```text
+cd frontend && npm test
+```
+
+CI chạy cả hai trên mọi pull request (`.github/workflows/`).
+
+Frontend:
+
+```text
+cd frontend
+npm install
+npm run dev
+```
+
+Set `NEXT_PUBLIC_CORE_API_URL=http://localhost:8080` for local API integration.
+
+Demo-only credentials are documented in `backend/README.md`. Never enable the `demo` Spring profile for customer production environments.

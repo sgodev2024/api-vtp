@@ -1,0 +1,30 @@
+{
+  "at": "2026-10-05T08:01:09.142Z",
+  "fixture": "e1aaa366",
+  "checks": [
+    "Core login and catalog registration",
+    "Purchase approval by a different actor and fee-capitalized moving average",
+    "POS, partial payment, debt allocation and idempotent replay",
+    "Original-sale return and refund cap",
+    "Manual online preorder, partial issue, delivery and COD without duplicate revenue",
+    "Transfer dispatch, partial receipts and carried inventory value",
+    "Count lock, approved adjustment and rollback of blocked POS",
+    "Concurrent sale of the final item: exactly one posts",
+    "FEFO picks earliest valid lot and expired sale is blocked",
+    "Serial trace and cross-warehouse return requires the original serial",
+    "Lot count and missing-serial recovery preserve tracked balances",
+    "Multi-unit fractional sale and tax-inclusive original-sale return",
+    "Order deposit allocates on issue and return clears unpaid debt first",
+    "Replacement sale links its posted return without changing the original sale",
+    "Manual commission order, monthly supplement, return adjustment and payment cap",
+    "Server-side warehouse scope, cost masking and unauthenticated rejection",
+    "Import preview/commit, duplicate errors and ledger-based reports",
+    "Customer and quantity price precedence, promotion stacking and immutable sale price",
+    "Document export includes every page and is permission protected",
+    "Stock quantity and value reconcile to immutable movements"
+  ],
+  "passed": 20,
+  "receipt": "051c8736-1397-491c-9937-82ba3c6d4196",
+  "warehouseA": "a18e522f-1475-455b-bc3d-76918053915d",
+  "warehouseB": "bdfe20a3-c6cc-4679-b9c9-6560690cb96d"
+}
