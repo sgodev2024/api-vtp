@@ -1,0 +1,18 @@
+{
+  "checkedAt": "2026-10-06T06:28:26.588Z",
+  "isolatedDeployment": "aicrm-supplier-check",
+  "passed": 9,
+  "checks": [
+    "Supplier-profile requests enforce all six general fields on the server",
+    "Supplier can be saved with all additional/payment fields blank",
+    "Company/contact/payment/manager fields persist separately; idempotent retry retains one version",
+    "Older master clients preserve omitted company fields; supplier/customer share one ID and data",
+    "Invalid email, debt days, manager and company length are rejected",
+    "Supplier maintenance permission does not grant access to financial bank fields",
+    "Supplier popup has exactly three tabs, six required fields and accessible validation from another tab",
+    "Supplier general/company/manager/payment data saves and reloads through the real isolated API on desktop/mobile",
+    "Payment tab remains available; bank fields require FINANCE and debt days remain editable"
+  ],
+  "runtimeErrors": [],
+  "operationalRetailWrites": 0
+}

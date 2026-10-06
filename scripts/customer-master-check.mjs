@@ -70,4 +70,4 @@ await retail("/catalog/scopes",{accountId:scopedUser.id,warehouseId:wh.id});
 const crmToken=(await api("/api/v1/auth/login",{email:"reader@example.test",password:pw})).session.accessToken;
 const oldHistory=await api("/api/v1/retail/customers/"+partner.id+"/history",undefined,200,undefined,crmToken);assert.equal(oldHistory.notes.length,1);assert.equal(oldHistory.history.length,0);
 checks.push("Legacy CRM history also enforces transaction permissions while retaining scoped care notes");
-const result={checkedAt:new Date().toISOString(),database:"disposable deployment aicrm-master-check",checks,passed:checks.length,operationalBusinessWrites:0};await writeFile(new URL("../docs/customer-master-check-result.json",import.meta.url),JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));
+const result={checkedAt:new Date().toISOString(),database:"disposable deployment "+(process.env.AICRM_TEST_DEPLOYMENT||"aicrm-master-check"),checks,passed:checks.length,operationalBusinessWrites:0};await writeFile(new URL("../docs/customer-master-check-result.json",import.meta.url),JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));

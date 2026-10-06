@@ -6,9 +6,9 @@ Cập nhật 06/10/2026. Đã được người dùng cho phép commit và đồ
 
 - Module cấp cao **Khách hàng / Đối tác** có hai mục **Khách hàng** (CUSTOMER) và **Đối tác** (tất cả hồ sơ, lọc vai trò). CRM và Bán hàng mỗi module có mục **Khách hàng** riêng (CUSTOMER), dùng cùng API/dữ liệu master; Nhà cung cấp tiếp tục là góc nhìn SUPPLIER tại Mua hàng.
 - Danh sách có STT, tìm mã/tên/điện thoại/email/MST, lọc trạng thái/nhóm khách, phân trang 50; gợi ý mã khi thêm, sửa và các tab hồ sơ. Các màn Khách hàng/NCC cố định bộ lọc vai trò; màn Đối tác cho chọn vai trò.
-- Một ID có nhiều vai trò Khách hàng, Nhà cung cấp, CTV; hoạt động/ngừng từng vai trò và cả hồ sơ. Màn Nhà cung cấp trong Mua hàng dùng chính master và cùng form sửa.
+- Một ID có nhiều vai trò Khách hàng, Nhà cung cấp, CTV; hoạt động/ngừng từng vai trò và cả hồ sơ. Màn Nhà cung cấp trong Mua hàng dùng chính master; thêm/sửa bằng popup ba tab riêng cho NCC, giữ các vai trò và thông tin master còn lại.
 - Bán/Mua chọn theo vai trò đang hoạt động; Bán tự điền địa chỉ giao mặc định từ master; CTV dùng chung master cho nghiệp vụ hoa hồng. Dashboard đếm theo vai trò thay vì kind đơn.
-- Hồ sơ có loại cá nhân/doanh nghiệp, liên hệ, địa chỉ giao mặc định, nhóm khách, MST, điều khoản/số ngày bán và mua riêng, ngân hàng và người phụ trách. Không bắt cửa hàng nhập các trường tùy chọn.
+- Hồ sơ có loại cá nhân/doanh nghiệp, liên hệ, địa chỉ giao mặc định, nhóm khách, MST, điều khoản/số ngày bán và mua riêng, ngân hàng và người phụ trách. Popup NCC bắt buộc mã, tên, loại đối tượng, điện thoại, email, địa chỉ; thông tin bổ sung/thanh toán tùy chọn. Tên và địa chỉ công ty lưu riêng với tên và địa chỉ NCC. Chi tiết cập nhật local: [SUPPLIER_PROFILE_LOCAL.md](./SUPPLIER_PROFILE_LOCAL.md).
 - Kiểm trùng mã/MST trong tenant; chuẩn hóa MST; trùng điện thoại/email báo cảnh báo trên chi tiết, không tự gộp.
 - Quyền READ xem master, SETUP sửa; FINANCE xem/sửa ngân hàng và số dư; CRM xem/ghi chăm sóc. Lịch sử giới hạn quyền module và scope; số dư AR/AP tách riêng theo scope.
 - Dùng Idempotency-Key của Core, version chống ghi đè, audit/outbox hiện có. Không bỏ/ngừng vai trò còn đơn mở. Hồ sơ ngừng không tạo giao dịch mới; thu nợ và nghiệp vụ có nguồn vẫn được xử lý theo quyền.

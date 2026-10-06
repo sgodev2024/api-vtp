@@ -1,0 +1,60 @@
+import assert from "node:assert/strict";
+import { readFile, writeFile } from "node:fs/promises";
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
+const require = createRequire(import.meta.url);
+const { chromium } = require(process.env.AICRM_PLAYWRIGHT_PATH);
+const password = (await readFile(new URL("../.env", import.meta.url), "utf8")).match(/^AICRM_BOOTSTRAP_PASSWORD=([^\r\n]+)/m)[1].trim();
+const auth = await fetch("http://localhost:8185/api/v1/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: "admin@core.local", password }) });
+assert.equal(auth.status, 200);
+const token = (await auth.json()).session.accessToken;
+const browser = await chromium.launch({ channel: "msedge", headless: true });
+const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+const sku = { id: "layout-priced", code: "SP-001", name: "Sản phẩm có giá", unit: "cái", units: { hộp: 2 }, barcode: "8939991112223", active: true, tracking: "NONE", price: 50000, vat: 8 };
+const manual = { ...sku, id: "layout-manual", code: "SP-002", name: "Sản phẩm chưa có giá", price: 0, vat: 10, barcode: "8939991112224" };
+const catalog = { warehouses: [{ id: "layout-warehouse", name: "Kho cửa hàng", active: true }], skus: [sku, manual], partners: [{ id: "layout-customer", name: "Khách hàng", phone: "0900000010", address: "123 Nguyễn Trãi", shipping_address: "123 Nguyễn Trãi", active: true, roles: { CUSTOMER: true } }], permissions: ["READ", "SELL"], accountId: "layout-account" };
+const errors = [], retailWrites = [];
+await ctx.addInitScript(t => sessionStorage.setItem("core-access-token", t), token);
+await ctx.route("**/api/v1/retail/**", async route => {
+  const req = route.request(), url = new URL(req.url()), path = url.pathname.replace("/api/v1/retail", "");
+  const send = (body, status = 200) => route.fulfill({ status, contentType: "application/json", body: JSON.stringify(body), headers: { "Access-Control-Allow-Origin": "http://localhost:3205" } });
+  if (req.method() === "OPTIONS") return send({});
+  if (path === "/price") { const body = req.postDataJSON(); return send({ price: body.skuId === sku.id ? 50000 : 0, effective: body.skuId === sku.id ? Number(body.qty) === 4 ? 45000 : 50000 : 0, priceAvailable: body.skuId === sku.id, promotions: [] }); }
+  if (req.method() !== "GET") { retailWrites.push(path); return send({}, 403); }
+  if (path === "/catalog") return send(catalog);
+  if (path === "/stock") return send([{ warehouse_id: "layout-warehouse", sku_id: sku.id, available: 20 }]);
+  if (path === "/documents") return send({ items: [], page: 0, pages: 1, total: 0 });
+  return send([]);
+});
+try {
+  const page = await ctx.newPage(); page.on("pageerror", error => errors.push(error.message));
+  await page.goto("http://localhost:3205/business/retail/orders");
+  await page.getByRole("button", { name: "+ Tạo đơn bán", exact: true }).click();
+  const editor = page.locator(".s-editor");
+  await editor.getByLabel("Khách hàng *", { exact: true }).selectOption("layout-customer");
+  const picker = editor.getByRole("combobox", { name: "Tìm tên, mã SKU hoặc quét barcode", exact: true });
+  await picker.fill(sku.barcode); await picker.press("Enter");
+  await editor.locator(".s-line").first().getByLabel("Đơn vị", { exact: true }).selectOption("hộp");
+  await editor.locator(".s-line").first().getByLabel("Số lượng", { exact: true }).fill("2");
+  await picker.fill(manual.barcode); await picker.press("Enter");
+  await page.waitForFunction(() => !document.querySelectorAll('.s-line input[aria-label="Đơn giá"]')[1].disabled);
+  await editor.locator(".s-line").nth(1).getByLabel("Đơn giá", { exact: true }).fill("12345");
+  await editor.getByLabel("Ghi chú", { exact: true }).fill("Giao trong giờ hành chính");
+  assert.match(await editor.locator("tfoot .oe-amount").innerText(), /207\.980/);
+  await editor.getByLabel("Ghi chú", { exact: true }).blur(); await page.evaluate(() => scrollTo(0, 0));
+  await page.screenshot({ path: fileURLToPath(new URL("../docs/screenshots/orders/order-entry-desktop.png", import.meta.url)), fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForFunction(() => document.querySelector(".sidebar").getBoundingClientRect().right <= 1);
+  const bounds = await page.evaluate(() => ({ viewport: innerWidth, root: document.documentElement.scrollWidth }));
+  assert(bounds.root <= bounds.viewport + 2, JSON.stringify(bounds));
+  await page.screenshot({ path: fileURLToPath(new URL("../docs/screenshots/orders/order-entry-mobile.png", import.meta.url)), fullPage: true });
+  const scroller = editor.locator(".oe-table-scroll");
+  assert(await scroller.evaluate(el => el.scrollWidth > el.clientWidth));
+  await scroller.evaluate(el => { el.scrollLeft = el.scrollWidth; });
+  await editor.locator(".s-line").nth(1).getByLabel("Đơn giá", { exact: true }).fill("20000");
+  assert.match(await editor.locator("tfoot .oe-amount").innerText(), /216\.400/);
+  assert.deepEqual(errors, []); assert.deepEqual(retailWrites, []);
+  const result = { checkedAt: new Date().toISOString(), mode: "browser fixture, no retail writes", bounds, keyboardBarcode: true, mobileTableScrollAndEdit: true, vatAndTotals: true, runtimeErrors: errors, operationalRetailWrites: 0 };
+  await writeFile(new URL("../docs/order-layout-check-result.json", import.meta.url), JSON.stringify(result, null, 2));
+  console.log(JSON.stringify(result, null, 2));
+} finally { await ctx.unrouteAll({ behavior: "ignoreErrors" }); await ctx.close(); await browser.close(); }

@@ -59,6 +59,6 @@ public class RetailCatalog {
     var exclusive=promos.stream().filter(p->!Boolean.TRUE.equals(p.get("stackable"))).findFirst();
     var selected=exclusive.isPresent()?List.of(exclusive.get()):promos;
     BigDecimal effective=price;for(var p:selected){effective=effective.multiply(BigDecimal.ONE.subtract(decimal(p.get("percent")).divide(new BigDecimal("100"))));used.add(p.get("id"));}
-    var response=new LinkedHashMap<String,Object>();response.put("price",price);response.put("effective",effective.setScale(4,RoundingMode.HALF_UP));response.put("vat",item.get("vat"));response.put("ruleId",rules.isEmpty()?"DEFAULT":rules.getFirst().get("id"));response.put("promotions",used);return response;
+    var response=new LinkedHashMap<String,Object>();response.put("price",price);response.put("priceAvailable",!rules.isEmpty()||price.signum()>0);response.put("effective",effective.setScale(4,RoundingMode.HALF_UP));response.put("vat",item.get("vat"));response.put("ruleId",rules.isEmpty()?"DEFAULT":rules.getFirst().get("id"));response.put("promotions",used);return response;
   }
 }

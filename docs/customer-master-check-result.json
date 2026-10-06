@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-06T00:54:09.817Z",
-  "database": "disposable deployment aicrm-master-check",
+  "checkedAt": "2026-10-06T07:26:58.253Z",
+  "database": "disposable deployment aicrm-order-check",
   "checks": [
     "Multi-role create and idempotent replay retain one partner ID",
     "Customer and supplier lists share the same master",

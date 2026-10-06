@@ -127,9 +127,10 @@ Cập nhật 06/10/2026 theo BA F-21. Đây là hồ sơ gốc dùng chung Bán 
 | Loại đối tượng | B: Cá nhân / Doanh nghiệp; mặc định Cá nhân | Bổ sung; khác vai trò kinh doanh |
 | Vai trò | B, chọn một hoặc nhiều: Khách hàng / Nhà cung cấp / CTV | Có trên local V30; kind cũ giữ tương thích |
 | Trạng thái từng vai trò | B, mặc định hoạt động; ngừng riêng không ngừng vai trò khác | Bổ sung |
-| Điện thoại | K, chữ ≤60 | Có |
-| Email | K, ≤160; cần thống nhất kiểm định dạng khi nhập | Có trường |
-| Địa chỉ | K, chữ | Có |
+| Điện thoại | K ở master chung; B trong popup NCC; chữ ≤60 | Có |
+| Email | K ở master chung; B trong popup NCC; ≤160, kiểm định dạng email | Có |
+| Địa chỉ | K ở master chung; B trong popup NCC; ≤2000 | Có |
+| Tên công ty / Địa chỉ công ty | K; ≤160 / ≤2000; tách tên/địa chỉ liên hệ NCC | V31: company_name / company_address |
 | Địa chỉ giao/nhận mặc định | K; mặc định dùng địa chỉ chung; giao dịch được sửa riêng | Bổ sung cấu trúc; không ghi địa chỉ giao riêng ngược vào master |
 | Nhóm khách | K, chữ ≤80; dùng chọn giá | Có; chưa có danh mục riêng |
 | Trạng thái hoạt động | T/K quản trị | Có tạo/ngừng |
@@ -138,7 +139,7 @@ Cập nhật 06/10/2026 theo BA F-21. Đây là hồ sơ gốc dùng chung Bán 
 | Điều khoản bán / số ngày thanh toán bán | K, dành vai trò Khách hàng; bỏ trống nghĩa chưa thỏa thuận, không tự chặn bán | Bổ sung form; bỏ mặc định 30 ngày chưa được chốt |
 | Điều khoản mua / số ngày thanh toán mua | K, dành vai trò Nhà cung cấp; độc lập điều khoản bán | Bổ sung |
 | Ngân hàng/số tài khoản/tên chủ tài khoản | K; chỉ hiển thị/sửa theo quyền thông tin thanh toán | Bổ sung; không bắt buộc khi tạo master |
-| Người phụ trách chăm sóc | K, tài khoản đang hoạt động trong công ty | Bổ sung |
+| Người phụ trách chăm sóc / Người quản lý NCC | K, cùng owner_id; tài khoản đang hoạt động trong công ty | Có; popup NCC hiển thị nhãn Người quản lý |
 | Phải thu / phải trả / cọc khách / ứng trước NCC | T từ sổ tương ứng, hiển thị riêng theo quyền và phạm vi | Có qua finance từng phần; không nhập hoặc tự bù trừ tại master |
 | Phiên bản, người/ngày tạo/sửa, nhật ký đổi vai trò | T; kiểm sửa đồng thời và audit | Bổ sung chuẩn hóa master |
 | Ghi chú chăm sóc — đối tác | B, cùng ID master; chọn vai trò/ngữ cảnh chăm sóc phù hợp | Có partner chung; cần chuẩn hóa quyền/ngữ cảnh |
@@ -188,11 +189,11 @@ Không có bảng giá theo nhiều tiền tệ hoặc mọi loại khuyến mã
 | Kênh bán | Quầy/online/sỉ/CTV, mặc định quầy | Có |
 | Hiệu lực báo giá | Ngày, K, mặc định hôm nay +7 | Có dữ liệu; chưa chặn/nhắc chuyển báo giá hết hiệu lực đầy đủ |
 | Địa chỉ giao | ĐK đơn cần giao, K quầy | Có trên báo giá/đơn; snapshot giao cần chuẩn hóa |
-| COD dự kiến | K, ≥0; thông tin kế hoạch, không thu tiền ở bước đơn | Có metadata |
-| Phí giao khách trả | K, ≥0, chỉ bán/báo giá/đơn | Có `fee`; cần phân biệt phí khách và phí hãng |
-| Phí mua vốn hóa | K, ≥0 ở nhập | Có `fee`; tách bên nhận/nghĩa vụ cần bổ sung |
-| Phân bổ phí mua | Giá trị / số lượng cơ sở / trọng lượng, mặc định giá trị | Có |
-| Giá vốn tạm thời | Boolean, K; chỉ nhãn chưa đủ phí | Có; không tự điều chỉnh muộn |
+| COD dự kiến | K, ≥0; không hiển thị trong tạo đơn bán mới, mặc định 0; không thu tiền ở bước đơn | Có metadata; giao/đối soát COD là luồng riêng |
+| Phí giao khách trả | K, ≥0, chỉ bán/báo giá; không hiển thị trong tạo đơn bán mới, mặc định 0 | Backend giữ `fee`; cần phân biệt phí khách và phí hãng |
+| Phí mua vốn hóa | Không hiển thị trong popup Nhập hàng; mặc định 0 | Backend giữ `fee`; tách bên nhận/nghĩa vụ cần bổ sung |
+| Phân bổ phí mua | Không hiển thị trong popup Nhập hàng; mặc định giá trị | Backend giữ phương pháp phân bổ |
+| Giá vốn tạm thời | Không hiển thị trong popup Nhập hàng; mặc định false | Backend giữ dữ liệu; không tự điều chỉnh muộn |
 | Tiền trả ngay | K, ≥0, không vượt tổng; ở POS/nhập mua | Có |
 | Phương thức | Tiền mặt/chuyển khoản/thẻ/khác; mặc định tiền mặt | Có |
 | Giá đã gồm VAT | Boolean, K, mặc định không; tại bán/báo giá/đơn mới | Có |
@@ -218,8 +219,8 @@ Không có bảng giá theo nhiều tiền tệ hoặc mọi loại khuyến mã
 | Hệ số | T tại thời điểm lập; giữ từ nguồn khi theo phiếu | Có |
 | Số lượng | B, >0, tối đa 4 chữ số lẻ; kiểm kê dùng số đếm riêng | Có |
 | Số lượng cơ sở | T = lượng × hệ số, tối đa 4 chữ số lẻ | Có |
-| Đơn giá | B, ≥0, tối đa 4 chữ số lẻ, theo đơn vị dòng | Có |
-| Giảm dòng (VND) | K, ≥0, không vượt tiền hàng; số tiền, không nhầm tỷ lệ | Có |
+| Đơn giá | B, ≥0, tối đa 4 chữ số lẻ, theo đơn vị dòng; tạo đơn bán tự lấy giá cấu hình, chưa có thì nhập tay | `/price` có priceAvailable; theo nguồn giữ giá gốc; backend tra lại giá cấu hình khi lưu đơn mới |
+| Giảm dòng (VND) | K, ≥0, không vượt tiền hàng; không hiển thị trong Nhập mua/Tạo đơn bán | Backend giữ trường; đơn bán mới áp ưu đãi tự động, không nhập giảm thủ công |
 | VAT (%) | K, 0–100 | Có |
 | Tiền sau giảm/thuế/thành tiền | T, làm tròn đồng theo BA | Có |
 | Mã lô | ĐK nhập/trả hàng LOT; xuất để trống chọn FEFO | Có, ≤100 theo xử lý lô |

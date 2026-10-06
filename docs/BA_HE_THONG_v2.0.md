@@ -154,20 +154,28 @@ Giá ưu tiên: khách riêng → nhóm khách → chi nhánh/kênh → giá m�
 
 ### F-08. Nhà cung cấp
 
-Chọn đối tác có vai trò Nhà cung cấp từ Customer Master tại **Khách hàng / Đối tác** → chọn trong đơn/phiếu nhập → tra phải trả và chi tiền tại Kế toán. Màn Nhà cung cấp trong Mua hàng là danh sách lọc của cùng dữ liệu gốc, không tạo danh mục riêng. Nếu chưa có hồ sơ, mở màn master để tạo hoặc bổ sung vai trò Nhà cung cấp cho đối tác hiện có rồi quay lại. Không nhập nợ trực tiếp trên hồ sơ. Các trường mã số thuế, người liên hệ, điều khoản trả là tùy chọn, không bắt buộc người bán nhỏ nhập.
+Màn **Mua hàng → Nhà cung cấp** dùng Customer Master chung và lọc SUPPLIER, không tạo bảng NCC riêng. Nút **Thêm NCC** mở popup ba tab; không có nút Mở Customer Master tại màn NCC. Tạo mới gắn vai trò Nhà cung cấp; sửa giữ các vai trò khác của hồ sơ. NCC đã có được chọn trong đơn/phiếu nhập; phải trả và chi tiền được tra tại Kế toán.
+
+| Tab popup NCC | Trường | Bắt buộc |
+|---|---|---|
+| Thông tin chung | Mã NCC, Tên NCC, Loại đối tượng (Cá nhân/Doanh nghiệp), Điện thoại, Email, Địa chỉ | Cả 6 trường |
+| Thông tin bổ sung | Tên công ty, Địa chỉ công ty (nhãn Địa chỉ), Mã số thuế, Người liên hệ, Người quản lý | Không |
+| Thông tin thanh toán | Ngân hàng, Số tài khoản, Chủ tài khoản, Thời gian công nợ | Không |
+
+Tên/địa chỉ công ty lưu riêng, không ghi đè tên/địa chỉ liên hệ NCC. Người quản lý là tài khoản đang hoạt động trong công ty; Thời gian công nợ là số ngày thanh toán mua (0–3650), bỏ trống nghĩa chưa thỏa thuận. Ngân hàng theo quyền FINANCE; chưa được cấp quyền vẫn có tab thanh toán nhưng các trường ngân hàng bị khóa. Lưu master không tạo tiền hoặc khoản nợ. Kiểm tra bắt buộc khi tạo/sửa qua popup NCC; form master chung tiếp tục dùng quy tắc tối thiểu của F-21.
 
 ### F-09. Nhập hàng trực tiếp — luồng mặc định
 
 1. Chọn kho nhận và NCC, ngày tham chiếu nếu bổ sung, ghi chú/chứng từ NCC nếu có.
-2. Chọn SKU/đơn vị/lượng/giá mua/giảm/VAT. Lô phải có mã và hạn; serial phải đủ và không trùng.
-3. Nhập phí mua đã biết, cách phân bổ; nhập đã trả ngay và phương thức nếu có.
+2. Chọn SKU/đơn vị/lượng/giá mua/VAT. Popup Nhập mua không có trường Giảm dòng; dòng mới không nhập giảm giá. Lô phải có mã và hạn; serial phải đủ và không trùng.
+3. Nhập đã trả ngay và phương thức nếu có; phí mua và phân bổ phí không hiển thị trong popup.
 4. Lưu nháp → kiểm tra → gửi duyệt kèm lý do.
 5. Người khác có quyền xem giá/lượng/thông tin tracking → duyệt hoặc từ chối.
 6. Duyệt thành công: tăng tồn kho nhận, cập nhật giá vốn, phát sinh phải trả theo tổng phiếu; tiền trả ngay tạo khoản chi và phân bổ. Xem số còn nợ NCC.
 
 Nhập thiếu lô/serial, sai hệ số hoặc giá trị âm bị chặn. NCC bắt buộc. Không tự tạo sản phẩm từ form nhập; hướng dẫn sang Sản phẩm, lưu nháp rồi quay lại.
 
-Phí mua vốn hóa hiện có nhưng khoản phí có thể trả bên vận chuyển khác NCC hàng: phải tách người nhận tiền và nghĩa vụ trả, tránh tự cộng cả phí vào nợ NCC hàng. Đây là phần cần chuẩn hóa, không mặc định dữ liệu nợ hiện tại đã phân tách phí đầy đủ. Cờ “giá vốn tạm thời” chỉ là thông tin; chưa tự điều chỉnh phí đến muộn.
+Popup Nhập hàng không hiển thị Phí mua vốn hóa, Phân bổ phí và Phí mua chưa biết hết để đơn giản hóa nhập liệu. Phiếu nhập mới từ popup mặc định phí mua bằng 0, phương pháp phân bổ theo giá trị và không đánh dấu giá vốn tạm thời. Backend vẫn giữ mô hình phí mua cho nhu cầu mở rộng; chưa tự điều chỉnh phí đến muộn hoặc phân tách đầy đủ nghĩa vụ trả phí cho bên vận chuyển.
 
 ### F-10. Mua theo kế hoạch — tùy chọn
 
@@ -187,6 +195,10 @@ Chọn phiếu nhập đã ghi → chọn dòng/lượng trả còn được tr�
 
 ### F-12. Bán tại quầy — luồng nhanh
 
+Giao diện POS: danh mục/tìm mã ở bên trái, giỏ và thanh toán ở bên phải; màn hình hẹp xếp dọc. F2 tìm/quét hàng, F4 chọn khách. Giá trên thẻ là giá niêm yết; tổng giỏ là tạm tính theo chính sách tra được. **Kiểm tra thanh toán** lưu nháp và hiển thị tổng máy chủ, sau đó **Xác nhận bán hàng** để ghi/gửi duyệt. Chi tiết đơn vị, giá, giảm, VAT, lô/serial nằm trong từng dòng. Lịch sử phiếu mở theo nhu cầu.
+
+POS cảnh báo cần/còn/thiếu theo kho và tổng lượng cơ sở của các dòng cùng SKU; tải lại tồn trước lưu nháp và xác nhận. Thiếu tồn thì chọn kho có hàng, giảm lượng, bổ sung nhập/tồn đầu kỳ đã được duyệt hoặc chuyển toàn bộ giỏ thành đơn đặt trước. Nếu POS đã lưu nháp, người dùng chủ động **Hủy nháp & chuyển giỏ đặt trước**; chưa ghi tồn/thu tiền trên nháp. Không tự tách phần thiếu hoặc tự tạo tồn từ danh mục sản phẩm.
+
 1. Chọn kho làm việc; tìm/quét hàng có sẵn trong danh mục.
 2. Thêm dòng, số lượng/đơn vị; chọn khách nếu muốn lưu lịch sử hoặc bán còn nợ. Khách vãng lai được bỏ trống khi trả đủ.
 3. Xem giá theo chính sách, khuyến mãi, giảm và VAT; chọn serial; lô để trống cho FEFO hoặc chọn lô hợp lệ.
@@ -200,11 +212,18 @@ Thiếu tồn/serial/lô hợp lệ → chặn xuất; đề nghị chuyển ph�
 
 1. Báo giá tùy chọn: khách, kho, hàng, giá, hiệu lực, phí dự kiến → xác nhận/gửi duyệt ngoại lệ. Không ảnh hưởng tồn/nợ.
 2. Tạo đơn từ báo giá hoặc trực tiếp; chọn kênh online/sỉ/quầy/CTV, khách, địa chỉ giao và hàng; xác nhận.
+
 3. Có cọc → Kế toán ghi thu gắn đơn; cọc là tiền ứng trước, chưa phải doanh thu/nợ đã xuất.
 4. Kho xem lượng chưa xuất và tồn → tạo phiếu xuất từ dòng đơn. Mỗi phiếu một kho; nhiều phiếu có thể lấy từ nhiều kho.
 5. Ghi phiếu xuất đủ điều kiện hoặc duyệt ngoại lệ → trừ tồn, phát sinh doanh thu nội bộ/giá vốn/nợ; phân bổ cọc vào phiếu đã xuất.
 6. Tạo đợt giao từ phiếu xuất đã ghi → cập nhật tay chuẩn bị/đang giao/giao một phần/đã giao/thất bại.
 7. Thu thêm, đối soát COD hoặc để công nợ → phân bổ vào khoản phải thu. Đơn hoàn thành về xuất khi toàn bộ lượng đã xuất; trạng thái tiền/giao cần hiển thị độc lập.
+
+Màn tạo đơn bán chọn khách trong danh sách tên/điện thoại; icon **+** bên trong ô Khách hàng mở popup **Thêm khách hàng**. Popup tạo nhanh bắt buộc mã/tên; điện thoại/email/địa chỉ/loại đối tượng theo quy tắc master, lưu vai trò CUSTOMER trong Customer Master chung rồi tự chọn cho đơn. Nhân viên có READ và SELL được tạo nhanh; sửa danh mục đầy đủ vẫn cần SETUP. Giữ giỏ hàng đang nhập, không tạo đơn hoặc khoản thu khi chỉ thêm khách.
+
+Ô chọn sản phẩm hiển thị danh sách xổ xuống khi nhập hoặc mở ô; tìm theo tên/SKU/biến thể/barcode, dùng phím lên/xuống và Enter để chọn, Esc hoặc chuyển sang ô khác để đóng. Quét barcode khớp duy nhất thêm hàng vào phiếu. Hàng trên phiếu là bảng gọn như báo giá: STT, sản phẩm/mã, đơn vị tính, số lượng, đơn giá, VAT %, thành tiền và bỏ dòng. Lô/serial mở trong dòng khi cần. Tổng tạm tính cập nhật sau khi tra giá; tổng trên nháp do máy chủ tính là số tiền xác nhận. Địa chỉ giao và ghi chú đặt trong cùng bảng thông tin dưới các dòng hàng, bỏ tiêu đề “Giao hàng, thuế và ghi chú”; vẫn giữ lựa chọn giá đã gồm VAT. Trên điện thoại, bảng hàng cuộn ngang bên trong, các ô thông tin xếp dọc.
+
+Tìm tên/SKU/biến thể hoặc quét barcode hiển thị danh sách hàng, không hiển thị thẻ sản phẩm. Đơn bán mới không có trường COD, phí giao khách trả hoặc giảm dòng; COD/phí trên đơn mới từ màn này bằng 0. Giá tự tra theo khách/kho/kênh/số lượng cơ sở, đổi đơn vị tự quy đổi. Có giá: tự điền và khóa nhập đơn giá; chưa có giá (giá danh mục 0 và không có quy tắc phù hợp): bắt buộc nhập tay, cho phép nhập rõ 0. Quy tắc giá 0 vẫn được coi là giá đã cấu hình. Khuyến mãi theo chính sách do backend áp; máy chủ tra lại giá khi lưu. Đơn từ báo giá giữ giá/chính sách dòng nguồn.
 
 Đơn online nhập thủ công, hãng vận chuyển/mã vận đơn/phí nhập tay. Một đơn có thể nhiều kho, nhiều lần xuất, nhiều đợt giao và nhiều lần thu. Hiện trạng thái giao “một phần” chưa lưu lượng giao theo dòng; cần bổ sung để biết chính xác lượng giao, thất bại và còn giao. Phí giao trên đơn xuất phân bổ theo phần hàng đã xuất; không cộng lại ở mỗi đợt.
 

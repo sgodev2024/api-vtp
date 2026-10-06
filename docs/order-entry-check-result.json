@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-06T08:18:09.671Z",
+  "isolatedDeployment": "aicrm-order-check",
+  "passed": 8,
+  "checks": [
+    "Quick customer validates identity/email, keeps CUSTOMER only, uses shared master and idempotency",
+    "Server resolves customer/quantity/UOM price and automatic promotion; ignores stale automatic price overrides",
+    "Orders converted from an approved quote retain original price and promotion snapshot",
+    "Missing price requires manual input; explicit zero is accepted and a zero-price rule is a configured price",
+    "READ+SELL can quick-create without SETUP; generic master remains protected and READ-only cannot create",
+    "Seller UI creates/selects shared customer with inline icon; dropdown supports search, keyboard, barcode and close; rows and delivery/note share quote-style sheet",
+    "Order UI refreshes customer/quantity/UOM prices, requires missing price and saves automatic + manual prices through real API",
+    "Desktop/mobile render without overflow or runtime error; removed fields do not add fees/COD/manual discounts"
+  ],
+  "runtimeErrors": [],
+  "operationalRetailWrites": 0
+}

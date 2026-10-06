@@ -1,11 +1,17 @@
 {
-  "checkedAt": "2026-10-05T16:47:46.924Z",
+  "checkedAt": "2026-10-06T08:13:41.678Z",
   "mode": "real read-only + browser-intercepted retail fixture",
   "checks": [
     "Real local POS loads without any retail writes",
+    "POS barcode, stock filters, quantity controls, serial/lot fields, shortcuts and exact-payment helper work",
+    "POS product grid and checkout render at 390px without root overflow",
     "Ambiguous create freezes inputs and replays the same key/payload",
+    "Unit conversion preview is scaled; draft total and line amounts replace estimated prices with server values",
     "POS draft review -> submit uses server total, debt 50,000, and selected customer",
+    "POS history opens an existing receipt while the new cart remains available",
     "Preorder deliberately converts cart to order without posting stock; approval cancellation is disabled",
+    "Zero stock warns before draft creation and disables POS checkout",
+    "Stock changes after draft are detected before submit; explicit cancellation preserves cart for preorder without payment",
     "Sales lists are filtered on server by document type and display empty state",
     "Mobile 390px sales workspace has no root horizontal overflow"
   ],
