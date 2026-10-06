@@ -1,11 +1,9 @@
 # AICRM — Sales Platform
 
-Ứng dụng quản lý bán hàng, mua hàng, kho, sản phẩm, CRM và kế toán nội bộ trên Java Core. Repository dự án: https://github.com/sgodev2024/java-aicrm.
+Ứng dụng quản lý bán hàng, mua hàng, kho, sản phẩm, CRM và kế toán nội bộ trên Java Core. Repository dự án: https://github.com/sgodev2024/aicrm-java.
 
 - Khởi động local: [AICRM_LOCAL.md](./AICRM_LOCAL.md).
 - BA: [BA_HE_THONG_v2.0.md](./docs/BA_HE_THONG_v2.0.md). SRS: [SRS_HE_THONG_v2.0.md](./docs/SRS_HE_THONG_v2.0.md).
-- Phân công intern: [TASK_INTERN_v2.0.md](./docs/TASK_INTERN_v2.0.md).
-- Tiến độ Bán hàng và hiện trạng backend: [TIEN_DO_MODULE_BAN_HANG.md](./docs/TIEN_DO_MODULE_BAN_HANG.md).
 - Nền Core gốc được ghi tại `CORE_BASELINE`; các cấu hình/mật khẩu mẫu chỉ phục vụ local. Chưa triển khai server.
 
 Phần mô tả Core dưới đây được kế thừa từ nền ban đầu; tài liệu nghiệp vụ hiện hành là các liên kết AICRM phía trên.

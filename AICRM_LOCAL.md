@@ -1,6 +1,6 @@
 # AICRM — ứng dụng local trên Java Core
 
-Dự án độc lập tại `aicrm-java`, nền Core ghi trong `CORE_BASELINE`. Repository đồng bộ: https://github.com/sgodev2024/java-aicrm. Chỉ vận hành local, chưa triển khai server. BA/SRS nằm trong `docs/`.
+Dự án độc lập tại `aicrm-java`, nền Core ghi trong `CORE_BASELINE`. Repository đồng bộ: https://github.com/sgodev2024/aicrm-java. Chỉ vận hành local, chưa triển khai server. BA/SRS nằm trong `docs/`.
 
 ## Khởi động
 
