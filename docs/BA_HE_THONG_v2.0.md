@@ -36,7 +36,7 @@ Chưa đưa vào giai đoạn này: bán khi mất Internet; mở/đóng ca và 
 
 | Menu cấp cao | Chức năng con | Vai trò chính |
 |---|---|---|
-| Trang chủ | Trang chủ nền tảng | Điểm vào hệ thống; cần ưu tiên công việc kinh doanh thay chỉ số kỹ thuật |
+| Trang chủ | Trang chủ mặc định Core | Điểm vào hệ thống, trạng thái nền tảng và hoạt động gần đây theo quyền; dashboard nghiệp vụ nằm riêng tại Tổng quan |
 | Tổng quan | Tab Mua hàng / Bán hàng / Kho / Sản phẩm / CRM / Kế toán | Theo dõi kết quả và việc cần làm |
 | Bán hàng | Bán tại quầy; Đơn bán hàng; Khách hàng | Giao dịch bán; Khách hàng là góc nhìn vai trò Khách hàng từ Customer Master |
 | Mua hàng | Mua hàng; Nhà cung cấp | Giao dịch mua; Nhà cung cấp là góc nhìn lọc vai trò từ Customer Master |
