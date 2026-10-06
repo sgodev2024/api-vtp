@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-06T01:09:49.479Z",
+  "checks": [
+    "Navigation API returns standalone master module with two children and separate customer pages under CRM and Sales",
+    "All five real routes load correct headings without redirect or retail writes",
+    "Three customer screens request CUSTOMER, supplier screen requests SUPPLIER, master partners can list all roles",
+    "Edit from Sales updates one master ID, reflected in master/customer/CRM/supplier views (browser fixture only)",
+    "Context screens link back to standalone Customer Master",
+    "Mobile master has no root overflow or runtime errors"
+  ],
+  "runtimeErrors": [],
+  "operationalRetailWrites": 0,
+  "fixture": "Browser interception only"
+}

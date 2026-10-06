@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-10-06T00:54:09.817Z",
+  "database": "disposable deployment aicrm-master-check",
+  "checks": [
+    "Multi-role create and idempotent replay retain one partner ID",
+    "Customer and supplier lists share the same master",
+    "Group filtering uses the same server-side count and rows",
+    "Tax duplicate and invalid roles rejected; shared phone/email allowed with warning",
+    "Sales and purchasing accept the same multi-role partner",
+    "Role removal while orders open is blocked; version lock and document snapshot preserved",
+    "CRM notes and scoped transaction history use the master ID",
+    "Import updates by partner code, merges roles and preserves omitted fields",
+    "Same partner has separate AR/AP balances and independent sale/purchase due dates",
+    "Inactive master blocks new sale documents",
+    "Read-only user sees shared master but no financial fields, CRM notes, unauthorized history or edits",
+    "Legacy CRM history also enforces transaction permissions while retaining scoped care notes"
+  ],
+  "passed": 12,
+  "operationalBusinessWrites": 0
+}

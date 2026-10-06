@@ -49,7 +49,7 @@ public class RetailAccess {
   public static LocalDate date(JsonNode n,String key){try{return LocalDate.parse(required(n,key,10));}catch(Exception e){throw problem("INVALID_DATE","Ngày "+key+" không hợp lệ");}}
   public static LocalDate today(){return LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));}
   public JsonNode node(Object value){if(value==null)return json.createObjectNode();try{return json.readTree(value.toString());}catch(Exception e){throw new IllegalStateException(e);}}
-  public Map<String,Object> clean(Map<String,Object> row){var m=new LinkedHashMap<>(row); for(var k:List.of("units","metadata","sku_snapshot","serials","segments","rule_snapshot","rows","errors","result","details","count_lots"))if(m.get(k)!=null)m.put(k,node(m.get(k)));return m;}
+  public Map<String,Object> clean(Map<String,Object> row){var m=new LinkedHashMap<>(row); for(var k:List.of("roles","units","metadata","sku_snapshot","serials","segments","rule_snapshot","rows","errors","result","details","count_lots"))if(m.get(k)!=null)m.put(k,node(m.get(k)));return m;}
 }
 
 

@@ -1,6 +1,6 @@
 # BA hệ thống quản lý bán hàng AICRM — phiên bản 2.0
 
-Ngày lập: 05/10/2026. Trạng thái: bản dự thảo đầy đủ để rà soát nghiệp vụ và phân công triển khai. Nền tảng: Java Core Platform hiện tại. Đối tượng: cửa hàng, hộ kinh doanh, doanh nghiệp thương mại nhỏ và chuỗi điểm bán.
+Ngày lập: 05/10/2026. Cập nhật: 06/10/2026 — bổ sung Customer Master dùng chung. Trạng thái: bản dự thảo đầy đủ để rà soát nghiệp vụ và phân công triển khai. Nền tảng: Java Core Platform hiện tại. Đối tượng: cửa hàng, hộ kinh doanh, doanh nghiệp thương mại nhỏ và chuỗi điểm bán.
 
 Tài liệu này mô tả **quy trình vận hành chuẩn cần đạt**, đối chiếu với giao diện và mã nguồn hiện tại. Đây không phải biên bản xác nhận toàn bộ chức năng đã hoàn thành. Chi tiết từng trường nằm trong [Phụ lục dữ liệu và màn hình](./BA_TRUONG_DU_LIEU_v2.0.md). Khi nội dung khác tài liệu BA/SRS 1.0, các quyết định mới của người dùng và quy tắc ghi rõ trong bản 2.0 là căn cứ cập nhật SRS tiếp theo.
 
@@ -38,11 +38,12 @@ Chưa đưa vào giai đoạn này: bán khi mất Internet; mở/đóng ca và 
 |---|---|---|
 | Trang chủ | Trang chủ nền tảng | Điểm vào hệ thống; cần ưu tiên công việc kinh doanh thay chỉ số kỹ thuật |
 | Tổng quan | Tab Mua hàng / Bán hàng / Kho / Sản phẩm / CRM / Kế toán | Theo dõi kết quả và việc cần làm |
-| Bán hàng | Bán tại quầy; Đơn bán hàng | Giao dịch bán; không tạo sản phẩm tại quầy |
-| Mua hàng | Mua hàng; Nhà cung cấp | Giao dịch mua và hồ sơ NCC hỗ trợ mua |
+| Bán hàng | Bán tại quầy; Đơn bán hàng; Khách hàng | Giao dịch bán; Khách hàng là góc nhìn vai trò Khách hàng từ Customer Master |
+| Mua hàng | Mua hàng; Nhà cung cấp | Giao dịch mua; Nhà cung cấp là góc nhìn lọc vai trò từ Customer Master |
 | Kho | Kho & Tồn; Chuyển kho; Cấu hình kho | Giao dịch tồn và chính sách tồn |
 | Sản phẩm | Danh sách sản phẩm; Nhóm sản phẩm; Thương hiệu; Đơn vị tính; Quy đổi đơn vị tính; Thuộc tính | Dữ liệu gốc của hàng hóa |
-| CRM | Khách hàng | Hồ sơ khách/CTV và chăm sóc |
+| Khách hàng / Đối tác | Khách hàng; Đối tác | Module master độc lập cùng cấp Bán hàng/CRM; quản lý hồ sơ gốc dùng chung |
+| CRM | Khách hàng | Danh sách khách hàng và chăm sóc từ cùng Customer Master |
 | Kế toán | Thu chi; Công nợ | Sổ tiền và sổ nợ tách riêng |
 | Vận hành chung | Đổi trả & bảo hành; Cần duyệt; Thiết lập ban đầu | Công việc xuyên module |
 | Báo cáo | Báo cáo nghiệp vụ và xuất dữ liệu | Đối chiếu kết quả |
@@ -153,7 +154,7 @@ Giá ưu tiên: khách riêng → nhóm khách → chi nhánh/kênh → giá m�
 
 ### F-08. Nhà cung cấp
 
-Tạo hồ sơ mã/tên, liên hệ và địa chỉ → chọn trong đơn/phiếu nhập → tra phải trả và chi tiền tại Kế toán → ngừng khi không dùng. Không nhập nợ trực tiếp trên hồ sơ. Các trường mã số thuế, người liên hệ, điều khoản trả là đề xuất bổ sung, không bắt buộc người bán nhỏ nhập.
+Chọn đối tác có vai trò Nhà cung cấp từ Customer Master tại **Khách hàng / Đối tác** → chọn trong đơn/phiếu nhập → tra phải trả và chi tiền tại Kế toán. Màn Nhà cung cấp trong Mua hàng là danh sách lọc của cùng dữ liệu gốc, không tạo danh mục riêng. Nếu chưa có hồ sơ, mở màn master để tạo hoặc bổ sung vai trò Nhà cung cấp cho đối tác hiện có rồi quay lại. Không nhập nợ trực tiếp trên hồ sơ. Các trường mã số thuế, người liên hệ, điều khoản trả là tùy chọn, không bắt buộc người bán nhỏ nhập.
 
 ### F-09. Nhập hàng trực tiếp — luồng mặc định
 
@@ -255,9 +256,46 @@ Chủ/quản lý thiết lập kiểu theo dõi mặc định khi tạo SKU (th�
 
 ## 11. Module CRM
 
-### F-21. Khách và cộng tác viên
+### F-21. Customer Master — Khách hàng / Đối tác dùng chung
 
-Tạo mã/tên, loại khách hoặc CTV, điện thoại/email/địa chỉ/nhóm khách → chọn trên giao dịch → tra lịch sử đúng phạm vi → ghi chú chăm sóc → đặt lịch gọi → đánh dấu hoàn thành sau khi xử lý. Nhóm khách hiện là chữ trên hồ sơ, chưa có danh mục nhóm khách riêng.
+**Customer Master = dữ liệu gốc đối tác**, bao gồm khách hàng, nhà cung cấp và cộng tác viên. Hồ sơ được quản lý tại module cấp cao **Khách hàng / Đối tác**, gồm **Khách hàng** (lọc vai trò CUSTOMER) và **Đối tác** (tất cả hồ sơ, có bộ lọc vai trò). CRM → Khách hàng và Bán hàng → Khách hàng là hai màn riêng theo ngữ cảnh, cùng lọc vai trò CUSTOMER và dùng chung API/master. Mua hàng → Nhà cung cấp lọc SUPPLIER. Bán hàng, Mua hàng và CRM cùng tham chiếu một định danh đối tác, không sao chép thành các hồ sơ riêng. Đây là master data; tạo/sửa hồ sơ không phát sinh doanh thu, tồn, tiền hoặc công nợ.
+
+Màn **Đối tác** giữ toàn bộ hồ sơ để kiểm tra và bổ sung vai trò khi một bên vừa là khách vừa là NCC/CTV; các danh sách có thể cùng hiển thị một hồ sơ. Sửa tại bất kỳ màn được cấp quyền đều cập nhật cùng master. Ngừng hoạt động của một vai trò không làm mất các vai trò khác. Quyền xem menu: master READ, khách Bán hàng SELL, khách CRM CRM, NCC PURCHASE; quyền sửa master vẫn SETUP và quyền dữ liệu giao dịch không thay đổi.
+
+#### F-21.1. Hồ sơ và vai trò
+
+Một cá nhân/doanh nghiệp có một hồ sơ trong công ty và có thể đồng thời mang nhiều vai trò: **Khách hàng**, **Nhà cung cấp**, **Cộng tác viên**. Tối thiểu cần mã, tên, loại Cá nhân/Doanh nghiệp và một vai trò. Hệ thống gợi ý mã; thông tin liên hệ, mã số thuế, nhóm khách và điều khoản thanh toán có thể bổ sung sau. Cửa hàng nhỏ chỉ cần nhập các trường tối thiểu để bắt đầu.
+
+Luồng: tìm theo tên/mã/điện thoại/mã số thuế → kiểm tra hồ sơ đã có → tạo mới nếu chưa có hoặc bổ sung vai trò → lưu → sử dụng ngay trong module phù hợp. Thêm vai trò không đổi định danh hoặc tạo thêm hồ sơ. Mã đối tác không trùng trong công ty; mã số thuế đã có báo lỗi để chọn hồ sơ cũ. Điện thoại/email trùng chỉ cảnh báo vì có thể dùng chung; không tự gộp. Gộp hồ sơ đã có giao dịch chưa thuộc giai đoạn đầu.
+
+Danh sách có STT, mã, tên, loại, vai trò, điện thoại, nhóm khách, trạng thái và thao tác. Có tìm kiếm, lọc vai trò/trạng thái/nhóm và phân trang. Hồ sơ gồm các tab **Thông tin chung**, **Thông tin theo vai trò**, **Lịch sử giao dịch**, **Công nợ**, **Chăm sóc**; chỉ hiển thị tab và dữ liệu đúng quyền.
+
+#### F-21.2. Dữ liệu mỗi module sử dụng
+
+| Module | Đối tác được chọn | Thông tin sử dụng | Dữ liệu module tự quản lý |
+|---|---|---|---|
+| Bán hàng | Khách hàng đang hoạt động; CTV giới thiệu chọn riêng theo vai trò | Mã/tên, liên hệ, địa chỉ nhận hàng, nhóm khách, điều khoản thanh toán | Báo giá/đơn/phiếu bán, giá thực tế, giao hàng và liên kết CTV; không coi CTV giới thiệu là người mua |
+| Mua hàng | Nhà cung cấp đang hoạt động | Mã/tên, liên hệ, địa chỉ, mã số thuế, điều khoản thanh toán, tài khoản nhận tiền nếu được cấp quyền | Đơn mua/nhập/trả mua, giá mua, chứng từ NCC; không lưu lại một hồ sơ NCC độc lập |
+| CRM | Đối tác theo vai trò và quyền chăm sóc | Thông tin chung, nhóm, người phụ trách; lịch sử mua và liên hệ | Ghi chú, nhắc lịch gọi/chăm sóc, kết quả và trạng thái hoàn thành |
+| Kế toán | Cùng định danh đối tác trên giao dịch | Thông tin nhận diện, vai trò và thông tin thanh toán được phép xem | Phải thu, phải trả, cọc/ứng trước, phân bổ; không nhập số dư trực tiếp vào master |
+
+Khách vãng lai trả đủ tại quầy không bắt buộc tạo hồ sơ. Đơn bán, bán còn nợ và giao dịch mua phải chọn đối tác phù hợp. Một đối tác vừa mua vừa bán có sổ phải thu và phải trả riêng; không tự bù trừ hoặc chỉ hiển thị một số nợ ròng. Hoa hồng CTV tiếp tục thiết lập thủ công theo quy tắc hiện hành, không tự tính khi gán vai trò.
+
+#### F-21.3. Quyền, thay đổi và lịch sử
+
+Master dùng chung các chi nhánh trong cùng công ty/tenant, không dùng chung giữa khách SaaS. Người có quyền được tra thông tin master cần cho công việc; lịch sử chứng từ, công nợ, giá và ghi chú vẫn áp dụng phạm vi chi nhánh/kho và quyền module. Quyền xem master không cấp quyền xem mọi giao dịch của đối tác. Thông tin tài khoản thanh toán chỉ cho người có quyền liên quan.
+
+Sửa thông tin chung tại master áp dụng cho các lần chọn mới. Chứng từ đã ghi giữ bản chụp mã/tên, địa chỉ và thông tin liên quan tại thời điểm ghi để không đổi nội dung phiếu cũ; vẫn liên kết định danh master để tra cứu. Không xóa cứng hồ sơ đã được tham chiếu. Ngừng hồ sơ/vai trò chặn tạo giao dịch mới tương ứng, nhưng cho xử lý thu nợ, trả hàng hoặc hoàn tất đơn cũ theo quyền. Không bỏ vai trò còn đơn đang xử lý; phải hoàn tất/hủy đúng quy trình trước. Ghi nhật ký tạo, sửa, đổi vai trò và ngừng hoạt động; kiểm phiên bản để tránh ghi đè thay đổi đồng thời.
+
+#### F-21.4. Hiện trạng và tiêu chí nghiệm thu
+
+**Đã triển khai local ngày 06/10/2026:** bảng `retail.partner` dùng chung, nhiều vai trò, màn Khách hàng / Đối tác và góc nhìn Nhà cung cấp; kiểm trùng, thông tin theo vai trò, snapshot, version, phân quyền dữ liệu và import cập nhật cùng hồ sơ. `kind` được giữ để tương thích, `roles` là căn cứ chọn đối tác. Chi tiết kiểm chứng và giới hạn xem [Customer Master local](./CUSTOMER_MASTER_LOCAL.md); không đồng nghĩa đã nghiệm thu toàn hệ thống hoặc SaaS.
+
+Nghiệm thu: (1) cùng đối tác mang vai trò Khách hàng và Nhà cung cấp xuất hiện ở cả Bán/Mua với cùng ID; (2) sửa liên hệ một lần và các module lấy thông tin mới; (3) giao dịch cũ không thay nội dung; (4) phải thu/phải trả tách riêng; (5) người giới hạn chi nhánh không thấy lịch sử ngoài phạm vi; (6) hồ sơ ngừng không tạo đơn mới nhưng vẫn thu được nợ cũ; (7) nhập Excel/API cập nhật theo mã đối tác trong tenant, thêm vai trò không tạo bản sao và báo lỗi trước khi ghi dữ liệu sai.
+
+### F-21.5. Chăm sóc khách hàng
+
+Chọn đối tác từ master → tra lịch sử đúng phạm vi → ghi chú chăm sóc → đặt lịch gọi → đánh dấu hoàn thành sau khi xử lý. Nhóm khách hiện là chữ trên hồ sơ, chưa có danh mục nhóm khách riêng.
 
 Lịch sử bao gồm loại, số, ngày, trạng thái, tổng tiền phiếu; phải phân biệt nháp và đã ghi. Nợ tra từ sổ nợ; không sửa nợ trên hồ sơ. Ghi chú bắt buộc; lịch nhắc tùy chọn. **Có:** lịch/hoàn thành. **Bổ sung:** người phụ trách, kết quả gọi, thời gian hoàn thành, lịch sử sửa, nhắc trên ứng dụng; không tự hứa email/SMS. Quyền ẩn thông tin cá nhân hoặc chỉ hiện khách của nhân viên là cấu hình đặc thù sau.
 

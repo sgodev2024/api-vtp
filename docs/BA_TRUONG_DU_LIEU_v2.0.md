@@ -115,22 +115,33 @@ Danh sách chuẩn: STT, mã, tên, biến thể, nhóm, thương hiệu, đơn 
 
 Chỉnh hệ số là cập nhật cho tương lai; hệ số trên phiếu cũ giữ nguyên. Không có chức năng xóa quy đổi đã dùng hoàn chỉnh; bản chuẩn cần ngừng sử dụng thay xóa lịch sử.
 
-## D-06. Khách hàng/CTV/NCC và chăm sóc
+## D-06. Customer Master — Khách hàng / Đối tác và chăm sóc
+
+Cập nhật 06/10/2026 theo BA F-21. Đây là hồ sơ gốc dùng chung Bán hàng, Mua hàng và CRM trong một tenant. Nhà cung cấp là góc nhìn theo vai trò, không có bảng hồ sơ riêng. Các thông tin theo vai trò chỉ xuất hiện khi vai trò được chọn; nhóm trường tùy chọn có thể thu gọn khi bắt đầu sử dụng.
 
 | Trường | Quy tắc | Hiện trạng |
 |---|---|---|
 | Mã đối tác | B, ≤60, duy nhất trong công ty | Có |
 | Tên đối tác | B, ≤160 | Có |
-| Loại | B: khách / NCC / CTV; màn NCC cố định NCC | Có; một hồ sơ hiện một loại, đa vai trò cần yêu cầu riêng |
+| ID đối tác / tenant | T, bất biến; các module cùng tham chiếu một ID | Có định danh chung |
+| Loại đối tượng | B: Cá nhân / Doanh nghiệp; mặc định Cá nhân | Bổ sung; khác vai trò kinh doanh |
+| Vai trò | B, chọn một hoặc nhiều: Khách hàng / Nhà cung cấp / CTV | Có trên local V30; kind cũ giữ tương thích |
+| Trạng thái từng vai trò | B, mặc định hoạt động; ngừng riêng không ngừng vai trò khác | Bổ sung |
 | Điện thoại | K, chữ ≤60 | Có |
 | Email | K, ≤160; cần thống nhất kiểm định dạng khi nhập | Có trường |
 | Địa chỉ | K, chữ | Có |
+| Địa chỉ giao/nhận mặc định | K; mặc định dùng địa chỉ chung; giao dịch được sửa riêng | Bổ sung cấu trúc; không ghi địa chỉ giao riêng ngược vào master |
 | Nhóm khách | K, chữ ≤80; dùng chọn giá | Có; chưa có danh mục riêng |
 | Trạng thái hoạt động | T/K quản trị | Có tạo/ngừng |
-| Mã số thuế/người liên hệ | K với khách doanh nghiệp/NCC, không ép hộ nhỏ | Bổ sung |
-| Điều khoản/số ngày thanh toán | K, mặc định 30 ngày đề xuất; không chặn bán | Bổ sung form |
-| Số dư nợ | T từ sổ; không cho sửa trên hồ sơ | Có qua finance; cần hiển thị liên kết dễ dùng |
-| Ghi chú chăm sóc — đối tác | B, chọn khách/CTV | Có; API hiện nhận partner chung cần giới hạn mục đích UI |
+| Mã số thuế | K, với doanh nghiệp/NCC; chuẩn hóa trước so trùng trong tenant | Bổ sung; nếu đã có chọn hồ sơ cũ |
+| Người liên hệ/chức danh/điện thoại liên hệ | K; một liên hệ chính giai đoạn đầu | Bổ sung |
+| Điều khoản bán / số ngày thanh toán bán | K, dành vai trò Khách hàng; bỏ trống nghĩa chưa thỏa thuận, không tự chặn bán | Bổ sung form; bỏ mặc định 30 ngày chưa được chốt |
+| Điều khoản mua / số ngày thanh toán mua | K, dành vai trò Nhà cung cấp; độc lập điều khoản bán | Bổ sung |
+| Ngân hàng/số tài khoản/tên chủ tài khoản | K; chỉ hiển thị/sửa theo quyền thông tin thanh toán | Bổ sung; không bắt buộc khi tạo master |
+| Người phụ trách chăm sóc | K, tài khoản đang hoạt động trong công ty | Bổ sung |
+| Phải thu / phải trả / cọc khách / ứng trước NCC | T từ sổ tương ứng, hiển thị riêng theo quyền và phạm vi | Có qua finance từng phần; không nhập hoặc tự bù trừ tại master |
+| Phiên bản, người/ngày tạo/sửa, nhật ký đổi vai trò | T; kiểm sửa đồng thời và audit | Bổ sung chuẩn hóa master |
+| Ghi chú chăm sóc — đối tác | B, cùng ID master; chọn vai trò/ngữ cảnh chăm sóc phù hợp | Có partner chung; cần chuẩn hóa quyền/ngữ cảnh |
 | Ghi chú — chi nhánh | B, trong phạm vi | Có |
 | Ghi chú — nội dung | B, tối đa 4.000 | Có |
 | Lịch nhắc | K, ngày giờ hợp lệ; lưu thời điểm, hiển thị giờ Việt Nam | Có |
@@ -389,7 +400,7 @@ Danh sách: STT, số, loại, ngày, người lập, kho/chi nhánh, đối tá
 |---|---|
 | Hàng: `code,name,unit,price` | B; mã/tên/đơn vị hợp lệ, giá ≥0; mã không trùng trong tệp hoặc đã có |
 | Hàng: `tracking,barcode,variant,returnDays,warrantyDays,weight` | K/ĐK; chính sách đổi trả/bảo hành cần đầy đủ theo BA; cấu trúc đơn vị phụ có thể nhận qua JSON nhưng mẫu đơn giản chưa bao phủ mọi trường |
-| Đối tác: `code,name,kind` | B; kind CUSTOMER/SUPPLIER/COLLABORATOR |
+| Đối tác: `code,name,roles` | B; roles gồm một hoặc nhiều CUSTOMER/SUPPLIER/COLLABORATOR. Có local; hỗ trợ roles JSON object hoặc chuỗi phân cách |; kind đơn còn tương thích |
 | Đối tác: `phone,email,address,customerGroup` | K |
 | Tồn: `skuCode,qty,price` | B; SKU có sẵn, qty >0, giá ≥0; kho lấy từ batch |
 | Tồn: `lot,expiry,serials` | ĐK theo tracking; ngày YYYY-MM-DD, serial `SN1|SN2` |

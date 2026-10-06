@@ -1,0 +1,6 @@
+services:
+  postgres:
+    ports: !override ["127.0.0.1:55438:5432"]
+  backend:
+    image: aicrm-java-backend:latest
+    ports: !override ["127.0.0.1:8186:8080"]

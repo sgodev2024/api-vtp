@@ -15,7 +15,7 @@ public class RetailCommissions {
   public static LocalDate period(JsonNode x){var period=date(x,"period");if(period.getDayOfMonth()!=1)throw problem("COMMISSION_PERIOD","Kỳ hoa hồng phải là ngày đầu tháng");return period;}
   public Object create(Authentication a,JsonNode x){
     r.require(a,"FINANCE");var t=r.tenant(a);var branch=uuid(x,"branchId");r.branch(a,branch);var partner=uuid(x,"partnerId");
-    if(!"COLLABORATOR".equals(r.one("partner",t,partner).get("kind")))throw problem("COMMISSION_PARTNER","Chọn đối tác cộng tác viên");
+    if(!RetailPartners.hasRole(r,r.one("partner",t,partner),"COLLABORATOR"))throw problem("COMMISSION_PARTNER","Chọn đối tác cộng tác viên");
     var kind=required(x,"kind",30);if(!Set.of("ORDER","MONTHLY_ADDITION","ADJUSTMENT").contains(kind))throw problem("COMMISSION_KIND","Loại hoa hồng không hợp lệ");
     var amount=num(x,"amount",BigDecimal.ZERO);if(amount.signum()==0||amount.stripTrailingZeros().scale()>0||!kind.equals("ADJUSTMENT")&&amount.signum()<0)throw problem("COMMISSION_AMOUNT","Khoản theo đơn/bổ sung phải dương; điều chỉnh dùng số có dấu, đơn vị VND");
     var document=optional(x,"documentId");if(kind.equals("ORDER")&&document==null)throw problem("COMMISSION_DOCUMENT","Hoa hồng theo đơn cần phiếu bán đã ghi");

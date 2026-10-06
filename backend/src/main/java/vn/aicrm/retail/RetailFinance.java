@@ -12,7 +12,8 @@ public class RetailFinance {
   private final RetailAccess r;private final RetailCommissions commissions;
   public RetailFinance(RetailAccess r,RetailCommissions commissions){this.r=r;this.commissions=commissions;}
   public UUID open(Authentication a,Map<String,Object> doc,String kind,BigDecimal amount){
-    UUID id=UUID.randomUUID();r.db.update("insert into retail.open_item(id,tenant_id,branch_id,partner_id,document_id,kind,amount,due_date) values(?,?,?,?,?,?,?,?)",id,r.tenant(a),doc.get("branch_id"),doc.get("partner_id"),doc.get("id"),kind,amount,today().plusDays(30));return id;
+    var snapshot=r.node(doc.get("metadata")).path("partnerSnapshot");String term=kind.equals("AR")?"sale_days":"purchase_days";java.time.LocalDate dueDate=snapshot.has(term)?snapshot.hasNonNull(term)?today().plusDays(snapshot.path(term).asInt()):null:today().plusDays(30);
+    UUID id=UUID.randomUUID();r.db.update("insert into retail.open_item(id,tenant_id,branch_id,partner_id,document_id,kind,amount,due_date) values(?,?,?,?,?,?,?,?)",id,r.tenant(a),doc.get("branch_id"),doc.get("partner_id"),doc.get("id"),kind,amount,dueDate);return id;
   }
   public UUID payment(Authentication a,UUID branch,UUID partner,UUID doc,String kind,BigDecimal amount,String method,String reference){
     if(amount.signum()<=0||amount.scale()>0)throw problem("INVALID_AMOUNT","Số tiền phải là số nguyên VND lớn hơn 0");
@@ -20,7 +21,7 @@ public class RetailFinance {
   }
   public Object createPayment(Authentication a,JsonNode x){r.require(a,"FINANCE");UUID branch=uuid(x,"branchId");r.branch(a,branch);r.one("branch",r.tenant(a),branch);UUID partner=optional(x,"partnerId"),doc=optional(x,"documentId");if(partner!=null)r.one("partner",r.tenant(a),partner);if(doc!=null){var d=r.one("document",r.tenant(a),doc);r.warehouse(a,(UUID)d.get("warehouse_id"));if(!branch.equals(d.get("branch_id"))||!Objects.equals(partner,d.get("partner_id")))throw problem("PAYMENT_PARTNER","Khoản tiền phải khớp chi nhánh/đối tác của chứng từ");}
     var kind=text(x,"kind","RECEIPT");if(!Set.of("RECEIPT","PAYMENT","COMMISSION","SUPPLIER_REFUND").contains(kind))throw problem("INVALID_PAYMENT","Hoàn khách cần lập phiếu hoàn và duyệt");
-    if(kind.equals("COMMISSION")&&(partner==null||!"COLLABORATOR".equals(r.one("partner",r.tenant(a),partner).get("kind"))))throw problem("COMMISSION_PARTNER","Hoa hồng cần cộng tác viên");
+    if(kind.equals("COMMISSION")&&(partner==null||!RetailPartners.hasRole(r,r.one("partner",r.tenant(a),partner),"COLLABORATOR")))throw problem("COMMISSION_PARTNER","Hoa hồng cần cộng tác viên");
     var amount=num(x,"amount",BigDecimal.ZERO);java.time.LocalDate commissionPeriod=null;
     if(kind.equals("COMMISSION")){commissionPeriod=RetailCommissions.period(x);if(amount.compareTo(commissions.remaining(a,branch,partner,commissionPeriod))>0)throw problem("COMMISSION_EXCEEDED","Chi vượt hoa hồng còn phải trả trong kỳ. Tổng tháng chỉ ghi phần bổ sung.");}
     var id=payment(a,branch,partner,doc,kind,amount,required(x,"method",40),text(x,"reference",""));

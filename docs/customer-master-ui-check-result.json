@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-10-06T00:57:39.797Z",
+  "checks": [
+    "Real local Customer Master loads read-only",
+    "Browser creates one master with customer and supplier roles in disposable database",
+    "Supplier view edits the same shared master",
+    "Sales picker receives updated master name and default shipping address",
+    "Desktop and mobile 390px render without runtime errors or master root overflow"
+  ],
+  "runtimeErrors": [],
+  "operationalRetailWrites": 0,
+  "testWrites": "Forwarded only to isolated API on 8186"
+}
