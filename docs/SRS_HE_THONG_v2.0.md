@@ -358,3 +358,17 @@ Backlog riêng có 72 task. Mỗi task có owner vai trò, priority, dependency,
 Một task Done khi: phần việc được mô tả đầy đủ, review; migration/backfill nếu có; API contract/quyền/scope/error đúng; UI gọi thật và đủ trạng thái; test AC gắn evidence; không mock đường chính; nhật ký/transaction nếu tác động sổ; tài liệu vận hành cập nhật. Task FE/BE riêng được Done theo deliverable riêng, nhưng FR chỉ Done sau integration+QA, không lấy “xongBE” thay tính năng hoàn chỉnh.
 
 Milestone nghiệm thu: M0 contract/quyết định → M1 bắt đầu sử dụng/sản phẩm → M2 nhập/quầy → M3 đơn/tiền/chuyển/kiểm → M4 trả/COD/service/report → M5 UAT/restore/bàn giao. Releasegate: P1 done hoặc PO duyệt phạm vi loại trừ rõ, quyết định conditional liên quan chốt, AC bắt buộc đạt, không lỗi nghiêm trọng tiền/tồn/quyền; P2 chưa done phải ghi hạn chế. Không gọi release fullBA nếu còn thiếuFR được cam kết.
+
+## FR-Phân quyền module — 06/10/2026
+Resource/action và phụ thuộc VIEW được định nghĩa tại RetailPermissions. API ma trận /api/v1/retail/permissions gồm catalog, role policies, role template, effective user preview, user roles và warehouse scopes; lưu có reason/revision/audit và chống tự thay đổi quyền. Lệnh nghiệp vụ kiểm quyền trước idempotent replay; list/detail/report/export/import không vượt quyền loại dữ liệu. Chi tiết task, quy tắc và nghiệm thu theo DE_XUAT_PHAN_QUYEN_MODULE_v1.0.md; bằng chứng thực hiện trong MODULE_PERMISSION_LOCAL.md.
+
+### Quản lý vai trò qua danh sách và popup
+
+- UI: bảng STT/Mã vai trò/Tên vai trò, tìm mã/tên; nút Thêm vai trò; popup nhập mã/tên và checkbox quyền; mở lại từ tên vai trò để sửa quyền.
+- API: POST /api/v1/retail/permissions/roles (code, name, reason, grants); tạo vai trò và quyền trong transaction, mã trùng trả 422, lỗi dependency rollback cả vai trò. GET/POST /roles/{id} tiếp tục đọc/sửa quyền, giữ revision và bảo vệ vai trò quản trị/tự sửa quyền.
+- Nghiệm thu: vai trò xuất hiện sau lưu, mở lại đúng checkbox, không tạo dữ liệu dở dang khi lỗi; danh sách/popup dùng được trên mobile.
+- Backend xác định canSelfApprove bằng tài khoản/tenant và vai trò platform-admin; catalog trả cờ này để frontend mở nút duyệt phiếu của chính admin@core.local. Không dùng dữ liệu client để quyết định ngoại lệ.
+
+### Khởi tạo địa điểm/kho mặc định
+
+RetailDefaults khởi tạo lúc ApplicationReady và trước catalog cho tenant mới; dùng TransactionTemplate và khóa tenant để chống trùng. Chỉ bổ sung phần còn thiếu, không cấp scope tự động cho nhân viên. Chặn ngừng danh mục cuối và ngừng địa điểm còn kho active. Frontend tự điền ID, ẩn chọn đơn khi duy nhất; vẫn gửi ID cho API và kiểm phạm vi.

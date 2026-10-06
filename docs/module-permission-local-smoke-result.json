@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-06T15:50:32.277Z",
+  "checks": [
+    "Local backend healthy",
+    "Admin login",
+    "Role catalog readable",
+    "Application User editable",
+    "Frontend route responds"
+  ],
+  "roles": 2,
+  "products": 2,
+  "documents": 4,
+  "operationalRetailWrites": 0
+}

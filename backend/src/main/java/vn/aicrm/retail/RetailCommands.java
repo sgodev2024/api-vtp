@@ -15,11 +15,11 @@ import static vn.aicrm.retail.RetailAccess.*;
 /** Per-tenant write serialization keeps last-item sales, numbering and payment allocation atomic for SMEs. */
 @Service
 public class RetailCommands {
-  private final RetailAccess access; private final AuditService audit; private final OutboxService outbox;
-  public RetailCommands(RetailAccess access,AuditService audit,OutboxService outbox){this.access=access;this.audit=audit;this.outbox=outbox;}
+  private final RetailPermissions granular; private final RetailAccess access; private final AuditService audit; private final OutboxService outbox;
+  public RetailCommands(RetailAccess access,AuditService audit,OutboxService outbox,RetailPermissions granular){this.granular=granular;this.access=access;this.audit=audit;this.outbox=outbox;}
   @Transactional
   public Object execute(Authentication a,String key,String operation,JsonNode body,Supplier<Object> work){
-    access.require(a,"READ");
+    granular.command(a,operation,body);
     if(key==null||!key.matches("[A-Za-z0-9._:-]{8,120}"))throw problem("IDEMPOTENCY_REQUIRED","Cần Idempotency-Key từ 8–120 ký tự");
     var t=access.tenant(a); var actor=access.actor(a);
     access.db.queryForList("select pg_advisory_xact_lock(hashtextextended(?,0))",t.toString());

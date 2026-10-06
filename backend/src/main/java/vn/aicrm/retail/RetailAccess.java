@@ -19,8 +19,25 @@ public class RetailAccess {
   public RetailAccess(JdbcTemplate db,PermissionService permissions,ObjectMapper json) {this.db=db;this.permissions=permissions;this.json=json;}
   public UUID tenant(Authentication a){return permissions.tenant(a);}
   public UUID actor(Authentication a){return permissions.account(a);}
-  public void require(Authentication a,String action){permissions.require(a,"aicrm-retail",action,null);}
-  public boolean can(Authentication a,String action){return permissions.decide(a,"aicrm-retail",action,null).allowed();}
+  public boolean canSelfApprove(Authentication a){return db.queryForObject("select count(*) from identity.account u join identity.account_role ar on ar.tenant_id=u.tenant_id and ar.account_id=u.id join identity.role rl on rl.tenant_id=ar.tenant_id and rl.id=ar.role_id where u.tenant_id=? and u.id=? and lower(u.email)='admin@core.local' and u.enabled and rl.code='platform-admin'",Integer.class,tenant(a),actor(a))>0;}
+  public void require(Authentication a,String action){if(!can(a,action))throw problem("PERMISSION_DENIED","Không có quyền nghiệp vụ "+action,HttpStatus.FORBIDDEN);}
+  public boolean can(Authentication a,String action){return switch(action){
+    case "ALL_BRANCHES" -> granular(a,"scope","ALL_BRANCHES");
+    case "COST" -> granular(a,"sensitive","VIEW_COST");
+    case "READ" -> RetailPermissions.FEATURES.stream().anyMatch(f->granular(a,f.code(),"VIEW"));
+    case "SELL" -> List.of("pos","orders","issue","returns","warranty","delivery").stream().anyMatch(f->granular(a,f,"CREATE"));
+    case "PURCHASE" -> List.of("purchase-order","purchase-receipt","purchase-return").stream().anyMatch(f->granular(a,f,"CREATE"));
+    case "STOCK" -> List.of("stock","transfer","count","issue","opening-stock").stream().anyMatch(f->granular(a,f,"VIEW"));
+    case "CRM" -> granular(a,"crm","VIEW");
+    case "FINANCE" -> List.of("receipt","payment","receivables","payables","commission","refund","partners").stream().anyMatch(f->granular(a,f,f.equals("partners")?"VIEW_BANK":"VIEW"));
+    case "SETUP" -> RetailPermissions.FEATURES.stream().anyMatch(f->granular(a,f.code(),"CREATE")||granular(a,f.code(),"UPDATE")||granular(a,f.code(),"MANAGE"));
+    case "APPROVE","EXPORT" -> RetailPermissions.FEATURES.stream().anyMatch(f->granular(a,f.code(),action));
+    case "REPORT" -> RetailPermissions.FEATURES.stream().anyMatch(f->f.code().startsWith("report-")&&granular(a,f.code(),"VIEW"));
+    default -> false;
+  };}
+  public boolean granular(Authentication a,String feature,String action){return permissions.decide(a,RetailPermissions.resource(feature),"VIEW",null).allowed()&&(action.equals("VIEW")||permissions.decide(a,RetailPermissions.resource(feature),action,null).allowed());}
+  public void gate(Authentication a,String feature,String action){if(!granular(a,feature,action))throw problem("PERMISSION_DENIED","Không có quyền "+action+" tại "+feature,HttpStatus.FORBIDDEN);}
+  public String documentTypes(Authentication a,String alias,String action){var types=RetailPermissions.TYPES.stream().filter(t->granular(a,RetailPermissions.feature(t),action)).map(t->"'"+t+"'").toList();return types.isEmpty()?"false":alias+".type in ("+String.join(",",types)+")";}
   public boolean all(Authentication a){return can(a,"ALL_BRANCHES");}
   public List<Map<String,Object>> warehouses(Authentication a){
     return db.queryForList("select w.* from retail.warehouse w where w.tenant_id=? and (? or exists(select 1 from retail.access_scope acl where acl.account_id=? and acl.warehouse_id=w.id and acl.tenant_id=w.tenant_id)) order by w.code",tenant(a),all(a),actor(a));
@@ -30,6 +47,7 @@ public class RetailAccess {
   }
   public void branch(Authentication a,UUID id){if(!all(a)&&db.queryForObject("select count(*) from retail.access_scope where tenant_id=? and account_id=? and branch_id=?",Integer.class,tenant(a),actor(a),id)==0)throw problem("SCOPE_DENIED","Không có quyền tại chi nhánh này",HttpStatus.FORBIDDEN);}
   public String scope(Authentication a,String alias){return all(a)?"true":"exists(select 1 from retail.access_scope acl where acl.tenant_id="+alias+".tenant_id and acl.account_id='"+actor(a)+"'::uuid and acl.warehouse_id="+alias+".warehouse_id)";}
+  public String documentScope(Authentication a,String alias){return "("+scope(a,alias)+" or ("+alias+".type='TRANSFER' and exists(select 1 from retail.access_scope acl where acl.tenant_id="+alias+".tenant_id and acl.account_id='"+actor(a)+"'::uuid and acl.warehouse_id="+alias+".destination_id)))";}
   public String branchScope(Authentication a,String alias){return all(a)?"true":"exists(select 1 from retail.access_scope acl where acl.tenant_id="+alias+".tenant_id and acl.account_id='"+actor(a)+"'::uuid and acl.branch_id="+alias+".branch_id)";}
   public Map<String,Object> one(String table,UUID tenant,UUID id){
     var rows=db.queryForList("select * from retail."+table+" where tenant_id=? and id=?",tenant,id);

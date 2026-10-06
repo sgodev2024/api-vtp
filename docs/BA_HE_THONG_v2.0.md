@@ -547,3 +547,15 @@ Khi khách nhận mã nguồn và chạy riêng, gói bàn giao phải có toàn
 | Tổng quan/Báo cáo | F-29/30/32 | D-18 |
 | Nhập ban đầu | F-31 | D-17 |
 | Quản trị/Hồ sơ | Mục 17 | D-19 |
+
+## Phụ lục phân quyền theo module — 06/10/2026
+Phương án phân quyền theo từng chức năng/thao tác đã được duyệt. Chi tiết quy tắc và ma trận: DE_XUAT_PHAN_QUYEN_MODULE_v1.0.md; triển khai và hướng dẫn local: MODULE_PERMISSION_LOCAL.md. Tái sử dụng vai trò/chính sách Core; không cấp quyền bằng tên vai trò, không fallback quyền retail rộng. Phạm vi chi nhánh/kho tách khỏi quyền thao tác; Customer Master dùng chung, thông tin nhạy cảm được kiểm riêng.
+
+### Giao diện quản lý vai trò phân quyền
+
+Màn hình danh sách vai trò gồm STT, Mã vai trò, Tên vai trò; tìm theo mã/tên. Thêm vai trò mở popup nhập mã/tên bắt buộc và chọn checkbox quyền theo module. Bấm tên vai trò để xem/chỉnh sửa quyền đã lưu. Lưu tạo mới phải đồng thời lưu vai trò và chính sách; không tự gán cho người dùng. Mã trùng hoặc quyền không hợp lệ phải báo lỗi, không để vai trò dở dang.
+- Ngoại lệ được duyệt: admin@core.local đang enabled và có platform-admin được tự lập, tự duyệt/từ chối phiếu của mình; vẫn kiểm trạng thái, lý do và ghi audit. Nhân viên khác không tự duyệt.
+
+### Công ty một địa điểm
+
+Mỗi công ty có tối thiểu một địa điểm và một kho hoạt động. Công ty mới được tự tạo Trụ sở chính và Kho chính; admin là người quản trị, không phải công ty/kho. Dữ liệu danh mục đã có được giữ nguyên. Biểu mẫu tự chọn và ẩn lựa chọn khi chỉ có một địa điểm/kho hợp lệ trong phạm vi người dùng; nhiều lựa chọn thì hiển thị. Không cho ngừng địa điểm/kho cuối cùng.

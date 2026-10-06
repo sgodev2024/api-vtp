@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-06T15:49:39.066Z",
+  "passed": 7,
+  "checks": [
+    "Role list displays STT/code/name and opens through Core navigation",
+    "New role allows code/name, checkbox dependency and select/clear all",
+    "Creating role atomically saves selected permissions and refreshes list",
+    "Existing role reopens with saved checkboxes and can update permissions",
+    "Role search filters by code",
+    "Mobile list/form have no horizontal overflow and Escape closes dialog",
+    "No browser runtime errors"
+  ],
+  "operationalRetailWrites": 0
+}

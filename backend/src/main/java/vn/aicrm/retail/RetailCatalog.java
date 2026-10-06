@@ -9,18 +9,18 @@ import static vn.aicrm.retail.RetailAccess.*;
 
 @Service
 public class RetailCatalog {
-  private final RetailAccess r; private final RetailPartners partners;
-  public RetailCatalog(RetailAccess r,RetailPartners partners){this.r=r;this.partners=partners;}
+  private final RetailAccess r; private final RetailPartners partners;private final RetailDefaults defaults;
+  public RetailCatalog(RetailAccess r,RetailPartners partners,RetailDefaults defaults){this.r=r;this.partners=partners;this.defaults=defaults;}
   public Object catalog(Authentication a){
-    r.require(a,"READ");var t=r.tenant(a);var warehouses=r.warehouses(a);
+    r.require(a,"READ");var t=r.tenant(a);defaults.ensure(t);var warehouses=r.warehouses(a);
     var branches=r.db.queryForList("select * from retail.branch where tenant_id=? order by code",t).stream().filter(b->r.all(a)||warehouses.stream().anyMatch(w->w.get("branch_id").equals(b.get("id")))).toList();
-    return Map.of("branches",branches,"warehouses",warehouses,
+    var result=new LinkedHashMap<String,Object>(Map.of("branches",branches,"warehouses",warehouses,
       "skus",r.db.queryForList("select * from retail.sku where tenant_id=? order by code",t).stream().map(r::clean).toList(),
       "partners",partners.catalog(a),
-      "priceRules",r.db.queryForList("select p.* from retail.price_rule p where p.tenant_id=? and (p.branch_id is null or "+r.branchScope(a,"p")+") order by p.priority desc",t),
-      "promotions",r.db.queryForList("select * from retail.promotion where tenant_id=? order by priority desc",t),
+      "priceRules",r.granular(a,"products","VIEW_PRICE")?r.db.queryForList("select p.* from retail.price_rule p where p.tenant_id=? and (p.branch_id is null or "+r.branchScope(a,"p")+") order by p.priority desc",t):List.of(),
+      "promotions",r.granular(a,"products","VIEW_PRICE")?r.db.queryForList("select * from retail.promotion where tenant_id=? order by priority desc",t):List.of(),
       "discountLimit",r.db.queryForObject("select coalesce((select discount_limit from retail.setting where tenant_id=?),0)",BigDecimal.class,t),
-      "permissions",List.of("READ","SELL","PURCHASE","STOCK","CRM","FINANCE","REPORT","APPROVE","SETUP","COST","EXPORT").stream().filter(x->r.can(a,x)).toList(),"accountId",r.actor(a));
+      "permissions",List.of("READ","SELL","PURCHASE","STOCK","CRM","FINANCE","REPORT","APPROVE","SETUP","COST","EXPORT").stream().filter(x->r.can(a,x)).toList(),"accountId",r.actor(a)));result.put("canSelfApprove",r.canSelfApprove(a));result.put("capabilities",new RetailPermissions(r).capabilities(a));if(!r.can(a,"SELL")&&!r.granular(a,"products","VIEW_PRICE"))((List<Map<String,Object>>)result.get("skus")).forEach(sku->sku.remove("price"));if(!r.granular(a,"products","VIEW")&&!r.can(a,"SELL")&&!r.can(a,"PURCHASE")&&!r.can(a,"STOCK"))result.put("skus",List.of());return result;
   }
   public Object create(Authentication a,String kind,JsonNode x){
     r.require(a,"SETUP");var t=r.tenant(a);var id=UUID.randomUUID();
@@ -43,7 +43,7 @@ public class RetailCatalog {
     }
     return Map.of("id",id);
   }
-  public Object deactivate(Authentication a,String kind,UUID id){if(kind.equals("partners"))return partners.deactivate(a,id);r.require(a,"SETUP");String table=switch(kind){case "skus"->"sku";case "partners"->"partner";case "warehouses"->"warehouse";case "branches"->"branch";default->throw problem("INVALID_CATALOG","Không hỗ trợ ngừng danh mục này");};var row=r.one(table,r.tenant(a),id);if(table.equals("warehouse"))r.warehouse(a,id);if(table.equals("branch"))r.branch(a,id);r.db.update("update retail."+table+" set active=false where tenant_id=? and id=?",r.tenant(a),id);return Map.of("id",row.get("id"));}
+  public Object deactivate(Authentication a,String kind,UUID id){if(kind.equals("partners"))return partners.deactivate(a,id);r.require(a,"SETUP");String table=switch(kind){case "skus"->"sku";case "partners"->"partner";case "warehouses"->"warehouse";case "branches"->"branch";default->throw problem("INVALID_CATALOG","Không hỗ trợ ngừng danh mục này");};var row=r.one(table,r.tenant(a),id);r.db.queryForList("select pg_advisory_xact_lock(hashtextextended(?,0))",r.tenant(a).toString());if(table.equals("warehouse")){r.warehouse(a,id);if(Boolean.TRUE.equals(row.get("active"))&&r.db.queryForObject("select count(*) from retail.warehouse where tenant_id=? and active",Integer.class,r.tenant(a))<=1)throw problem("LAST_WAREHOUSE","Công ty cần ít nhất một kho hoạt động");}if(table.equals("branch")){r.branch(a,id);if(Boolean.TRUE.equals(row.get("active"))&&r.db.queryForObject("select count(*) from retail.branch where tenant_id=? and active",Integer.class,r.tenant(a))<=1)throw problem("LAST_BRANCH","Công ty cần ít nhất một địa điểm hoạt động");if(r.db.queryForObject("select count(*) from retail.warehouse where tenant_id=? and branch_id=? and active",Integer.class,r.tenant(a),id)>0)throw problem("BRANCH_HAS_WAREHOUSES","Cần ngừng các kho thuộc địa điểm trước khi ngừng địa điểm");}r.db.update("update retail."+table+" set active=false where tenant_id=? and id=?",r.tenant(a),id);return Map.of("id",row.get("id"));}
   public Map<String,Object> price(Authentication a,UUID sku,UUID partner,UUID branch,String channel,BigDecimal qty){
     var t=r.tenant(a);var item=r.one("sku",t,sku);if(!Boolean.TRUE.equals(item.get("active")))throw problem("INACTIVE_SKU","Hàng hóa đã ngừng sử dụng");
     String group=partner==null?"":String.valueOf(r.one("partner",t,partner).get("customer_group"));

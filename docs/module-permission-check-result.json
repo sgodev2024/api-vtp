@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-10-06T17:28:35.047Z",
+  "deployment": "aicrm-permission-check",
+  "checks": [
+    "Permission catalog exposes granular resources/actions",
+    "Sales list/count/detail excludes purchase and unrelated document types",
+    "VIEW cannot create; sales cannot create purchases",
+    "Independent approver works without CREATE; creator without approval cannot approve",
+    "Quick customer fixed CUSTOMER; supplier escalation and bank leakage denied",
+    "Revocation applies to same session and idempotent replay before cached result",
+    "Permission editor rejects missing VIEW dependency",
+    "Effective preview includes assigned warehouse, and denied writes do not expand scope",
+    "Supplier lookup, finance and cost unavailable to sales-only role",
+    "Legacy broad READ does not authorize new module resources",
+    "Sales template created without assigning user or approval/payment escalation",
+    "Warehouse revocation removes existing document access immediately",
+    "Explicit DENY wins across multiple roles in same active session",
+    "POS paid amount as string requires separate COLLECT_POS permission",
+    "Menu hides purchase and permission management from sales-only role",
+    "Empty warehouse scope yields empty list/count",
+    "Bank fields absent from master, document snapshot and CSV export for non-finance role",
+    "Finance overview and export filter receipt/payment directions independently",
+    "IMPORT without target CREATE cannot preview or write products",
+    "Application User editable and persists permissions; Platform Administrator remains protected",
+    "Role creation persists code/name/grants atomically; duplicate rejected and invalid grants roll back role",
+    "admin@core.local has all registered capabilities and approves own document; employee has no self-approval exception",
+    "Employee with CREATE and APPROVE still cannot approve own purchase"
+  ],
+  "passed": 23,
+  "operationalRetailWrites": 0
+}

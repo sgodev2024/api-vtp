@@ -1,0 +1,9 @@
+{
+  "passed": 3,
+  "checks": [
+    "Loads assigned roles",
+    "Saves selected role IDs/revision/reason and refreshes list",
+    "Reopens updated assignments"
+  ],
+  "operationalWrites": 0
+}

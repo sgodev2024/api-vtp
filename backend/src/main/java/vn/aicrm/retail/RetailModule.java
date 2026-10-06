@@ -57,10 +57,13 @@ public class RetailModule implements ModuleContributor, ApplicationRunner {
       {"setup","Thiết lập ban đầu","settings","SETUP","retail-general"}};
     var items=new ArrayList<NavigationItemDescriptor>(); int order=10;
     for(var s:screens) items.add(new NavigationItemDescriptor("customer.aicrm."+s[0],s[4],"",s[1],"navigation.retail."+s[0],s[2],
-      "retail-"+s[0],"/business/retail/"+s[0],order++,"","aicrm-retail",s[3],List.of(s[1],"cửa hàng")));
+      "retail-"+s[0],"/business/retail/"+s[0],order++,"","aicrm-menu-"+s[0],"VIEW",List.of(s[1],"cửa hàng")));
+    items.add(new NavigationItemDescriptor("customer.aicrm.permissions","system-administration","","Phân quyền module","navigation.retail.permissions","shield","retail-permissions","/business/retail/permissions",99,"","ACCESS_ADMIN","MANAGE",List.of("phân quyền","module")));
     return items;
   }
+  private String screenFeature(String screen){return switch(screen){case "purchase"->"purchase-order";case "suppliers"->"supplier";case "customers"->"crm";case "sales-customers","master-customers"->"customer";case "master-partners"->"partners";case "overview"->"overview-sales";case "reports"->"report-sales";case "cashflow"->"receipt";case "debt"->"receivables";case "approvals"->"approvals";default->screen;};}
   public void run(ApplicationArguments args) {
+    for(var feature:RetailPermissions.FEATURES) resources.register(new ResourceDescriptor(RetailPermissions.resource(feature.code()),feature.name(),"aicrm-retail","DOMAIN","1.0.0",feature.actions(),"ALWAYS","CONFIDENTIAL"));
     resources.register(new ResourceDescriptor("aicrm-retail","Vận hành cửa hàng","aicrm-retail","DOMAIN","1.0.0",
       List.of("READ","SELL","PURCHASE","STOCK","CRM","FINANCE","REPORT","APPROVE","SETUP","COST","EXPORT","ALL_BRANCHES"),"ALWAYS","CONFIDENTIAL"));
   }

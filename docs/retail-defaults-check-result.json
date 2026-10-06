@@ -1,0 +1,10 @@
+{
+  "passed": 4,
+  "checks": [
+    "Fresh company gets main location/warehouse",
+    "Concurrent catalog calls do not duplicate defaults",
+    "Last active location/warehouse cannot deactivate",
+    "Expansion supports second warehouse and keeps original"
+  ],
+  "operationalWrites": 0
+}

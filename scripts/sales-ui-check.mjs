@@ -33,6 +33,7 @@ async function mock(route) {
   const req = route.request(), url = new URL(req.url()), path = url.pathname.replace("/api/v1/retail", "");
   const send = (body, status = 200) => route.fulfill({ status, contentType: "application/json", body: JSON.stringify(body), headers: { "Access-Control-Allow-Origin": base } });
   if (req.method() === "OPTIONS") return send({});
+  if(path==="/permissions/capabilities")return send(Object.fromEntries(["pos","orders","issue"].map(f=>[f,["VIEW","CREATE","SUBMIT","PRINT"]])));
   if (req.method() === "POST") {
     const payload = req.postDataJSON(), key = req.headers()["idempotency-key"];
     if (path === "/price") return send({ price: 50000, priceAvailable: true, effective: Number(payload.qty) === 4 ? 45000 : 50000, vat: 0, promotions: [] });
@@ -74,6 +75,7 @@ try {
   const ctx = await context({ width: 1440, height: 1050 }); await ctx.route("**/api/v1/retail/**", mock);
   const page = await ctx.newPage(); page.on("pageerror", e => consoleErrors.push(e.message));
   await page.goto(base + "/business/retail/pos");
+  await page.getByLabel("Tìm tên, mã SKU hoặc quét barcode").waitFor();assert.equal(await page.getByLabel("Kho thực hiện *",{exact:true}).isVisible(),false);checks.push("Single authorized warehouse is selected automatically and selector hidden");
   await page.getByLabel("Tìm tên, mã SKU hoặc quét barcode").fill(sku.barcode);
   await page.getByLabel("Tìm tên, mã SKU hoặc quét barcode").press("Enter");
   await page.getByLabel("Số lượng", { exact: true }).fill("1");
