@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { AppIcon } from "./components/app-icon";
+import MobileAppChrome from "./components/mobile-app-chrome";
 
 type View = string | "home" | "profile" | "approvals" | "modules" | "resources" | "users" | "organizations" | "access" | "activity" | "files" | "settings";
 type AuthStep = "login" | "mfa";
@@ -99,6 +100,7 @@ async function apiRequest<T>(path:string, init:RequestInit = {}):Promise<T> {
 
 function LoginScreen({ onAuthenticated }: { onAuthenticated: (session: SessionData, remember: boolean) => void }) {
   const [step, setStep] = useState<AuthStep>("login");
+  const [showPassword,setShowPassword]=useState(false);
   const [email, setEmail] = useState("admin@core.local");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
@@ -151,10 +153,10 @@ function LoginScreen({ onAuthenticated }: { onAuthenticated: (session: SessionDa
     <section className="auth-form-panel">
       <div className="auth-card">
         {step === "login" ? <>
-          <div className="auth-heading"><span className="mobile-auth-logo">CP</span><h2>Đăng nhập</h2><p>Sử dụng tài khoản nội bộ để truy cập Core Platform.</p></div>
+          <div className="auth-heading"><span className="mobile-auth-logo"><img src="/apple-touch-icon.png" alt="AICRM" width="48" height="48"/></span><h2>Đăng nhập</h2><p>Đăng nhập để quản lý cửa hàng của bạn.</p></div>
           <form onSubmit={submitLogin} noValidate>
-            <label>Email công việc<input autoFocus type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.vn" /></label>
-            <label>Mật khẩu<div className="password-field"><input type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Nhập mật khẩu" /><span>●●●</span></div></label>
+            <label>Email công việc<input inputMode="email" autoCapitalize="none" spellCheck={false} type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@company.vn" /></label>
+            <label>Mật khẩu<div className="password-field"><input type={showPassword?"text":"password"} autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Nhập mật khẩu" /><button className="password-visibility" type="button" aria-label={showPassword?"Ẩn mật khẩu":"Hiện mật khẩu"} aria-pressed={showPassword} onClick={()=>setShowPassword(v=>!v)}>{showPassword?"Ẩn":"Hiện"}</button></div></label>
             <div className="auth-options"><label className="check-label"><input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} /> Ghi nhớ đăng nhập</label><button type="button" className="auth-link" onClick={() => setError("Vui lòng liên hệ Quản trị viên hệ thống để đặt lại mật khẩu.")}>Quên mật khẩu?</button></div>
             {error && <p className="auth-error" role="alert">{error}</p>}
             <button className="auth-submit" disabled={loading}>{loading ? "Đang xác thực..." : "Tiếp tục"}<span>→</span></button>
@@ -707,7 +709,9 @@ export default function Home() {
   if(passwordChangeRequired)return <PasswordChangeScreen onChanged={()=>{setPasswordChangeRequired(false);setNavigation(null);}} onSignOut={()=>void signOut()}/>;
   if(!navigation)return <div className="auth-loading" aria-label="Đang tải Navigation Registry"><span/></div>;
 
+  const mobileTabs=[{section:"retail-overview",label:"Tổng quan",icon:"home",preferred:["retail-overview"]},{section:"retail",label:"Bán hàng",icon:"shopping-bag",preferred:["retail-pos","retail-orders"]},{section:"retail-stock",label:"Kho",icon:"layers",preferred:["retail-stock","retail-warehouses"]},{section:"retail-purchase",label:"Mua hàng",icon:"download",preferred:["retail-purchase"]}].flatMap(t=>{const entries=allPages.filter(e=>e.section.key===t.section);const target=t.preferred.map(v=>entries.find(e=>e.item.viewKey===v)).find(Boolean)||entries[0];return target?[{label:t.label,icon:t.icon,active:currentSection?.key===t.section,onSelect:()=>openItem(target.item)}]:[];});
   return <div className="app-shell">
+    <MobileAppChrome tabs={mobileTabs} moreOpen={sidebarOpen} onMore={()=>setSidebarOpen(v=>!v)}/>
     <aside className={`sidebar ${sidebarOpen?"open":""}`}>
       <div className="brand">{systemLogoUrl?<img className="brand-logo" src={systemLogoUrl} alt="Logo hệ thống" />:<div className="brand-mark"><i/><i/><i/><i/></div>}<div><strong>AICRM</strong><span>Sales Platform</span></div></div>
       <nav aria-label="Điều hướng ứng dụng">
@@ -717,7 +721,7 @@ export default function Home() {
       <div className="sidebar-status"><div><StatusDot tone={apiOnline?"teal":"amber"}/><strong>{apiOnline?"Backend connected":"Backend unavailable"}</strong></div><span>Navigation {navigation.revision}</span></div>
     </aside>
     {sidebarOpen&&<button className="sidebar-scrim" aria-label="Đóng menu" onClick={()=>setSidebarOpen(false)}/>}
-    <div className="main-area"><header className="topbar"><button className="mobile-menu" aria-label="Mở menu" onClick={()=>setSidebarOpen(true)}><AppIcon name="menu"/></button><div className="breadcrumb"><span>{view==="profile"?"Tài khoản":currentSectionLabel}</span><b>/</b><strong>{view==="profile"?"Hồ sơ & bảo mật":currentLabel}</strong></div><button className="command-trigger" onClick={()=>setCommandOpen(true)}><AppIcon name="search" size={15}/> Tìm module hoặc chức năng... <kbd>Ctrl K</kbd></button><div className="top-actions"><button aria-label="Thông báo" className="notification-button" onClick={()=>{setNotificationsOpen(!notificationsOpen);setProfileOpen(false);}}><AppIcon name="bell" size={17}/><i/></button><button className="profile-button" aria-expanded={profileOpen} onClick={()=>{setProfileOpen(!profileOpen);setNotificationsOpen(false);}}><span>{initials}</span><div><strong>{user?.displayName||"Người dùng"}</strong><small>{user?.role==="PLATFORM_ADMIN"?"Quản trị viên hệ thống":"Người dùng ứng dụng"}</small></div><b><AppIcon name="chevron-down" size={13}/></b></button></div>
+    <div className="main-area"><header className="topbar"><button className="mobile-menu" aria-label="Mở menu" onClick={()=>setSidebarOpen(v=>!v)}><AppIcon name="menu"/></button><div className="breadcrumb"><span>{view==="profile"?"Tài khoản":currentSectionLabel}</span><b>/</b><strong>{view==="profile"?"Hồ sơ & bảo mật":currentLabel}</strong></div><button className="command-trigger" onClick={()=>setCommandOpen(true)}><AppIcon name="search" size={15}/> Tìm module hoặc chức năng... <kbd>Ctrl K</kbd></button><div className="top-actions"><button aria-label="Thông báo" className="notification-button" onClick={()=>{setNotificationsOpen(!notificationsOpen);setProfileOpen(false);}}><AppIcon name="bell" size={17}/><i/></button><button className="profile-button" aria-expanded={profileOpen} onClick={()=>{setProfileOpen(!profileOpen);setNotificationsOpen(false);}}><span>{initials}</span><div><strong>{user?.displayName||"Người dùng"}</strong><small>{user?.role==="PLATFORM_ADMIN"?"Quản trị viên hệ thống":"Người dùng ứng dụng"}</small></div><b><AppIcon name="chevron-down" size={13}/></b></button></div>
       {notificationsOpen&&<div className="notification-popover"><div><strong>Thông báo</strong><button aria-label="Đóng thông báo" onClick={()=>setNotificationsOpen(false)}><AppIcon name="x" size={16}/></button></div><article><span className="notice teal"><AppIcon name="check-circle" size={15}/></span><p><strong>Navigation Registry đã đồng bộ</strong><small>Menu được lọc theo module, quyền và nhiệm vụ hiện tại.</small></p><time>Live</time></article></div>}
 
       {profileOpen&&<div className="profile-popover"><div className="profile-summary"><span>{initials}</span><p><strong>{user?.displayName||"Người dùng"}</strong><small>{user?.email}</small></p></div><div className="profile-role"><span>{user?.role==="PLATFORM_ADMIN"?"SYSTEM ADMINISTRATOR":"APPLICATION USER"}</span><em>Dedicated deployment</em></div>{settingsItem&&<button onClick={()=>{openItem(settingsItem);setProfileOpen(false);}}><span><AppIcon name="settings" size={15}/></span> Hồ sơ & bảo mật</button>}<button onClick={()=>setLogoutOpen(true)} className="logout-action"><span><AppIcon name="logout" size={15}/></span> Đăng xuất</button></div>}

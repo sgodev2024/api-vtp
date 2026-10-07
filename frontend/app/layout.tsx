@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
+import "./mobile-app.css";
+export const viewport:Viewport={width:"device-width",initialScale:1,viewportFit:"cover",themeColor:"#0b382f",interactiveWidget:"resizes-content"};
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
@@ -12,7 +14,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg",apple:"/apple-touch-icon.png" },
+    appleWebApp:{capable:true,title:"AICRM",statusBarStyle:"default"},
     openGraph: { title, description, type: "website", url: origin, images: [{ url: `${origin}/og.png`, width: 1536, height: 1024, alt: "Core Platform Control Plane" }] },
     twitter: { card: "summary_large_image", title, description, images: [`${origin}/og.png`] },
   };

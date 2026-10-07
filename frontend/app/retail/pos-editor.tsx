@@ -23,6 +23,7 @@ const methods = [["CASH", "Tiền mặt", "database"], ["BANK", "Chuyển khoả
 const round = (value: number) => Math.round(value);
 
 export default function PosEditor({ catalog, customers, header, lines, saved, busy, uncertain, request, available, updateHeader, updateLine, addSku, removeLine, save, confirm, cancel, preorder, shortages, recoverPreorder }: Props) {
+  const [mobileStep,setMobileStep]=useState("products");
   const [query, setQuery] = useState(""), [filter, setFilter] = useState("all"), [scanMessage, setScanMessage] = useState("");
   const [prices, setPrices] = useState<{ key: string; values: Record<string, Row> }>({ key: "", values: {} }), [pricing, setPricing] = useState(false), [priceError, setPriceError] = useState("");
   const searchRef = useRef<HTMLInputElement>(null), customerRef = useRef<HTMLSelectElement>(null);
@@ -82,7 +83,7 @@ export default function PosEditor({ catalog, customers, header, lines, saved, bu
   const remaining = Math.max(0, total - paid);
   const awaitingPrices = !saved && !!header.warehouseId && lines.length > 0 && prices.key !== priceKey && !priceError;
 
-  return <div className="pos-layout">
+  return <div className="pos-layout" data-mobile-step={mobileStep}><nav className="mobile-pos-steps" aria-label="Các bước bán tại quầy">{[["products","Chọn hàng"],["cart","Giỏ hàng"],["payment","Thanh toán"]].map(([key,label])=><button key={key} type="button" aria-current={mobileStep===key?"step":undefined} onClick={()=>setMobileStep(key)}>{label}{key==="cart"?" ("+lines.length+")":""}</button>)}</nav>
     <section className="pos-catalog" aria-label="Chọn sản phẩm">
       <div className="pos-catalog-head"><div><h2>Sản phẩm</h2><small>{activeProducts.length} mặt hàng đang kinh doanh</small></div><span className="pos-live"><span /> Bán tại quầy</span></div>
       <fieldset disabled={locked} className="pos-catalog-controls">
@@ -137,5 +138,5 @@ export default function PosEditor({ catalog, customers, header, lines, saved, bu
         {!saved && (pricing || awaitingPrices || priceError) && <p className="pos-pricing-status" role="status">{pricing || awaitingPrices ? "Đang tra giá theo khách hàng và số lượng…" : priceError}</p>}
       </div>
     </aside>
-  </div>;
+  <div className="mobile-pos-total"><div><span>{lines.length} dòng · Tổng tạm tính</span><strong>{money(total)}</strong></div><button type="button" onClick={()=>setMobileStep(mobileStep==="products"?"cart":"payment")}>{mobileStep==="products"?"Xem giỏ":"Thanh toán"}</button></div></div>;
 }
