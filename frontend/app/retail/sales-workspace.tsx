@@ -28,15 +28,30 @@ const vietnamDate = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_
 function newHeader(warehouseId: string): Header { const expiry = new Date(); expiry.setDate(expiry.getDate() + 7); return { warehouseId, partnerId: "", channel: "COUNTER", fee: "0", paid: "0", method: "CASH", address: "", cod: "0", validUntil: new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Ho_Chi_Minh", year: "numeric", month: "2-digit", day: "2-digit" }).format(expiry), note: "", reason: "", taxInclusive: false }; }
 function Badge({ value, delivery = false }: { value: unknown; delivery?: boolean }) { const key = String(value); return <span className={`s-badge s-badge-${key.toLowerCase()}`}>{key === "PARTIAL" && delivery ? "Giao một phần" : statuses[key] ?? key}</span>; }
 function Field({ label, children, hint }: { label: string; children: ReactNode; hint?: string }) { return <label className="s-field"><span>{label}</span>{isValidElement<{ "aria-label"?: string }>(children) ? cloneElement(children, { "aria-label": label }) : children}{hint && <small>{hint}</small>}</label>; }
-function Table({ headings, children }: { headings: string[]; children: ReactNode }) { return 
-<div className="s-table-wrap">
-  <table>
-    <thead>
-      <tr>{headings.map(h => <th key={h} scope="col">{h}</th>)}</tr>
-      </thead>
-      <tbody>{children}</tbody>
-    </table>
-  </div>; }
+function Table({
+  headings,
+  children,
+}: {
+  headings: string[];
+  children: ReactNode;
+}) {
+  return (
+    <div className="s-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            {headings.map((h) => (
+              <th key={h} scope="col">
+                {h}
+              </th>
+            ))}
+            </tr>
+        </thead>
+        <tbody>{children}</tbody>
+      </table>
+    </div>
+  );
+}
 function Dialog({ title, children, onClose, locked }: { title: string; children: ReactNode; onClose: () => void; locked: boolean }) { const ref = useRef<HTMLDivElement>(null); useEffect(() => { const prior = document.activeElement as HTMLElement | null; ref.current?.focus(); return () => prior?.focus(); }, []); return <div className="s-backdrop" onKeyDown={e => { if (e.key === "Escape" && !locked) onClose(); if (e.key === "Tab") { const elements = ref.current?.querySelectorAll<HTMLElement>('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex="0"]'); if (!elements?.length) return; const first = elements[0], last = elements[elements.length - 1]; if (e.shiftKey && (document.activeElement === first || document.activeElement === ref.current)) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } } }}><div className="s-dialog" role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} ref={ref}><header><h2>{title}</h2><button type="button" disabled={locked} onClick={onClose} aria-label="Đóng biểu mẫu">×</button></header>{children}</div></div>; }
 
 export default function SalesWorkspace({ view, request, onNavigate }: { view: string; request: Request; onNavigate: (view: string) => void }) {
