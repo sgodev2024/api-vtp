@@ -10,10 +10,10 @@
 .sales-workspace input[type=checkbox]{accent-color:var(--s-green)}
 .sales-workspace h1{margin:0 0 5px;font-size:28px;letter-spacing:-.6px}
 .sales-workspace h2{font-size:18px;margin:0 0 4px}.sales-workspace h3{font-size:15px;margin:0 0 12px}
-.sales-workspace p{margin:8px 0}.sales-workspace small{font-size:11px;line-height:1.55;color:var(--s-muted)}
+.sales-workspace p{margin:8px 0}.sales-workspace small{font-size:12px;line-height:1.55;color:var(--s-muted)}
 .s-heading,.s-section-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .s-heading{margin-bottom:16px}.s-heading p:not(.s-eyebrow){font-size:13px;color:var(--s-muted)}
-.s-eyebrow{font-size:10px;font-weight:750;letter-spacing:1.6px;color:var(--s-green);margin:0 0 6px!important}
+.s-eyebrow{font-size:12px;font-weight:750;letter-spacing:1.6px;color:var(--s-green);margin:0 0 6px!important}
 .s-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.s-scope{color:var(--s-muted);font-size:12px;margin-bottom:18px;padding:10px 14px;background:#edf5ef;border-radius:8px}
 .s-panel,.s-editor{background:white;border:1px solid var(--s-border);border-radius:14px;margin-bottom:20px;min-width:0;box-shadow:0 3px 12px #14372705}
 .s-section-heading{padding:18px 22px;border-bottom:1px solid #edf2ee}.s-section-heading small{display:block}
