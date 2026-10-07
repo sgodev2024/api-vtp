@@ -1,0 +1,11 @@
+alter table retail.branch add column phone varchar(60) not null default '', add column email varchar(160) not null default '', add column address varchar(2000) not null default '', add column manager_id uuid, add column note varchar(2000) not null default '', add column is_default boolean not null default false;
+alter table retail.warehouse add column phone varchar(60) not null default '', add column email varchar(160) not null default '', add column address varchar(2000) not null default '', add column manager_id uuid, add column note varchar(2000) not null default '', add column is_default boolean not null default false, add column kind varchar(20) not null default 'SALEABLE' check(kind in ('SALEABLE','QUARANTINE'));
+update retail.branch b set is_default=true where b.active and b.id=(select x.id from retail.branch x where x.tenant_id=b.tenant_id and x.active order by x.code limit 1);
+update retail.warehouse w set is_default=true where w.active and w.id=(select x.id from retail.warehouse x where x.tenant_id=w.tenant_id and x.branch_id=w.branch_id and x.active order by x.code limit 1);
+create unique index branch_one_default on retail.branch(tenant_id) where is_default and active;
+create unique index warehouse_one_default on retail.warehouse(tenant_id,branch_id) where is_default and active;
+create table retail.company_profile(tenant_id uuid primary key references platform.tenant(id), name varchar(160) not null default '', phone varchar(60) not null default '', email varchar(160) not null default '', address varchar(2000) not null default '', tax_code varchar(60) not null default '', onboarding_step int not null default 1 check(onboarding_step between 1 and 5));
+alter table retail.company_profile enable row level security;
+alter table retail.company_profile force row level security;
+create policy tenant_scope on retail.company_profile using(tenant_id=nullif(current_setting('core.tenant_id',true),'')::uuid) with check(tenant_id=nullif(current_setting('core.tenant_id',true),'')::uuid);
+grant select,insert,update on retail.company_profile to core_app;

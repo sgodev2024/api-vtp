@@ -36,14 +36,14 @@ Các bảng chuẩn có STT và hành động xem chi tiết; cột vốn chỉ 
 | Họ tên hiển thị | Chữ, T từ tài khoản | Có |
 | Vai trò/phạm vi | T; tải theo tài khoản | Có |
 | Mật khẩu hiện tại/mới/xác nhận | B khi tự đổi; mới ≥8, xác nhận khớp | Có; không ép thay lần đầu local |
-| Tên cửa hàng/công ty | Chữ, B khi setup | Bổ sung hồ sơ nghiệp vụ |
-| Điện thoại cửa hàng | Chữ, K, không lưu kiểu số mất số 0 đầu | Bổ sung |
-| Địa chỉ cửa hàng | Chữ nhiều dòng, K | Bổ sung |
+| Tên cửa hàng/công ty | Chữ, B khi setup, tối đa 160 ký tự | Có trong bước 1, company_profile |
+| Điện thoại cửa hàng | Chữ, K, tối đa 60 ký tự, giữ số 0 đầu | Có trong bước 1 |
+| Địa chỉ cửa hàng | Chữ nhiều dòng, K, tối đa 2000 ký tự | Có trong bước 1 |
 | Logo | Tệp ảnh, K; định dạng/kích thước chốt SRS | Bổ sung liên kết hồ sơ |
 | Tiền tệ/múi giờ | T; VND / Asia/Ho_Chi_Minh giai đoạn đầu | Quy tắc có; UI hồ sơ bổ sung |
 | Ngày bắt đầu số dư | Ngày, B khi nhập đầu kỳ | Bổ sung |
 | Kho làm việc mặc định | Danh sách, B trước giao dịch; kho được cấp | Có chọn kho; lưu mặc định theo người bổ sung |
-| Bước thiết lập/đã hoàn thành | T; lưu tiến độ và người xác nhận từng bước | Bổ sung wizard |
+| Bước thiết lập/đã hoàn thành | T; 1–5, lưu sau mỗi bước; người thao tác trong audit | Có wizard 5 bước |
 | Xác nhận không có số dư | Boolean, ĐK khi bỏ nhập tồn/nợ | Bổ sung |
 
 ## D-03. Chi nhánh, kho và phạm vi người dùng
@@ -476,3 +476,11 @@ Không mô tả quyền kỹ thuật là quyền được cấp sẵn cho mọi 
 | Duyệt | Phiếu, lý do, quyết định | Thông tin ngoại lệ | Tác động và người lập |
 
 Các dòng “Bổ sung” trong tài liệu phải thành yêu cầu SRS có tiêu chí nghiệm thu; không thêm trường tự do rồi coi đã đủ nghiệp vụ. Q-01 đã chốt biến thể chọn từ thuộc tính/giá trị cấu hình sẵn, Q-02 đã xác nhận khóa kiểm kê theo SKU. Chính sách trả hàng đã sử dụng Q-03 còn chờ quyết định.
+
+
+## D-03 bổ sung ngày 07/10/2026 — hồ sơ địa điểm và kho
+
+- Địa điểm: `code` (B, 60), `name` (B, 160), `phone` (K, 60), `email` (K, 160), `address` (K, 2000), `manager_id` (K, tài khoản hoạt động cùng công ty), `note` (K, 2000), `is_default`, `active`.
+- Kho: các trường trên, thêm `branch_id` (B, địa điểm hoạt động được cấp phạm vi), `kind` (`SALEABLE`/`QUARANTINE`). `branch_id` giữ nguyên sau khi tạo. Mã kho duy nhất trong công ty.
+- Hồ sơ doanh nghiệp: tên (B, 160), điện thoại (K, 60), email (K, 160), địa chỉ (K, 2000), mã số thuế (K, 60), tiến độ (1–5). Bước đầu xác nhận đồng thời doanh nghiệp và địa điểm; bước hai xác nhận kho tự tạo.
+- Mặc định: một địa điểm hoạt động/công ty; một kho hoạt động/địa điểm có kho. Ngừng hồ sơ mặc định yêu cầu chọn hồ sơ khác trước; không xóa chứng từ liên quan.

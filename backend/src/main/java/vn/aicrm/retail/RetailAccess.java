@@ -40,7 +40,7 @@ public class RetailAccess {
   public String documentTypes(Authentication a,String alias,String action){var types=RetailPermissions.TYPES.stream().filter(t->granular(a,RetailPermissions.feature(t),action)).map(t->"'"+t+"'").toList();return types.isEmpty()?"false":alias+".type in ("+String.join(",",types)+")";}
   public boolean all(Authentication a){return can(a,"ALL_BRANCHES");}
   public List<Map<String,Object>> warehouses(Authentication a){
-    return db.queryForList("select w.* from retail.warehouse w where w.tenant_id=? and (? or exists(select 1 from retail.access_scope acl where acl.account_id=? and acl.warehouse_id=w.id and acl.tenant_id=w.tenant_id)) order by w.code",tenant(a),all(a),actor(a));
+    return db.queryForList("select w.* from retail.warehouse w where w.tenant_id=? and (? or exists(select 1 from retail.access_scope acl where acl.account_id=? and acl.warehouse_id=w.id and acl.tenant_id=w.tenant_id)) order by (select b.is_default from retail.branch b where b.tenant_id=w.tenant_id and b.id=w.branch_id) desc,w.is_default desc,w.code",tenant(a),all(a),actor(a));
   }
   public Map<String,Object> warehouse(Authentication a,UUID id){
     return warehouses(a).stream().filter(w->id.equals(w.get("id"))).findFirst().orElseThrow(()->problem("SCOPE_DENIED","Không có quyền tại kho này",HttpStatus.FORBIDDEN));

@@ -39,6 +39,8 @@ public class RetailModule implements ModuleContributor, ApplicationRunner {
       {"purchase","Mua hàng","download","PURCHASE","retail-purchase"},
       {"suppliers","Nhà cung cấp","users","PURCHASE","retail-purchase"},
       {"stock","Kho & tồn","layers","STOCK","retail-stock"},
+      {"warehouses","Danh sách kho","layers","READ","retail-stock"},
+      {"locations","Địa điểm / Chi nhánh","building","READ","retail-general"},
       {"transfer","Chuyển kho","refresh","STOCK","retail-stock"},
       {"products","Danh sách sản phẩm","shopping-bag","READ","retail-products"},
       {"product-groups","Nhóm sản phẩm","layers","SETUP","retail-products"},

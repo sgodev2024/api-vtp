@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-07T05:24:58.205Z",
+  "passed": 11,
+  "checks": [
+    "Fresh tenant has one default location and warehouse",
+    "Five-step onboarding persists without creating duplicate defaults; cannot skip steps",
+    "Creating location can atomically create its default warehouse",
+    "Duplicate code, warehouse reparent, active child warehouse and default deactivation blocked",
+    "Warehouse update persists metadata",
+    "Cannot deactivate stocked warehouse",
+    "Cannot deactivate warehouse with unfinished document",
+    "Quarantine warehouse cannot sell",
+    "Empty nondefault warehouse can deactivate and stays in history",
+    "Module permissions and warehouse scopes enforced for list/edit/export/onboarding",
+    "Navigation places locations in administration and warehouse master in inventory"
+  ]
+}

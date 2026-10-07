@@ -372,3 +372,21 @@ Resource/action và phụ thuộc VIEW được định nghĩa tại RetailPermi
 ### Khởi tạo địa điểm/kho mặc định
 
 RetailDefaults khởi tạo lúc ApplicationReady và trước catalog cho tenant mới; dùng TransactionTemplate và khóa tenant để chống trùng. Chỉ bổ sung phần còn thiếu, không cấp scope tự động cho nhân viên. Chặn ngừng danh mục cuối và ngừng địa điểm còn kho active. Frontend tự điền ID, ẩn chọn đơn khi duy nhất; vẫn gửi ID cho API và kiểm phạm vi.
+
+
+## Bổ sung chốt 07/10/2026 — Địa điểm, kho và wizard cơ bản
+
+Đặc tả luồng hiện hành tại F-02 của BA thay luồng tạo chi nhánh rồi tạo kho. Tác vụ quản lý được triển khai local:
+
+| Task | Frontend | Backend / dữ liệu |
+|---|---|---|
+| LOC-01 | Địa điểm / Chi nhánh thuộc Vận hành chung, danh sách STT, tìm/lọc, form thêm/sửa | GET/POST `/api/v1/retail/locations/branches`, POST `.../branches/{id}`; mã duy nhất theo tenant, quản lý cùng tenant |
+| LOC-02 | Danh sách kho thuộc Kho, form chọn địa điểm, loại kho, quản lý, mặc định | GET/POST `.../locations/warehouses`, POST `.../warehouses/{id}`; không chuyển địa điểm; tạo địa điểm có tùy chọn tạo kho nguyên tử |
+| LOC-03 | Nút ngừng và thông báo nguyên nhân không thể ngừng | POST `.../catalog/{kind}/{id}/deactivate`; chặn mặc định, kho còn hàng/giá trị/chứng từ/serial/giao hàng/bảo hành; địa điểm còn kho hoạt động |
+| LOC-04 | Quyền VIEW/CREATE/UPDATE/DEACTIVATE/EXPORT riêng từng màn hình | Resource `aicrm-locations`, `aicrm-warehouses`; kiểm phạm vi kho/địa điểm cả đọc và ghi; không cấp scope từ manager_id |
+| LOC-05 | Xuất CSV đúng dữ liệu được cấp | GET `.../locations/{kind}/export`, có kiểm quyền EXPORT và audit |
+| ONB-01 | Wizard 5 bước, xác nhận doanh nghiệp+địa điểm đầu tiên rồi kho | GET/POST `/api/v1/retail/onboarding`; company_profile và audit; không nhảy quá bước đã lưu |
+| ONB-02 | Mở wizard khi vào Trang chủ mà chưa hoàn tất, chỉ người được phép thiết lập toàn công ty | Kiểm UPDATE setup và ALL_BRANCHES; không đổi route khi mở trực tiếp module |
+| ONB-03 | Danh mục, đầu kỳ, Excel dùng chức năng sẵn có; hoàn tất sang Tổng quan | Hoàn tất wizard không tự duyệt phiếu, không xóa hay ghi tồn/nợ ngầm |
+
+Migration V33 giữ dữ liệu cũ, bổ sung hồ sơ, cờ mặc định và company_profile có RLS. Backend tự tạo mặc định khi công ty thiếu địa điểm/kho. Các hạng mục nâng cao của wizard trong backlog cũ vẫn giữ nếu chưa được nêu là đã triển khai.

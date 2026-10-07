@@ -9,6 +9,7 @@ import static vn.aicrm.retail.RetailAccess.*;
 
 @Service
 public class RetailCatalog {
+  @org.springframework.beans.factory.annotation.Autowired private RetailLocations locations;
   private final RetailAccess r; private final RetailPartners partners;private final RetailDefaults defaults;
   public RetailCatalog(RetailAccess r,RetailPartners partners,RetailDefaults defaults){this.r=r;this.partners=partners;this.defaults=defaults;}
   public Object catalog(Authentication a){
@@ -25,8 +26,8 @@ public class RetailCatalog {
   public Object create(Authentication a,String kind,JsonNode x){
     r.require(a,"SETUP");var t=r.tenant(a);var id=UUID.randomUUID();
     switch(kind){
-      case "branches" -> { if(!r.all(a))throw problem("SCOPE_DENIED","Cần quyền quản lý toàn chi nhánh");r.db.update("insert into retail.branch(id,tenant_id,code,name) values(?,?,?,?)",id,t,required(x,"code",60),required(x,"name",160)); }
-      case "warehouses" -> {var branch=uuid(x,"branchId");r.branch(a,branch);r.one("branch",t,branch);r.db.update("insert into retail.warehouse(id,tenant_id,branch_id,code,name) values(?,?,?,?,?)",id,t,branch,required(x,"code",60),required(x,"name",160));}
+      case "branches" -> {return locations.save(a,kind,null,x);}
+      case "warehouses" -> {return locations.save(a,kind,null,x);}
       case "skus" -> {
         var tracking=text(x,"tracking","NONE");if(!Set.of("NONE","LOT","SERIAL").contains(tracking))throw problem("INVALID_TRACKING","Kiểu theo dõi không hợp lệ");
         var price=num(x,"price",BigDecimal.ZERO); var vat=num(x,"vat",BigDecimal.ZERO); var weight=num(x,"weight",BigDecimal.ZERO);if(price.signum()<0||price.scale()>4||vat.signum()<0||vat.compareTo(new BigDecimal("100"))>0||weight.signum()<0)throw problem("INVALID_PRICE","Giá, thuế hoặc trọng lượng không hợp lệ");
@@ -43,7 +44,7 @@ public class RetailCatalog {
     }
     return Map.of("id",id);
   }
-  public Object deactivate(Authentication a,String kind,UUID id){if(kind.equals("partners"))return partners.deactivate(a,id);r.require(a,"SETUP");String table=switch(kind){case "skus"->"sku";case "partners"->"partner";case "warehouses"->"warehouse";case "branches"->"branch";default->throw problem("INVALID_CATALOG","Không hỗ trợ ngừng danh mục này");};var row=r.one(table,r.tenant(a),id);r.db.queryForList("select pg_advisory_xact_lock(hashtextextended(?,0))",r.tenant(a).toString());if(table.equals("warehouse")){r.warehouse(a,id);if(Boolean.TRUE.equals(row.get("active"))&&r.db.queryForObject("select count(*) from retail.warehouse where tenant_id=? and active",Integer.class,r.tenant(a))<=1)throw problem("LAST_WAREHOUSE","Công ty cần ít nhất một kho hoạt động");}if(table.equals("branch")){r.branch(a,id);if(Boolean.TRUE.equals(row.get("active"))&&r.db.queryForObject("select count(*) from retail.branch where tenant_id=? and active",Integer.class,r.tenant(a))<=1)throw problem("LAST_BRANCH","Công ty cần ít nhất một địa điểm hoạt động");if(r.db.queryForObject("select count(*) from retail.warehouse where tenant_id=? and branch_id=? and active",Integer.class,r.tenant(a),id)>0)throw problem("BRANCH_HAS_WAREHOUSES","Cần ngừng các kho thuộc địa điểm trước khi ngừng địa điểm");}r.db.update("update retail."+table+" set active=false where tenant_id=? and id=?",r.tenant(a),id);return Map.of("id",row.get("id"));}
+  public Object deactivate(Authentication a,String kind,UUID id){if(kind.equals("partners"))return partners.deactivate(a,id);if(!Set.of("branches","warehouses").contains(kind))r.require(a,"SETUP");String table=switch(kind){case "skus"->"sku";case "partners"->"partner";case "warehouses"->"warehouse";case "branches"->"branch";default->throw problem("INVALID_CATALOG","Không hỗ trợ ngừng danh mục này");};var row=r.one(table,r.tenant(a),id);if(Set.of("branches","warehouses").contains(kind))locations.checkDeactivate(a,kind,id);r.db.queryForList("select pg_advisory_xact_lock(hashtextextended(?,0))",r.tenant(a).toString());if(table.equals("warehouse")){r.warehouse(a,id);if(Boolean.TRUE.equals(row.get("active"))&&r.db.queryForObject("select count(*) from retail.warehouse where tenant_id=? and active",Integer.class,r.tenant(a))<=1)throw problem("LAST_WAREHOUSE","Công ty cần ít nhất một kho hoạt động");}if(table.equals("branch")){r.branch(a,id);if(Boolean.TRUE.equals(row.get("active"))&&r.db.queryForObject("select count(*) from retail.branch where tenant_id=? and active",Integer.class,r.tenant(a))<=1)throw problem("LAST_BRANCH","Công ty cần ít nhất một địa điểm hoạt động");if(r.db.queryForObject("select count(*) from retail.warehouse where tenant_id=? and branch_id=? and active",Integer.class,r.tenant(a),id)>0)throw problem("BRANCH_HAS_WAREHOUSES","Cần ngừng các kho thuộc địa điểm trước khi ngừng địa điểm");}r.db.update("update retail."+table+" set active=false where tenant_id=? and id=?",r.tenant(a),id);return Map.of("id",row.get("id"));}
   public Map<String,Object> price(Authentication a,UUID sku,UUID partner,UUID branch,String channel,BigDecimal qty){
     var t=r.tenant(a);var item=r.one("sku",t,sku);if(!Boolean.TRUE.equals(item.get("active")))throw problem("INACTIVE_SKU","Hàng hóa đã ngừng sử dụng");
     String group=partner==null?"":String.valueOf(r.one("partner",t,partner).get("customer_group"));

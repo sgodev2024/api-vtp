@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-10-07T05:26:33.803Z",
+  "passed": 6,
+  "checks": [
+    "Wizard forms save and navigate all five steps",
+    "Create location popup and list persist successfully",
+    "Warehouse edit keeps location fixed and saves address",
+    "Wizard fits mobile viewport",
+    "No browser runtime errors",
+    "Operational local home opens onboarding for authorized admin, checked without saving business data"
+  ]
+}

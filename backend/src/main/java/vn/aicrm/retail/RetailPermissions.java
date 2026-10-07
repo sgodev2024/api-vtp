@@ -15,6 +15,8 @@ public class RetailPermissions implements vn.coreplatform.kernel.NavigationCapab
   public record Feature(String code,String module,String name,List<String> actions) {}
   private static Feature f(String code,String module,String name,String actions){return new Feature(code,module,name,List.of(actions.split(",")));}
   public static final List<Feature> FEATURES=List.of(
+    f("locations","Vận hành chung","Địa điểm / Chi nhánh","VIEW,CREATE,UPDATE,DEACTIVATE,EXPORT"),
+    f("warehouses","Kho","Danh sách kho","VIEW,CREATE,UPDATE,DEACTIVATE,EXPORT"),
     f("pos","Bán hàng","Bán tại quầy","VIEW,CREATE,SUBMIT,COLLECT_POS,REQUEST_CANCEL,APPROVE_CANCEL,PRINT,EXPORT"),
     f("orders","Bán hàng","Báo giá / Đơn bán","VIEW,CREATE,SUBMIT,APPROVE,REJECT,REQUEST_CANCEL,APPROVE_CANCEL,PRINT,EXPORT"),
     f("issue","Kho","Xuất bán","VIEW,CREATE,SUBMIT,APPROVE,REJECT,REQUEST_CANCEL,APPROVE_CANCEL,PRINT,EXPORT"),
@@ -66,7 +68,7 @@ public class RetailPermissions implements vn.coreplatform.kernel.NavigationCapab
   public String documentFilter(Authentication a,String alias,String action){var allowed=TYPES.stream().filter(t->can(a,feature(t),action)).map(t->"'"+t+"'").toList();return allowed.isEmpty()?"false":alias+".type in ("+String.join(",",allowed)+")";}
   public String partnerFeature(String role){return switch(role){case "CUSTOMER"->"customer";case "SUPPLIER"->"supplier";default->"partners";};}
   public String configFeature(String kind){return switch(kind){case "INVENTORY"->"warehouse-config";case "UNIT"->"product-units";case "GROUP"->"product-groups";case "BRAND"->"product-brands";case "VARIANT","ATTRIBUTE"->"product-attributes";default->throw problem("INVALID_CONFIG","Cấu hình không hợp lệ");};}
-  public String catalogFeature(String kind){return switch(kind){case "skus"->"products";case "price-rules","promotions"->"products";case "branches","warehouses","settings"->"setup";case "scopes"->"scope";case "partners"->"partners";default->throw problem("INVALID_CATALOG","Danh mục không hợp lệ");};}
+  public String catalogFeature(String kind){return switch(kind){case "skus"->"products";case "price-rules","promotions"->"products";case "branches"->"locations";case "warehouses"->"warehouses";case "settings"->"setup";case "scopes"->"scope";case "partners"->"partners";default->throw problem("INVALID_CATALOG","Danh mục không hợp lệ");};}
   public void partnerWrite(Authentication a,UUID id,JsonNode x){
     var old=id==null?null:r.one("partner",r.tenant(a),id);var roles=x.path("roles");if(!roles.isObject())roles=r.json.createObjectNode().put(text(x,"kind","CUSTOMER"),true);
     var prior=old==null?r.json.createObjectNode():r.node(old.get("roles"));
@@ -81,6 +83,8 @@ public class RetailPermissions implements vn.coreplatform.kernel.NavigationCapab
     if(old!=null && x.has("active") && !x.path("active").asBoolean())require(a,"partners","DEACTIVATE");
   }
   public void command(Authentication a,String op,JsonNode x){
+    if(op.equals("ONBOARDING")){require(a,"setup","UPDATE");return;}
+    if(op.startsWith("LOCATION_CREATE_")||op.startsWith("LOCATION_UPDATE_")){var kind=op.substring(op.lastIndexOf('_')+1);if(!Set.of("branches","warehouses").contains(kind))throw problem("INVALID_CATALOG","Danh mục không hợp lệ");require(a,kind.equals("branches")?"locations":"warehouses",op.startsWith("LOCATION_CREATE_")?"CREATE":"UPDATE");return;}
     if(x.hasNonNull("warehouseId"))r.warehouse(a,uuid(x,"warehouseId"));if(x.hasNonNull("branchId"))r.branch(a,uuid(x,"branchId"));
     if(op.equals("DOCUMENT_CREATE")){String f=feature(required(x,"type",30));require(a,f,"CREATE");if(num(x,"paid",java.math.BigDecimal.ZERO).signum()>0)require(a,f.equals("pos")?"pos":"payment",f.equals("pos")?"COLLECT_POS":"CREATE");return;}
     if(op.startsWith("DOCUMENT_")){int last=op.lastIndexOf('_');var d=r.one("document",r.tenant(a),UUID.fromString(op.substring(last+1)));String action=op.substring(9,last);r.warehouse(a,(UUID)d.get(action.equals("receive")?"destination_id":"warehouse_id"));String f=feature(d.get("type").toString());String p=switch(action){case "approve"->"APPROVE";case "reject"->"REJECT";case "cancel"->"DRAFT".equals(d.get("status"))?"REQUEST_CANCEL":"APPROVE_CANCEL";case "close"->"APPROVE_CANCEL";case "dispatch"->"DISPATCH";case "receive"->"RECEIVE";case "count","record-count"->"UPDATE";default->"SUBMIT";};require(a,f,p);if(action.equals("receive")&&x.path("lines").isArray())for(var l:x.path("lines"))if(l.path("damaged").asBoolean())require(a,"transfer","CONFIRM_DISCREPANCY");return;}

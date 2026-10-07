@@ -85,21 +85,25 @@ Danh mục sản phẩm/đối tác dùng chung trong công ty. Lịch sử, t�
 
 **Có:** đăng nhập email, nhớ phiên, hồ sơ, đổi mật khẩu. Chính sách local đã tắt MFA, không ép đổi mật khẩu lần đầu, mật khẩu từ 8 ký tự không ép độ phức tạp. **Bổ sung:** định tuyến theo tiến độ thiết lập, điểm làm việc mặc định và thông báo chưa có phạm vi. Chính sách local không tự được coi là cấu hình SaaS đã nghiệm thu.
 
-### F-02. Hướng dẫn thiết lập từng bước — đã chốt, cần bổ sung giao diện wizard
+### F-02. Hướng dẫn thiết lập từng bước — luồng chốt ngày 07/10/2026
 
-| Bước | Người thực hiện và thao tác | Điều kiện hoàn thành |
+| Bước | Thao tác | Kết quả |
 |---|---|---|
-| 1. Thông tin cửa hàng | Chủ nhập tên hiển thị, liên hệ, địa chỉ, logo tùy chọn; VND và giờ Việt Nam mặc định | Tên cửa hàng có dữ liệu; các trường hồ sơ/in phiếu cần bổ sung |
-| 2. Điểm bán và kho | Tạo chi nhánh đầu tiên, kho đầu tiên; thêm điểm khác nếu có | Ít nhất một chi nhánh và một kho hoạt động |
-| 3. Người dùng | Tạo tài khoản, vai trò, kho phụ trách, người duyệt khác người lập | Chủ có quyền làm việc; có người duyệt cho luồng bắt buộc |
-| 4. Danh mục | Tạo/nhập đơn vị, hàng hóa, khách, NCC; thiết lập đổi trả/bảo hành, giá/ưu đãi | Có sản phẩm hợp lệ; có thể chọn “Nhập sau” khi chưa phát sinh nghiệp vụ |
-| 5. Số dư đầu kỳ | Chọn ngày bắt đầu; nhập tồn theo kho/lô/serial và nợ theo đối tác; xem lỗi, gửi duyệt | Phiếu đầu kỳ đã ghi hoặc xác nhận không có số dư; ngày hiệu lực cần bổ sung |
-| 6. Chính sách | Mức giảm tự quyết, theo dõi tồn mặc định; kiểm tra quy tắc không âm và duyệt | Quy tắc được lưu; không bắt nhập cấu hình nâng cao |
-| 7. Kiểm tra và bắt đầu | Xem danh sách đã đủ/chưa đủ, đối chiếu tồn/nợ, chọn điểm làm việc | Lưu mốc hoàn thành, mở Tổng quan và hướng dẫn nhập/bán |
+| 1. Doanh nghiệp & Địa điểm | Nhập tên doanh nghiệp, liên hệ, địa chỉ, mã số thuế tùy chọn; xác nhận mã/tên địa điểm đầu tiên | Cập nhật địa điểm mặc định đã tự tạo, không tạo trùng |
+| 2. Kho chính | Xác nhận mã/tên kho, địa chỉ và người quản lý | Cập nhật kho mặc định thuộc địa điểm đầu tiên |
+| 3. Danh mục | Mở đơn vị tính, nhóm, sản phẩm, khách hàng, NCC để thêm dữ liệu | Có thể bổ sung sau; tiến độ giữ nguyên khi rời màn hình |
+| 4. Dữ liệu đầu kỳ | Nhập tồn, phải thu, phải trả hoặc Excel/CSV; xác nhận hoàn tất nếu doanh nghiệp mới bắt đầu | Phiếu tồn/nợ vẫn xác nhận theo quyền; hoàn tất wizard không tự duyệt phiếu |
+| 5. Hoàn tất | Vào Tổng quan hoặc quản lý thêm địa điểm/kho | Lưu tiến độ hoàn thành |
 
-Lưu tiến độ sau mỗi bước; có thể quay lại sửa khi chưa ghi giao dịch. “Nhập sau” không xóa dữ liệu đã có. Bỏ qua số dư nghĩa là người dùng xác nhận số dư bằng 0, không tự kết luận cửa hàng không có tồn/nợ. Một công ty chỉ có một bộ số dư bắt đầu cho cùng phạm vi/ngày; bổ sung sau bằng chứng từ điều chỉnh có lý do.
+Mỗi công ty có ít nhất một địa điểm và một kho hoạt động. Hệ thống tự tạo Trụ sở chính và Kho chính khi thiếu; không đổi tên dữ liệu đã tồn tại. Tài khoản có quyền cập nhật thiết lập và phạm vi toàn công ty được đưa đến wizard khi vào Trang chủ mà chưa hoàn tất. Không chuyển hướng cưỡng bức khi mở trực tiếp màn hình nghiệp vụ. Người dùng thông thường vận hành theo quyền và phạm vi đã được giao.
 
-Hiện tại màn hình Thiết lập ban đầu có các chức năng rời (chi nhánh/kho, danh mục, quyền kho, giá, nhập đầu kỳ); chưa có bộ hướng dẫn, lưu tiến độ và checklist hoàn thành.
+**Vận hành chung → Địa điểm / Chi nhánh:** xem danh sách có STT, mã, tên, điện thoại, địa chỉ, người quản lý, số kho, trạng thái; tìm kiếm, thêm/sửa, chọn mặc định, ngừng, xuất CSV. Mã duy nhất trong công ty, tên bắt buộc. Có thể tự tạo kho khi thêm địa điểm nếu được cấp quyền thêm kho.
+
+**Kho → Danh sách kho:** hồ sơ kho riêng với Kho & tồn và Cấu hình kho. Mã, tên, địa điểm bắt buộc; điện thoại, email, địa chỉ, người quản lý, ghi chú tùy chọn. Loại kho bán hàng hoặc cách ly/hàng lỗi; kho cách ly không được tạo đơn bán/báo giá/POS/xuất bán. Một kho mặc định tại mỗi địa điểm có kho hoạt động.
+
+Hồ sơ được ngừng, không xóa lịch sử. Đổi mặc định sang hồ sơ khác trước khi ngừng. Không ngừng địa điểm còn kho hoạt động; không ngừng kho còn tồn/giá trị, serial chưa xử lý, phiếu chưa hoàn tất, giao hàng hoặc bảo hành chưa kết thúc. Không chuyển kho sang địa điểm khác; tạo kho mới và chuyển hàng. Chỉ định quản lý không tự cấp quyền. VIEW/CREATE/UPDATE/DEACTIVATE/EXPORT tách riêng; dữ liệu theo phạm vi kho/địa điểm.
+
+Các cấu hình nâng cao (ngày hiệu lực số dư, logo in phiếu, mặc định theo từng người dùng, checklist đối chiếu chi tiết) tiếp tục theo backlog; không coi wizard cơ bản là đã hoàn tất những hạng mục này.
 
 ## 6. Luồng vận hành hằng ngày
 
