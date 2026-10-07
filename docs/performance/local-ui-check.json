@@ -1,0 +1,179 @@
+{
+  "checks": [
+    "All 34 application screens open through the menu without runtime errors",
+    "Module title visible while permission API is pending, no catalog or protected controls exposed",
+    "Denied permission does not mount protected data requests"
+  ],
+  "timings": [
+    {
+      "view": "home",
+      "label": "Trang chủ",
+      "shellMs": 244
+    },
+    {
+      "view": "retail-overview",
+      "label": "Tổng quan",
+      "shellMs": 226
+    },
+    {
+      "view": "retail-pos",
+      "label": "Bán tại quầy",
+      "shellMs": 187
+    },
+    {
+      "view": "retail-orders",
+      "label": "Đơn bán hàng",
+      "shellMs": 123
+    },
+    {
+      "view": "retail-sales-customers",
+      "label": "Khách hàng",
+      "shellMs": 95
+    },
+    {
+      "view": "retail-purchase",
+      "label": "Mua hàng",
+      "shellMs": 118
+    },
+    {
+      "view": "retail-suppliers",
+      "label": "Nhà cung cấp",
+      "shellMs": 103
+    },
+    {
+      "view": "retail-stock",
+      "label": "Kho & tồn",
+      "shellMs": 112
+    },
+    {
+      "view": "retail-transfer",
+      "label": "Chuyển kho",
+      "shellMs": 93
+    },
+    {
+      "view": "retail-warehouse-config",
+      "label": "Cấu hình kho",
+      "shellMs": 113
+    },
+    {
+      "view": "retail-products",
+      "label": "Danh sách sản phẩm",
+      "shellMs": 88
+    },
+    {
+      "view": "retail-product-groups",
+      "label": "Nhóm sản phẩm",
+      "shellMs": 105
+    },
+    {
+      "view": "retail-product-brands",
+      "label": "Thương hiệu",
+      "shellMs": 91
+    },
+    {
+      "view": "retail-product-units",
+      "label": "Đơn vị tính",
+      "shellMs": 97
+    },
+    {
+      "view": "retail-uom-conversions",
+      "label": "Quy đổi đơn vị tính",
+      "shellMs": 91
+    },
+    {
+      "view": "retail-product-attributes",
+      "label": "Thuộc tính",
+      "shellMs": 91
+    },
+    {
+      "view": "retail-master-customers",
+      "label": "Khách hàng",
+      "shellMs": 110
+    },
+    {
+      "view": "retail-master-partners",
+      "label": "Đối tác",
+      "shellMs": 118
+    },
+    {
+      "view": "retail-customers",
+      "label": "Khách hàng",
+      "shellMs": 108
+    },
+    {
+      "view": "retail-cashflow",
+      "label": "Thu chi",
+      "shellMs": 107
+    },
+    {
+      "view": "retail-debt",
+      "label": "Công nợ",
+      "shellMs": 104
+    },
+    {
+      "view": "retail-returns",
+      "label": "Đổi trả & bảo hành",
+      "shellMs": 107
+    },
+    {
+      "view": "retail-approvals",
+      "label": "Cần duyệt",
+      "shellMs": 98
+    },
+    {
+      "view": "retail-setup",
+      "label": "Thiết lập ban đầu",
+      "shellMs": 87
+    },
+    {
+      "view": "retail-reports",
+      "label": "Báo cáo",
+      "shellMs": 118
+    },
+    {
+      "view": "modules",
+      "label": "Quản lý module",
+      "shellMs": 117
+    },
+    {
+      "view": "resources",
+      "label": "Tài nguyên mở rộng",
+      "shellMs": 167
+    },
+    {
+      "view": "users",
+      "label": "Người dùng",
+      "shellMs": 120
+    },
+    {
+      "view": "organizations",
+      "label": "Cơ cấu tổ chức",
+      "shellMs": 115
+    },
+    {
+      "view": "access",
+      "label": "Vai trò & phân quyền",
+      "shellMs": 147
+    },
+    {
+      "view": "activity",
+      "label": "Events & Jobs",
+      "shellMs": 112
+    },
+    {
+      "view": "files",
+      "label": "Tệp tin",
+      "shellMs": 118
+    },
+    {
+      "view": "settings",
+      "label": "Cấu hình hệ thống",
+      "shellMs": 123
+    },
+    {
+      "view": "retail-permissions",
+      "label": "Phân quyền module",
+      "shellMs": 114
+    }
+  ]
+}

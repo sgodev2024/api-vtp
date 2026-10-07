@@ -1,0 +1,396 @@
+[
+  {
+    "target": "local",
+    "apis": [
+      {
+        "path": "/api/v1/navigation/me",
+        "samples": [
+          {
+            "ms": 245,
+            "status": 200,
+            "bytes": 12535
+          },
+          {
+            "ms": 229,
+            "status": 200,
+            "bytes": 12535
+          },
+          {
+            "ms": 339,
+            "status": 200,
+            "bytes": 12535
+          }
+        ]
+      },
+      {
+        "path": "/api/v1/retail/permissions/capabilities",
+        "samples": [
+          {
+            "ms": 2373,
+            "status": 200,
+            "bytes": 3218
+          },
+          {
+            "ms": 1178,
+            "status": 200,
+            "bytes": 3218
+          },
+          {
+            "ms": 1311,
+            "status": 200,
+            "bytes": 3218
+          }
+        ]
+      },
+      {
+        "path": "/api/v1/retail/catalog",
+        "samples": [
+          {
+            "ms": 1133,
+            "status": 200,
+            "bytes": 5124
+          },
+          {
+            "ms": 904,
+            "status": 200,
+            "bytes": 5124
+          },
+          {
+            "ms": 884,
+            "status": 200,
+            "bytes": 5124
+          }
+        ]
+      },
+      {
+        "path": "/api/v1/retail/summary",
+        "samples": [
+          {
+            "ms": 93,
+            "status": 200,
+            "bytes": 88
+          },
+          {
+            "ms": 121,
+            "status": 200,
+            "bytes": 88
+          },
+          {
+            "ms": 136,
+            "status": 200,
+            "bytes": 88
+          }
+        ]
+      },
+      {
+        "path": "/api/v1/retail/stock",
+        "samples": [
+          {
+            "ms": 70,
+            "status": 200,
+            "bytes": 368
+          },
+          {
+            "ms": 36,
+            "status": 200,
+            "bytes": 368
+          },
+          {
+            "ms": 53,
+            "status": 200,
+            "bytes": 368
+          }
+        ]
+      },
+      {
+        "path": "/api/v1/retail/documents?type=SALE_ORDER",
+        "samples": [
+          {
+            "ms": 94,
+            "status": 200,
+            "bytes": 1129
+          },
+          {
+            "ms": 79,
+            "status": 200,
+            "bytes": 1129
+          },
+          {
+            "ms": 90,
+            "status": 200,
+            "bytes": 1129
+          }
+        ]
+      },
+      {
+        "path": "/api/v1/retail/finance",
+        "samples": [
+          {
+            "ms": 57,
+            "status": 200,
+            "bytes": 880
+          },
+          {
+            "ms": 58,
+            "status": 200,
+            "bytes": 880
+          },
+          {
+            "ms": 63,
+            "status": 200,
+            "bytes": 880
+          }
+        ]
+      }
+    ],
+    "modules": [
+      {
+        "path": "/business/retail/orders",
+        "shellMs": 3762,
+        "settledMs": 10019,
+        "requests": [
+          {
+            "path": "/api/v1/auth/me",
+            "ms": 182
+          },
+          {
+            "path": "/api/v1/auth/me",
+            "ms": 80
+          },
+          {
+            "path": "/api/v1/navigation/me",
+            "ms": 340
+          },
+          {
+            "path": "/api/v1/control-plane/bootstrap",
+            "ms": 275
+          },
+          {
+            "path": "/api/v1/retail/permissions/capabilities",
+            "ms": 1295
+          },
+          {
+            "path": "/api/v1/retail/catalog",
+            "ms": 929
+          },
+          {
+            "path": "/api/v1/retail/stock",
+            "ms": 130
+          },
+          {
+            "path": "/api/v1/retail/documents",
+            "ms": 242
+          }
+        ]
+      },
+      {
+        "path": "/business/retail/products",
+        "shellMs": 3877,
+        "settledMs": 10049,
+        "requests": [
+          {
+            "path": "/api/v1/auth/me",
+            "ms": 75
+          },
+          {
+            "path": "/api/v1/auth/me",
+            "ms": 35
+          },
+          {
+            "path": "/api/v1/navigation/me",
+            "ms": 162
+          },
+          {
+            "path": "/api/v1/control-plane/bootstrap",
+            "ms": 137
+          },
+          {
+            "path": "/api/v1/retail/permissions/capabilities",
+            "ms": 1333
+          },
+          {
+            "path": "/api/v1/retail/catalog",
+            "ms": 1155
+          },
+          {
+            "path": "/api/v1/retail/deliveries",
+            "ms": 153
+          },
+          {
+            "path": "/api/v1/retail/stock",
+            "ms": 154
+          },
+          {
+            "path": "/api/v1/retail/warranties",
+            "ms": 197
+          },
+          {
+            "path": "/api/v1/retail/summary",
+            "ms": 255
+          },
+          {
+            "path": "/api/v1/retail/documents",
+            "ms": 277
+          },
+          {
+            "path": "/api/v1/retail/finance",
+            "ms": 89
+          }
+        ]
+      },
+      {
+        "path": "/business/retail/purchase",
+        "shellMs": 3291,
+        "settledMs": 10080,
+        "requests": [
+          {
+            "path": "/api/v1/auth/me",
+            "ms": 75
+          },
+          {
+            "path": "/api/v1/auth/me",
+            "ms": 52
+          },
+          {
+            "path": "/api/v1/navigation/me",
+            "ms": 259
+          },
+          {
+            "path": "/api/v1/control-plane/bootstrap",
+            "ms": 125
+          },
+          {
+            "path": "/api/v1/retail/permissions/capabilities",
+            "ms": 1119
+          },
+          {
+            "path": "/api/v1/retail/catalog",
+            "ms": 1017
+          },
+          {
+            "path": "/api/v1/retail/warranties",
+            "ms": 71
+          },
+          {
+            "path": "/api/v1/retail/stock",
+            "ms": 74
+          },
+          {
+            "path": "/api/v1/retail/deliveries",
+            "ms": 86
+          },
+          {
+            "path": "/api/v1/retail/summary",
+            "ms": 140
+          },
+          {
+            "path": "/api/v1/retail/documents",
+            "ms": 144
+          },
+          {
+            "path": "/api/v1/retail/finance",
+            "ms": 80
+          }
+        ]
+      },
+      {
+        "path": "/business/retail/suppliers",
+        "shellMs": 2282,
+        "settledMs": 10064,
+        "requests": [
+          {
+            "path": "/api/v1/auth/me",
+            "ms": 49
+          },
+          {
+            "path": "/api/v1/auth/me",
+            "ms": 35
+          },
+          {
+            "path": "/api/v1/navigation/me",
+            "ms": 157
+          },
+          {
+            "path": "/api/v1/control-plane/bootstrap",
+            "ms": 108
+          },
+          {
+            "path": "/api/v1/retail/permissions/capabilities",
+            "ms": 1296
+          },
+          {
+            "path": "/api/v1/retail/partners",
+            "ms": 131
+          },
+          {
+            "path": "/api/v1/retail/catalog",
+            "ms": 991
+          },
+          {
+            "path": "/api/v1/retail/partner-owners",
+            "ms": 55
+          }
+        ]
+      },
+      {
+        "path": "/business/retail/stock",
+        "shellMs": 2693,
+        "settledMs": 10075,
+        "requests": [
+          {
+            "path": "/api/v1/auth/me",
+            "ms": 40
+          },
+          {
+            "path": "/api/v1/auth/me",
+            "ms": 25
+          },
+          {
+            "path": "/api/v1/navigation/me",
+            "ms": 115
+          },
+          {
+            "path": "/api/v1/control-plane/bootstrap",
+            "ms": 88
+          },
+          {
+            "path": "/api/v1/retail/permissions/capabilities",
+            "ms": 1017
+          },
+          {
+            "path": "/api/v1/retail/catalog",
+            "ms": 915
+          },
+          {
+            "path": "/api/v1/retail/deliveries",
+            "ms": 66
+          },
+          {
+            "path": "/api/v1/retail/stock",
+            "ms": 81
+          },
+          {
+            "path": "/api/v1/retail/warranties",
+            "ms": 95
+          },
+          {
+            "path": "/api/v1/retail/summary",
+            "ms": 134
+          },
+          {
+            "path": "/api/v1/retail/documents",
+            "ms": 135
+          },
+          {
+            "path": "/api/v1/retail/finance",
+            "ms": 64
+          },
+          {
+            "path": "/api/v1/retail/movements",
+            "ms": 78
+          }
+        ]
+      }
+    ]
+  }
+]

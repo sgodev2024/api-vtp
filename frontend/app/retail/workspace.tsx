@@ -1,6 +1,7 @@
 "use client";
 import {Children,cloneElement,isValidElement,useEffect,useRef,useState,type ReactNode} from "react";
 import PermissionBoundary from "./permission-boundary";
+import LoadingScreen from "./loading-screen";
 import PermissionMatrix from "./permission-matrix";
 import OverviewDashboard from "./overview-dashboard";
 import UomConversions from "./uom-conversions";
@@ -56,7 +57,30 @@ function LegacyRetailWorkspace({view,request,apiUrl,onNavigate}:{view:string;req
   const docFeature=(type:string)=>({QUOTE:"orders",SALE_ORDER:"orders",POS:"pos",ISSUE:"issue",PURCHASE_REQUEST:"purchase-order",PURCHASE_ORDER:"purchase-order",PURCHASE_RECEIPT:"purchase-receipt",PURCHASE_RETURN:"purchase-return",SALE_RETURN:"returns",TRANSFER:"transfer",COUNT:"count",OTHER_RECEIPT:"stock",OTHER_ISSUE:"stock",REFUND:"refund",OPENING_STOCK:"opening-stock",OPENING_AR:"opening-ar",OPENING_AP:"opening-ap"} as Record<string,string>)[type];
   const can=(action:string)=>catalog?.capabilities ? action==="APPROVE" ? !!detail&&allowed(docFeature(detail.type),"APPROVE") : action==="SETUP" ? allowed(screen,"CREATE")||allowed(screen,"UPDATE") : action==="COST" ? allowed("sensitive","VIEW_COST") : action==="EXPORT" ? allowed(screen==="purchase"?"purchase-order":screen==="debt"?"receivables":screen==="cashflow"?"receipt":screen,"EXPORT") : catalog.permissions.includes(action) : catalog?.permissions.includes(action)??false;
   const command=async<T,>(path:string,body:unknown):Promise<T>=>{const serialized=JSON.stringify(body),cache=path+serialized;let key=keys.current.get(cache);if(!key){key=crypto.randomUUID();keys.current.set(cache,key);}const result=await request<T>("/api/v1/retail"+path,{method:"POST",headers:{"Idempotency-Key":key},body:serialized});keys.current.delete(cache);return result;};
-  const load=async()=>{setLoading(true);setError("");try{const cat=await request<Catalog>("/api/v1/retail/catalog");setCatalog(cat);setWarehouse(old=>cat.warehouses.some(w=>s(w,"id")===old)?old:s(cat.warehouses.find(w=>w.active)||{},"id"));const [sum,ds,st,dv,wa]=await Promise.all([request<Row>("/api/v1/retail/summary"),request<Page>("/api/v1/retail/documents?type="+filterType+"&status="+(screen==="approvals"?"PENDING":"")+"&q="+encodeURIComponent(query)+"&page="+page),request<Row[]>("/api/v1/retail/stock"),request<Row[]>("/api/v1/retail/deliveries"),request<Row[]>("/api/v1/retail/warranties")]);setSummary(sum);setDocs(ds);setStock(st);setDeliveries(dv);setWarranties(wa);if(cat.permissions.includes("FINANCE")){setFinance(await request("/api/v1/retail/finance"));if(["finance","cashflow","debt"].includes(screen))setCommissions(await request("/api/v1/retail/commissions"));}if(screen==="stock"&&cat.permissions.includes("STOCK"))setMovements(await request("/api/v1/retail/movements"));if(screen==="setup"&&cat.permissions.includes("SETUP")){setImports(await request("/api/v1/retail/imports"));setScopes(await request("/api/v1/retail/scopes"));try{setUsers(await request("/api/v1/access/users"));}catch{setUsers([]);}}}catch(e){setError(e instanceof Error?e.message:"Không thể tải dữ liệu");}finally{setLoading(false);}};
+  const load=async()=>{
+    setLoading(true);setError("");
+    try{
+      const tasks:Promise<unknown>[]=[];
+      const catalogTask=request<Catalog>("/api/v1/retail/catalog").then(cat=>{setCatalog(cat);setWarehouse(old=>cat.warehouses.some(w=>s(w,"id")===old)?old:s(cat.warehouses.find(w=>w.active)||{},"id"));return cat;});
+      tasks.push(catalogTask);
+      const dashboard=["overview","reports"].includes(screen);
+      const accounting=["finance","cashflow","debt"].includes(screen);
+      if(dashboard||accounting)tasks.push(request<Row>("/api/v1/retail/summary").then(setSummary));
+      if(["orders","purchase","transfer","approvals","returns","stock"].includes(screen))tasks.push(request<Page>("/api/v1/retail/documents?type="+(screen==="stock"?"COUNT":filterType)+"&status="+(screen==="approvals"?"PENDING":"")+"&q="+encodeURIComponent(query)+"&page="+page).then(setDocs));
+      if(dashboard||screen==="stock")tasks.push(request<Row[]>("/api/v1/retail/stock").then(setStock));
+      if(accounting||screen==="orders")tasks.push(request<Row[]>("/api/v1/retail/deliveries").then(setDeliveries));
+      if(screen==="returns")tasks.push(request<Row[]>("/api/v1/retail/warranties").then(setWarranties));
+      tasks.push(catalogTask.then(async cat=>{
+        const extra:Promise<unknown>[]=[];
+        if((dashboard||["finance","cashflow","debt"].includes(screen))&&cat.permissions.includes("FINANCE"))extra.push(request<{openItems:Row[];payments:Row[]}>("/api/v1/retail/finance").then(setFinance));
+        if(["finance","cashflow","debt"].includes(screen)&&cat.permissions.includes("FINANCE"))extra.push(request<{entries:Row[];balances:Row[]}>("/api/v1/retail/commissions").then(setCommissions));
+        if(screen==="stock"&&cat.permissions.includes("STOCK"))extra.push(request<Row[]>("/api/v1/retail/movements").then(setMovements));
+        if(screen==="setup"&&cat.permissions.includes("SETUP")){extra.push(request<Row[]>("/api/v1/retail/imports").then(setImports),request<Row[]>("/api/v1/retail/scopes").then(setScopes),request<Row[]>("/api/v1/access/users").then(setUsers).catch(()=>setUsers([])));}
+        await Promise.all(extra);
+      }));
+      await Promise.all(tasks);
+    }catch(e){setError(e instanceof Error?e.message:"Không thể tải dữ liệu");}finally{setLoading(false);}
+  };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(()=>{void load();},[screen,filterType,page]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,7 +105,7 @@ function LegacyRetailWorkspace({view,request,apiUrl,onNavigate}:{view:string;req
   const docTable=(items:Row[],offset=0)=><><Table offset={offset} headers={["Số phiếu","Loại / Đối tác","Kho","Giá trị","Trạng thái","Còn nợ","Thời gian"]}>{items.map(d=><tr key={s(d,"id")} onClick={()=>void run(()=>showDetail(s(d,"id")))}><td><button className="text-button">{s(d,"number")}</button></td><td>{types[s(d,"type")]}<small>{s(d,"partner")||"—"}</small></td><td>{s(d,"warehouse")}</td><td>{money(d.total)}</td><td><Pill value={d.status}/></td><td>{money(d.debt)}</td><td>{date(d.created_at)}</td></tr>)}</Table>{items.length===0&&<div className="p-empty">Chưa có chứng từ phù hợp.</div>}</>;
   const openForm=(kind:string,values:Record<string,string>={})=>{if(!catalog)return;setForm({warehouseId:catalog.warehouses.filter(w=>w.active).length===1?s(catalog.warehouses.find(w=>w.active)||{},"id"):warehouse,branchId:catalog.branches.filter(b=>b.active).length===1?s(catalog.branches.find(b=>b.active)||{},"id"):"",...values});setDialog(kind);};
   const addProduct=async()=>{let tracking="NONE";if(can("SETUP")){const configs=await request<Row[]>("/api/v1/retail/warehouse-config");tracking=s(configs.find(c=>s(c,"kind")==="INVENTORY"&&s(c,"code")==="defaultTracking"&&c.active)||{},"value")||"NONE";}openForm("skus",{unit:"cái",tracking,price:"0",vat:"0",returnDays:"0",warrantyDays:"0",allowOpened:"false",weight:"0"});};
-  if(!catalog)return <div className="empty-workspace">{loading?"Đang tải dữ liệu cửa hàng...":error}<button onClick={()=>void load()}>Thử lại</button></div>;
+  if(!catalog)return <LoadingScreen view={view} message={loading?"Đang tải dữ liệu…":error} onRetry={loading?undefined:()=>void load()}/>;
   const branch=String(catalog.warehouses.find(w=>s(w,"id")===warehouse)?.branch_id||"");
   return <div className="proto r-workspace">
     <div className="p-title"><div><p className="p-eyebrow">AICRM · VẬN HÀNH CỬA HÀNG</p><h1>{titles[screen]}</h1><p>Dữ liệu thực theo chi nhánh và kho được phân quyền.</p></div><div className="r-actions">{can("SETUP")&&["products","setup"].includes(screen)&&<button className="p-button primary" onClick={()=>void run(addProduct)}>＋ Thêm sản phẩm</button>}{can("EXPORT")&&!(["uom-conversions","warehouse-config","product-groups","product-brands","product-units","product-attributes"].includes(screen))&&<button onClick={()=>void run(()=>exportData(screen==="suppliers"?"suppliers":screen==="products"?"products":screen==="stock"?"stock":screen==="cashflow"?"payments":["finance","debt"].includes(screen)?"finance":"documents"))}>Xuất dữ liệu</button>}{["orders","purchase","stock","transfer"].includes(screen)&&<button className="p-button primary" disabled={!warehouse||!allowed(docFeature(screen==="purchase"?"PURCHASE_RECEIPT":screen==="stock"?"COUNT":screen==="transfer"?"TRANSFER":"SALE_ORDER"),"CREATE")} onClick={()=>startDoc(screen==="orders"?"SALE_ORDER":screen==="purchase"?"PURCHASE_RECEIPT":screen==="stock"?"COUNT":"TRANSFER")}>{screen==="orders"?"Tạo đơn bán":screen==="purchase"?"Nhập hàng trực tiếp":screen==="stock"?"Tạo kiểm kê":"Đề nghị chuyển"}</button>}</div></div>

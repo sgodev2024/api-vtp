@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import vn.coreplatform.shared.CorrelationIdFilter;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * PDP (E4-S02, E4-S03). Quyết định được cache theo (permission revision, tenant, account,
@@ -25,6 +27,7 @@ public class PermissionService {
   private record CacheKey(long revision,UUID tenant,UUID account,String resource,String action,boolean exact){}
   private record PolicyRow(String effect,String conditionJson){}
   private final Map<CacheKey, List<PolicyRow>> policyCache = new ConcurrentHashMap<>();
+  private final com.fasterxml.jackson.databind.ObjectMapper conditionMapper = new com.fasterxml.jackson.databind.ObjectMapper();
 
   public Decision decide(Authentication auth,String resource,String action,UUID ownerId){
     try{
@@ -92,7 +95,15 @@ public class PermissionService {
   }
 
   private long revision(UUID tenant){
+    // Read requests use one permission snapshot. Never retain it across requests
+    // or during writes, where a role/policy change can bump the revision.
+    var attributes=RequestContextHolder.getRequestAttributes();
+    var request=attributes instanceof ServletRequestAttributes servlet ? servlet.getRequest() : null;
+    var key=PermissionService.class.getName()+".revision."+tenant;
+    boolean readRequest=request!=null && ("GET".equals(request.getMethod())||"HEAD".equals(request.getMethod()));
+    if(readRequest && request.getAttribute(key) instanceof Long cached)return cached;
     Long value=jdbc.queryForObject("select revision from identity.permission_revision where tenant_id=?",Long.class,tenant);
+    if(readRequest && value!=null)request.setAttribute(key,value);
     return value==null?0L:value;
   }
 
@@ -108,5 +119,5 @@ public class PermissionService {
   public String tenantKey(Authentication a){ return jdbc.queryForObject("select tenant_key from platform.tenant where id=?", String.class, tenant(a)); }
   @SuppressWarnings("unchecked") public UUID tenant(Authentication a){return (UUID)((Map<String,Object>)a.getDetails()).get("tenantId");}
   @SuppressWarnings("unchecked") public UUID account(Authentication a){return (UUID)((Map<String,Object>)a.getDetails()).get("accountId");}
-  private JsonNode read(String value){try{return new com.fasterxml.jackson.databind.ObjectMapper().readTree(value);}catch(Exception e){throw new IllegalArgumentException("condition_json không hợp lệ",e);}}
+  private JsonNode read(String value){try{return conditionMapper.readTree(value);}catch(Exception e){throw new IllegalArgumentException("condition_json không hợp lệ",e);}}
 }

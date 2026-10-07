@@ -17,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component; import org.springframework.web.cors.*;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 public class SecurityConfig {
@@ -30,7 +31,7 @@ public class SecurityConfig {
     encoders.put("bcrypt", new BCryptPasswordEncoder(12));
     return new DelegatingPasswordEncoder("argon2", encoders);
   }
-  @Bean CorsConfigurationSource corsConfigurationSource(){ var c=new CorsConfiguration(); c.setAllowedOriginPatterns(List.of("http://localhost:*","http://127.0.0.1:*","https://*.chatgpt.site","https://corejava.sgodata.com")); c.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS")); c.setAllowedHeaders(List.of("Authorization","Content-Type","X-Correlation-Id","Idempotency-Key")); c.setAllowCredentials(false); var s=new UrlBasedCorsConfigurationSource(); s.registerCorsConfiguration("/**",c); return s; }
+  @Bean CorsConfigurationSource corsConfigurationSource(@Value("${CORE_CORS_ALLOWED_ORIGINS:http://localhost:*,http://127.0.0.1:*,https://*.chatgpt.site,https://corejava.sgodata.com}") String origins){ var c=new CorsConfiguration(); c.setAllowedOriginPatterns(Arrays.stream(origins.split(",")).map(String::trim).filter(origin -> !origin.isEmpty()).toList()); c.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS")); c.setAllowedHeaders(List.of("Authorization","Content-Type","X-Correlation-Id","Idempotency-Key")); c.setAllowCredentials(false); var s=new UrlBasedCorsConfigurationSource(); s.registerCorsConfiguration("/**",c); return s; }
   @Bean SecurityFilterChain security(HttpSecurity http, TokenFilter tokenFilter) throws Exception { return http.csrf(x->x.disable()).cors(x->{}).sessionManagement(x->x.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(x->x.requestMatchers("/api/v1/auth/login","/api/v1/auth/mfa","/api/v1/auth/refresh","/actuator/health/**","/v3/api-docs/**","/swagger-ui/**").permitAll().anyRequest().authenticated()).addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class).build(); }
 
   @Component static class TokenFilter extends OncePerRequestFilter {
