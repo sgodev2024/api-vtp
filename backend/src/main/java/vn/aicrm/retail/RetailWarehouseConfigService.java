@@ -55,6 +55,7 @@ public class RetailWarehouseConfigService {
         if (code.isEmpty())
             throw problem("CODE_REQUIRED", "Mã không được để trống");
 
+        if (code.length() > 60) throw problem("INVALID_FIELD", "Mã cấu hình tối đa 60 ký tự");
         if (kind.equals("INVENTORY")
                 && (!code.equals("defaultTracking")
                     || !Set.of("NONE", "LOT", "SERIAL").contains(value)))

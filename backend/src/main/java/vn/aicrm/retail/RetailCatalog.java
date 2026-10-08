@@ -96,6 +96,7 @@ public class RetailCatalog {
         if (code.isEmpty()) {
             code = generateSkuCode(t);
         }
+        if (code.length() > 60) throw problem("INVALID_FIELD", "Mã sản phẩm tối đa 60 ký tự");
         var price = num(x, "price", BigDecimal.ZERO);
         var vat = num(x, "vat", BigDecimal.ZERO);
         var weight = num(x, "weight", BigDecimal.ZERO);
@@ -131,6 +132,7 @@ public class RetailCatalog {
         var partner = optional(x, "partnerId");
         if (partner != null)
           r.one("partner", t, partner);
+
         var price = num(x, "price", BigDecimal.ZERO);
         if (price.signum() < 0)
           throw problem("INVALID_PRICE", "Giá không âm");
