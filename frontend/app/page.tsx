@@ -18,7 +18,7 @@ type UserInfo = { id: string; email: string; displayName: string; role: string }
 type NavigationItem = { key:string; parentKey:string; ownerModule:string; label:string; labelKey:string; icon:string; type:"GROUP"|"PAGE"; viewKey:string; route:string; sortOrder:number; keywords:string[] };
 type NavigationSection = { key:string; label:string; labelKey:string; icon:string; sortOrder:number; items:NavigationItem[] };
 type NavigationModel = { revision:string; sections:NavigationSection[]; favoriteKeys:string[]; recentKeys:string[] };
-type ModuleItem = { id: string; name: string; moduleKey: string; version: string; status: string; description: string; metric: string };
+type ModuleItem = { id: string; name: string; moduleKey: string; version: string; status: string; description: string; metric: string; dependencies: string[]; activeDependents: string[] };
 type ResourceItem = { id: string; name: string; storageMode: string; ownerModule: string; records: number; schemaVersion: string; updatedAt: string };
 type ActivityItem = { id: string; kind: string; name: string; metadata: string; status: string; occurredAt: string };
 type RoleItem = { id: string; name: string; users: number; policies: number; scope: string };
@@ -337,7 +337,7 @@ function Modules({ items, onStatus }: { items: ModuleItem[]; onStatus: (item: Mo
         {filtered.map((item) => <article className="module-card" key={item.id}>
           <div className="module-top"><div className="module-symbol"><AppIcon name={MODULE_ICONS[item.moduleKey]??"modules"} size={19}/></div><span className={`state ${item.status === "HEALTHY" ? "teal" : item.status === "ATTENTION" ? "amber" : "gray"}`}>{item.status}</span></div>
           <h3>{item.name}</h3><code>{item.moduleKey}</code><p>{item.description}</p>
-          <div className="module-meta"><span>v{item.version}</span><span>{item.metric}</span></div>
+          <div className="module-meta"><span>v{item.version}</span><span>{item.metric}</span></div><p>Phụ thuộc: {item.dependencies?.join(", ")||"Không có"}</p>{!!item.activeDependents?.length&&<p role="note">Đang được dùng bởi: {item.activeDependents.join(", ")}</p>}
           <button className="card-action" onClick={() => onStatus(item)}>{item.status === "DISABLED" ? "Bật module" : "Tắt module"} <span>→</span></button>
         </article>)}
       </section>

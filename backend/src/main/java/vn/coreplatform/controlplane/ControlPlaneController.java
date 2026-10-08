@@ -20,21 +20,22 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1/control-plane")
 public class ControlPlaneController {
   private final JdbcTemplate jdbc;
+  private final vn.coreplatform.kernel.ModuleRuntime moduleRuntime;
   private final vn.coreplatform.kernel.ResourceRegistry resources;
   private final vn.coreplatform.audit.AuditService audits;
   private final vn.coreplatform.jobs.JobService jobs;
   private final vn.coreplatform.eventing.OutboxService outbox;
-  public ControlPlaneController(JdbcTemplate jdbc, vn.coreplatform.kernel.ResourceRegistry resources, vn.coreplatform.audit.AuditService audits, vn.coreplatform.eventing.OutboxService outbox, vn.coreplatform.jobs.JobService jobs){this.jdbc=jdbc;this.resources=resources;this.audits=audits;this.outbox=outbox;this.jobs=jobs;}
+  public ControlPlaneController(JdbcTemplate jdbc, vn.coreplatform.kernel.ResourceRegistry resources, vn.coreplatform.audit.AuditService audits, vn.coreplatform.eventing.OutboxService outbox, vn.coreplatform.jobs.JobService jobs,vn.coreplatform.kernel.ModuleRuntime moduleRuntime){this.moduleRuntime=moduleRuntime;this.jdbc=jdbc;this.resources=resources;this.audits=audits;this.outbox=outbox;this.jobs=jobs;}
 
   public record Summary(long resources,long modules,long pendingOutbox,long runningJobs,long files,double storageGb,String coreVersion,String environment){}
-  public record Module(UUID id,String name,String moduleKey,String version,String status,String description,String metric){}
+  public record Module(UUID id,String name,String moduleKey,String version,String status,String description,String metric,List<String> dependencies,List<String> activeDependents){}
   public record Resource(UUID id,String name,String storageMode,String ownerModule,long records,String schemaVersion,Instant updatedAt){}
   public record Activity(UUID id,String kind,String name,String metadata,String status,Instant occurredAt){}
   public record Role(UUID id,String name,int users,int policies,String scope){}
   public record FileItem(UUID id,String name,String mediaType,long sizeBytes,String classification,String status,Instant updatedAt){}
   public record AuditItem(UUID id,String actorEmail,String action,String resourceType,String resourceId,String result,UUID correlationId,Instant occurredAt){}
   public record Bootstrap(Summary summary,List<Module> modules,List<Resource> resources,List<Activity> activities,List<Role> roles,List<FileItem> files,List<AuditItem> audit,Map<String,String> settings){}
-  public record ModuleStatus(@Pattern(regexp="HEALTHY|DISABLED|ATTENTION") String status){}
+  public record ModuleStatus(@NotBlank @Pattern(regexp="HEALTHY|DISABLED|ATTENTION") String status){}
   public record ResourceCreate(@NotBlank @Size(max=160) String name,@Pattern(regexp="DOMAIN|DYNAMIC") String storageMode,@NotBlank @Size(max=80) String ownerModule,@NotBlank @Size(max=20) String schemaVersion){}
   public record RoleCreate(@NotBlank @Size(max=100) String name,@Size(max=120) String scope){}
   public record SettingUpdate(@NotBlank @Size(max=100) String key,@NotBlank @Size(max=500) String value){}
@@ -60,8 +61,7 @@ public class ControlPlaneController {
 
   @PatchMapping("/modules/{id}/status") @Transactional
   Module updateModule(@PathVariable UUID id,@Valid @RequestBody ModuleStatus request,Authentication auth){
-    requireAdmin(auth); int changed=jdbc.update("update platform.module set status=? where id=?",request.status(),id);
-    if(changed==0) throw new ApiProblem(HttpStatus.NOT_FOUND,"MODULE_NOT_FOUND","Module không tồn tại");
+    requireAdmin(auth); moduleRuntime.change(id,request.status());
     audit(auth,"MODULE_STATUS_CHANGED","MODULE",id.toString(),"SUCCESS");
     return jdbc.queryForObject("select * from platform.module where id=?",(r,n)->module(r),id);
   }
@@ -255,7 +255,7 @@ public class ControlPlaneController {
   private List<Role> roles(){return jdbc.query("select * from identity.role_summary order by name",(r,n)->role(r));}
   private List<FileItem> files(){return jdbc.query("select * from files.file_object where status in ('ACTIVE','QUARANTINED') order by updated_at desc",(r,n)->new FileItem(r.getObject("id",UUID.class),r.getString("name"),r.getString("media_type"),r.getLong("size_bytes"),r.getString("classification"),r.getString("status"),r.getTimestamp("updated_at").toInstant()));}
   private Map<String,String> settings(){var result=new LinkedHashMap<String,String>();jdbc.query("select setting_key,setting_value from platform.setting order by setting_key",r->{result.put(r.getString(1),r.getString(2));});return result;}
-  private Module module(java.sql.ResultSet r)throws java.sql.SQLException{return new Module(r.getObject("id",UUID.class),r.getString("name"),r.getString("module_key"),r.getString("version"),r.getString("status"),r.getString("description"),r.getString("metric"));}
+  private Module module(java.sql.ResultSet r)throws java.sql.SQLException{String key=r.getString("module_key");return new Module(r.getObject("id",UUID.class),r.getString("name"),r.getString("module_key"),r.getString("version"),r.getString("status"),r.getString("description"),r.getString("metric"),moduleRuntime.dependencies(r.getString("module_key")),moduleRuntime.statuses().entrySet().stream().filter(e->!"DISABLED".equals(e.getValue())&&moduleRuntime.dependencies(e.getKey()).contains(key)).map(Map.Entry::getKey).toList());}
   private Resource resource(java.sql.ResultSet r)throws java.sql.SQLException{return new Resource(r.getObject("id",UUID.class),r.getString("name"),r.getString("storage_mode"),r.getString("owner_module"),r.getLong("record_count"),r.getString("schema_version"),r.getTimestamp("updated_at").toInstant());}
   private Activity activity(java.sql.ResultSet r)throws java.sql.SQLException{return new Activity(r.getObject("id",UUID.class),r.getString("kind"),r.getString("name"),r.getString("metadata"),r.getString("status"),r.getTimestamp("occurred_at").toInstant());}
   private Role role(java.sql.ResultSet r)throws java.sql.SQLException{return new Role(r.getObject("id",UUID.class),r.getString("name"),r.getInt("user_count"),r.getInt("policy_count"),r.getString("scope"));}

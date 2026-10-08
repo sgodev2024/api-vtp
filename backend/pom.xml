@@ -22,7 +22,7 @@
     <dependency><groupId>org.testcontainers</groupId><artifactId>postgresql</artifactId><scope>test</scope></dependency>
     <dependency><groupId>com.tngtech.archunit</groupId><artifactId>archunit-junit5</artifactId><version>1.4.1</version><scope>test</scope></dependency>
   </dependencies>
-  <build><plugins>
+  <build><plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-jar-plugin</artifactId><executions><execution><id>aicrm-shared-package</id><phase>package</phase><goals><goal>jar</goal></goals><configuration><classifier>aicrm-shared</classifier><includes><include>vn/aicrm/shared/**</include></includes></configuration></execution><execution><id>aicrm-sales-package</id><phase>package</phase><goals><goal>jar</goal></goals><configuration><classifier>aicrm-sales</classifier><includes><include>vn/aicrm/sales/**</include></includes></configuration></execution><execution><id>aicrm-stock-package</id><phase>package</phase><goals><goal>jar</goal></goals><configuration><classifier>aicrm-stock</classifier><includes><include>vn/aicrm/inventory/**</include></includes></configuration></execution><execution><id>aicrm-purchase-package</id><phase>package</phase><goals><goal>jar</goal></goals><configuration><classifier>aicrm-purchase</classifier><includes><include>vn/aicrm/purchase/**</include></includes></configuration></execution></executions></plugin>
     <plugin><groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId></plugin>
     <plugin><groupId>org.cyclonedx</groupId><artifactId>cyclonedx-maven-plugin</artifactId><version>2.8.0</version>
       <executions><execution><phase>package</phase><goals><goal>makeBom</goal></goals></execution></executions>

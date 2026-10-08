@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication
-@org.springframework.context.annotation.Import(vn.aicrm.retail.RetailConfiguration.class)
+@org.springframework.context.annotation.Import(vn.aicrm.shared.RetailConfiguration.class)
 public class CorePlatformApplication {
   public static void main(String[] args) { SpringApplication.run(CorePlatformApplication.class, args); }
 }

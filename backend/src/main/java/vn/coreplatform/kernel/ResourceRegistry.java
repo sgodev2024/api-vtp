@@ -19,6 +19,10 @@ public class ResourceRegistry {
 
   public ResourceRegistry(JdbcTemplate jdbc) { this.jdbc = jdbc; }
 
+  public void reassignLegacyOwner(String resource,String previous,String owner){
+    jdbc.update("update platform.resource_descriptor set owner_module=?,updated_at=now() where resource_type=? and owner_module=?",owner,resource,previous);
+  }
+
   public ResourceDescriptor register(ResourceDescriptor descriptor) {
     validate(descriptor);
     var existing = findByType(descriptor.resourceType());
