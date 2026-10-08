@@ -102,7 +102,7 @@ h1 { font-size: 27px; line-height: 1.15; letter-spacing: -.035em; margin: 0; col
     background: transparent; 
     color: var(--teal-dark); 
     font-weight: 650; 
-    font-size: 12px; 
+    font-size: 12px;
     white-space: nowrap; 
 }
 

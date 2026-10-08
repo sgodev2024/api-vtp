@@ -10,7 +10,7 @@ import WarehouseConfig from "./warehouse-config";
 import PartnerMaster from "./partner-master";
 import { hasPartnerRole } from "./partner-role";
 import MoneyInput from "./money-input";
-import SalesWorkspace from "./sales-workspace";
+import SalesWorkspace from "./sales/sales-workspace";
 import {AppIcon} from "../components/app-icon";
 import "../prototype/prototype.css";
 import "./retail.css";

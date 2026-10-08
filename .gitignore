@@ -38,3 +38,8 @@ backups/
 /mes/
 /ioc/
 /docs/local-backup/
+# # Dừng container aicrm-java-postgres-1 (đang fail)
+# docker compose -p aicrm-java down
+
+# Khởi động lại project cũ
+# docker compose -p aicrm-dev up -d --build backend frontend
