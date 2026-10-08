@@ -1,0 +1,6 @@
+services:
+  backend:
+    environment:
+      CORE_OUTBOX_ENABLED: "false"
+      CORE_JOBS_ENABLED: "false"
+      CORE_JOBS_SCHEDULER_ENABLED: "false"
