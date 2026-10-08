@@ -199,4 +199,9 @@
 .r-workspace .accounting-table td button{white-space:nowrap}
 .r-workspace .accounting-table-head{padding:16px 20px 14px;border-bottom:1px solid #edf2ee}
 .r-workspace .accounting-table-head h2{margin:0;color:#19382f;font-size:18px;font-weight:700}
+.r-workspace .commission-section-head{padding:16px 20px 10px}
+.r-workspace .commission-section-head h3{margin:0;color:#294a3b;font-size:13px;font-weight:700}
+.r-workspace .commission-section-head p{margin:4px 0 0;color:#71847a;font-size:11px;line-height:1.5}
+.r-workspace .commission-empty{margin:0 20px 16px;padding:14px 16px;border:1px dashed #d5e3d9;border-radius:9px;background:#f8fbf9;color:#71847a;font-size:12px;line-height:1.5}
 @media(max-width:600px){.r-workspace .accounting-table{width:calc(100% - 24px);margin-right:12px;margin-left:12px}.r-workspace .accounting-table th,.r-workspace .accounting-table td{padding:10px 11px}}
+@media(max-width:600px){.r-workspace .commission-section-head{padding:14px 12px 9px}.r-workspace .commission-empty{margin:0 12px 12px;padding:12px}}
