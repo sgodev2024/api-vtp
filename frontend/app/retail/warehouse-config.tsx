@@ -198,7 +198,7 @@ export default function WarehouseConfig({
                   <button
                     type="submit"
                     className="p-button primary"
-                    disabled={busy}
+                    disabled={busy || !editable}
                   >
                     Lưu
                   </button>
@@ -215,7 +215,7 @@ export default function WarehouseConfig({
               </form>
             )}
 
-            <table className="p-table">
+            <div className="warehouse-config-table-wrap"><table className="warehouse-config-table">
               <thead>
                 <tr>
                   {[
@@ -226,7 +226,7 @@ export default function WarehouseConfig({
                     "Trạng thái",
                     "Thao tác",
                   ].map((h) => (
-                    <th key={h}>{h}</th>
+                    <th key={h} scope="col">{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -241,8 +241,9 @@ export default function WarehouseConfig({
                       <td>{r.name}</td>
                       <td>{r.value || "—"}</td>
                       <td>{r.active ? "Đang dùng" : "Ngừng dùng"}</td>
-                      <td>
+                      <td><div className="warehouse-config-actions">
                         <button
+                          disabled={busy || !editable}
                           onClick={() => {
                             setForm({
                               code: r.code,     
@@ -256,16 +257,16 @@ export default function WarehouseConfig({
                         </button>
 
                         <button
-                          disabled={busy}
+                          disabled={busy || !editable}
                           onClick={() => save({ ...r, active: !r.active })}
                         >
                           {r.active ? "Ngừng dùng" : "Kích hoạt"}
-                        </button>
+                        </button></div>
                       </td>
                     </tr>
                   ))}
               </tbody>
-            </table>
+            </table></div>
 
             {!rows.some((r) => r.kind === tab) && (
               <p>Chưa có dữ liệu. Bấm Thêm mới để bắt đầu.</p>
