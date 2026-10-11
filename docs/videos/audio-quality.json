@@ -1,0 +1,512 @@
+{
+  "audioFiles": 63,
+  "allDecoded": true,
+  "allTimestampsFit": true,
+  "silentFiles": [],
+  "checks": [
+    {
+      "scene": "00-0",
+      "decoded": true,
+      "duration": 10.56,
+      "lastWordEnd": 9.676291,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.6
+    },
+    {
+      "scene": "00-1",
+      "decoded": true,
+      "duration": 12.0,
+      "lastWordEnd": 11.121125,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.1
+    },
+    {
+      "scene": "00-2",
+      "decoded": true,
+      "duration": 8.88,
+      "lastWordEnd": 8.002541,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.0
+    },
+    {
+      "scene": "01-0",
+      "decoded": true,
+      "duration": 9.7,
+      "lastWordEnd": 8.814416,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "01-1",
+      "decoded": true,
+      "duration": 10.51,
+      "lastWordEnd": 9.626249,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.6
+    },
+    {
+      "scene": "01-2",
+      "decoded": true,
+      "duration": 8.9,
+      "lastWordEnd": 8.041207,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "02-0",
+      "decoded": true,
+      "duration": 10.2,
+      "lastWordEnd": 9.329916,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.2
+    },
+    {
+      "scene": "02-1",
+      "decoded": true,
+      "duration": 9.46,
+      "lastWordEnd": 8.582457,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.5
+    },
+    {
+      "scene": "02-2",
+      "decoded": true,
+      "duration": 12.65,
+      "lastWordEnd": 11.778333,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.4
+    },
+    {
+      "scene": "03-0",
+      "decoded": true,
+      "duration": 11.98,
+      "lastWordEnd": 11.10825,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "03-1",
+      "decoded": true,
+      "duration": 12.05,
+      "lastWordEnd": 11.159791,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.6
+    },
+    {
+      "scene": "03-2",
+      "decoded": true,
+      "duration": 12.36,
+      "lastWordEnd": 11.481958,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.6
+    },
+    {
+      "scene": "04-0",
+      "decoded": true,
+      "duration": 10.73,
+      "lastWordEnd": 9.845374,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.7
+    },
+    {
+      "scene": "04-1",
+      "decoded": true,
+      "duration": 12.72,
+      "lastWordEnd": 11.842791,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.3
+    },
+    {
+      "scene": "04-2",
+      "decoded": true,
+      "duration": 12.94,
+      "lastWordEnd": 12.074749,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.4
+    },
+    {
+      "scene": "05-0",
+      "decoded": true,
+      "duration": 12.55,
+      "lastWordEnd": 11.675291,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.1
+    },
+    {
+      "scene": "05-1",
+      "decoded": true,
+      "duration": 11.11,
+      "lastWordEnd": 10.231958,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "05-2",
+      "decoded": true,
+      "duration": 12.82,
+      "lastWordEnd": 11.932999,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "06-0",
+      "decoded": true,
+      "duration": 11.83,
+      "lastWordEnd": 10.953624,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.0
+    },
+    {
+      "scene": "06-1",
+      "decoded": true,
+      "duration": 12.53,
+      "lastWordEnd": 11.649458,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.1
+    },
+    {
+      "scene": "06-2",
+      "decoded": true,
+      "duration": 10.66,
+      "lastWordEnd": 9.780916,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.7
+    },
+    {
+      "scene": "07-0",
+      "decoded": true,
+      "duration": 13.9,
+      "lastWordEnd": 13.028375,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.0
+    },
+    {
+      "scene": "07-1",
+      "decoded": true,
+      "duration": 10.73,
+      "lastWordEnd": 9.85825,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.0
+    },
+    {
+      "scene": "07-2",
+      "decoded": true,
+      "duration": 14.18,
+      "lastWordEnd": 13.298999,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.3
+    },
+    {
+      "scene": "08-0",
+      "decoded": true,
+      "duration": 11.06,
+      "lastWordEnd": 10.193291,
+      "timestampsFit": true,
+      "meanVolumeDb": -17.9
+    },
+    {
+      "scene": "08-1",
+      "decoded": true,
+      "duration": 11.33,
+      "lastWordEnd": 10.463916,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.4
+    },
+    {
+      "scene": "08-2",
+      "decoded": true,
+      "duration": 12.19,
+      "lastWordEnd": 11.327333,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.9
+    },
+    {
+      "scene": "09-0",
+      "decoded": true,
+      "duration": 12.36,
+      "lastWordEnd": 11.481957,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.1
+    },
+    {
+      "scene": "09-1",
+      "decoded": true,
+      "duration": 13.22,
+      "lastWordEnd": 12.358249,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "09-2",
+      "decoded": true,
+      "duration": 15.31,
+      "lastWordEnd": 14.445874,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.7
+    },
+    {
+      "scene": "10-0",
+      "decoded": true,
+      "duration": 14.42,
+      "lastWordEnd": 13.543791,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.9
+    },
+    {
+      "scene": "10-1",
+      "decoded": true,
+      "duration": 12.38,
+      "lastWordEnd": 11.520624,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.7
+    },
+    {
+      "scene": "10-2",
+      "decoded": true,
+      "duration": 13.58,
+      "lastWordEnd": 12.706208,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.3
+    },
+    {
+      "scene": "11-0",
+      "decoded": true,
+      "duration": 14.21,
+      "lastWordEnd": 13.324749,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.5
+    },
+    {
+      "scene": "11-1",
+      "decoded": true,
+      "duration": 12.14,
+      "lastWordEnd": 11.275749,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.1
+    },
+    {
+      "scene": "11-2",
+      "decoded": true,
+      "duration": 11.47,
+      "lastWordEnd": 10.605708,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.0
+    },
+    {
+      "scene": "12-0",
+      "decoded": true,
+      "duration": 13.03,
+      "lastWordEnd": 12.152041,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.0
+    },
+    {
+      "scene": "12-1",
+      "decoded": true,
+      "duration": 12.55,
+      "lastWordEnd": 11.688166,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.7
+    },
+    {
+      "scene": "12-2",
+      "decoded": true,
+      "duration": 14.54,
+      "lastWordEnd": 13.672708,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.7
+    },
+    {
+      "scene": "13-0",
+      "decoded": true,
+      "duration": 12.91,
+      "lastWordEnd": 12.036083,
+      "timestampsFit": true,
+      "meanVolumeDb": -19.1
+    },
+    {
+      "scene": "13-1",
+      "decoded": true,
+      "duration": 12.91,
+      "lastWordEnd": 12.048999,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.9
+    },
+    {
+      "scene": "13-2",
+      "decoded": true,
+      "duration": 14.38,
+      "lastWordEnd": 13.505166,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.7
+    },
+    {
+      "scene": "14-0",
+      "decoded": true,
+      "duration": 12.19,
+      "lastWordEnd": 11.327333,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "14-1",
+      "decoded": true,
+      "duration": 13.15,
+      "lastWordEnd": 12.268041,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.4
+    },
+    {
+      "scene": "14-2",
+      "decoded": true,
+      "duration": 13.7,
+      "lastWordEnd": 12.822166,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.6
+    },
+    {
+      "scene": "15-0",
+      "decoded": true,
+      "duration": 12.24,
+      "lastWordEnd": 11.365999,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "15-1",
+      "decoded": true,
+      "duration": 8.69,
+      "lastWordEnd": 7.822166,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.9
+    },
+    {
+      "scene": "15-2",
+      "decoded": true,
+      "duration": 11.86,
+      "lastWordEnd": 10.979375,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.6
+    },
+    {
+      "scene": "16-0",
+      "decoded": true,
+      "duration": 15.05,
+      "lastWordEnd": 14.175249,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.7
+    },
+    {
+      "scene": "16-1",
+      "decoded": true,
+      "duration": 13.39,
+      "lastWordEnd": 12.525791,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.3
+    },
+    {
+      "scene": "16-2",
+      "decoded": true,
+      "duration": 14.42,
+      "lastWordEnd": 13.556708,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "17-0",
+      "decoded": true,
+      "duration": 9.84,
+      "lastWordEnd": 8.956208,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "17-1",
+      "decoded": true,
+      "duration": 12.24,
+      "lastWordEnd": 11.366,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.6
+    },
+    {
+      "scene": "17-2",
+      "decoded": true,
+      "duration": 12.67,
+      "lastWordEnd": 11.804125,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.5
+    },
+    {
+      "scene": "18-0",
+      "decoded": true,
+      "duration": 12.31,
+      "lastWordEnd": 11.430416,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.6
+    },
+    {
+      "scene": "18-1",
+      "decoded": true,
+      "duration": 13.61,
+      "lastWordEnd": 12.731957,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.7
+    },
+    {
+      "scene": "18-2",
+      "decoded": true,
+      "duration": 15.62,
+      "lastWordEnd": 14.755166,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.2
+    },
+    {
+      "scene": "19-0",
+      "decoded": true,
+      "duration": 12.74,
+      "lastWordEnd": 11.868583,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.4
+    },
+    {
+      "scene": "19-1",
+      "decoded": true,
+      "duration": 12.62,
+      "lastWordEnd": 11.752583,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.9
+    },
+    {
+      "scene": "19-2",
+      "decoded": true,
+      "duration": 11.62,
+      "lastWordEnd": 10.734541,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.2
+    },
+    {
+      "scene": "20-0",
+      "decoded": true,
+      "duration": 12.62,
+      "lastWordEnd": 11.739666,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.8
+    },
+    {
+      "scene": "20-1",
+      "decoded": true,
+      "duration": 12.91,
+      "lastWordEnd": 12.036083,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.7
+    },
+    {
+      "scene": "20-2",
+      "decoded": true,
+      "duration": 13.51,
+      "lastWordEnd": 12.628875,
+      "timestampsFit": true,
+      "meanVolumeDb": -18.6
+    }
+  ]
+}

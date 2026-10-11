@@ -13,12 +13,12 @@ public class RetailModule implements ModuleContributor, ApplicationRunner {
   private final ResourceRegistry resources;
   public RetailModule(ResourceRegistry resources) { this.resources = resources; }
   public ModuleDescriptor descriptor() {
-    return new ModuleDescriptor("aicrm-retail", "Nghiệp vụ dùng chung", "1.1.0",
+    return new ModuleDescriptor("aicrm-retail", "Nền tảng nghiệp vụ dùng chung", "1.2.0",
       List.of("kernel", "permission", "audit-store", "event-outbox"),
       List.of("retail-operations"), "Vận hành cửa hàng và chuỗi chi nhánh", ">=1.1.0 <2.0.0");
   }
   public List<NavigationWorkspaceDescriptor> navigationWorkspaces() {
-    return allWorkspaces().stream().filter(w->!Set.of("retail","retail-stock","retail-purchase").contains(w.key())).toList();
+    return List.of();
   }
   public static List<NavigationWorkspaceDescriptor> allWorkspaces(){return List.of(
       new NavigationWorkspaceDescriptor("retail-overview", "Tổng quan", "navigation.retail.overview-group", "home", "BUSINESS", 11, ""),

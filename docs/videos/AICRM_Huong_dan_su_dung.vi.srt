@@ -1,0 +1,667 @@
+1
+00:00:00,140 --> 00:00:04,754
+Chào mừng bạn đến với hướng dẫn sử dụng A I C R M Video có thuyết minh tiếng
+
+2
+00:00:04,754 --> 00:00:08,632
+Việt và phụ đề dựa trên runbook phiên bản ngày chín tháng mười năm hai nghìn
+
+3
+00:00:08,632 --> 00:00:09,676
+không trăm hai mươi sáu
+
+4
+00:00:11,070 --> 00:00:16,226
+Các màn hình minh họa được lấy từ hệ thống local Video không lưu thêm chứng
+
+5
+00:00:16,226 --> 00:00:21,239
+từ Khi thao tác thực tế chỉ coi giao dịch hoàn tất sau khi hệ thống xác nhận
+
+6
+00:00:21,239 --> 00:00:22,051
+đã ghi sổ
+
+7
+00:00:23,420 --> 00:00:28,306
+Bạn có thể xem theo thứ tự hoặc chọn chương trong mục lục đi kèm Các nội dung
+
+8
+00:00:28,306 --> 00:00:31,283
+chưa hoàn chỉnh được nêu rõ để tránh hiểu nhầm trong vận hành
+
+9
+00:00:32,650 --> 00:00:37,330
+Mở hệ thống trên trình duyệt và đăng nhập bằng tài khoản được quản trị cấp Cần
+
+10
+00:00:37,330 --> 00:00:41,324
+có Internet phiên bản hiện tại chưa hỗ trợ bán hàng khi mất mạng
+
+11
+00:00:42,707 --> 00:00:48,083
+Sau khi đăng nhập kiểm tra đúng tài khoản và kho phụ trách Nếu không thấy menu
+
+12
+00:00:48,302 --> 00:00:52,206
+nhờ quản trị kiểm tra vai trò phạm vi kho và trạng thái module
+
+13
+00:00:53,577 --> 00:00:58,063
+Không dùng chung tài khoản quản trị cho nhân viên Trang chủ là màn hình nền
+
+14
+00:00:58,063 --> 00:01:01,491
+tảng Tổng quan là nơi xem số liệu nghiệp vụ theo quyền được cấp
+
+15
+00:01:02,860 --> 00:01:07,668
+Vào Vận hành chung chọn Thiết lập ban đầu Bắt đầu với thông tin doanh nghiệp
+
+16
+00:01:07,668 --> 00:01:12,050
+và địa điểm tiếp theo là kho chính danh mục rồi dữ liệu đầu kỳ
+
+17
+00:01:13,397 --> 00:01:18,167
+Mỗi doanh nghiệp có ít nhất một địa điểm và một kho Cửa hàng duy nhất sử dụng
+
+18
+00:01:18,167 --> 00:01:21,852
+địa điểm mặc định không cần tạo thêm chi nhánh chỉ để hoàn thành thiết lập
+
+19
+00:01:23,207 --> 00:01:28,763
+Nhập tồn và công nợ đầu kỳ đúng thực tế Mở các phiếu đầu kỳ để gửi và duyệt
+
+20
+00:01:29,021 --> 00:01:33,737
+đối chiếu Kho và Công nợ trước khi bấm Hoàn tất Hoàn tất hướng dẫn chưa đồng
+
+21
+00:01:33,737 --> 00:01:34,858
+nghĩa đã ghi sổ
+
+22
+00:01:36,220 --> 00:01:42,807
+Vào Quản trị hệ thống Phân quyền Thêm vai trò nhập mã tên và lý do rồi tích
+
+23
+00:01:42,807 --> 00:01:47,188
+các quyền cần dùng Quyền xem không tự bao gồm quyền tạo hay duyệt
+
+24
+00:01:48,537 --> 00:01:55,498
+Lưu vai trò mở lại kiểm tra Trong Người dùng chọn nhân viên và gán vai trò Cấp
+
+25
+00:01:55,498 --> 00:01:59,570
+thêm phạm vi kho phụ trách thông tin người quản lý không tự tạo quyền truy cập
+
+26
+00:02:00,937 --> 00:02:05,526
+Nhân viên thường cần người khác duyệt Tài khoản quản trị được tự duyệt khi đủ
+
+27
+00:02:05,526 --> 00:02:10,655
+điều kiện của hệ thống Nếu có lỗi phiên bản phân quyền tải lại trước khi lưu
+
+28
+00:02:10,836 --> 00:02:12,292
+không ghi đè thay đổi mới
+
+29
+00:02:13,680 --> 00:02:19,816
+Vào Vận hành chung Địa điểm và Chi nhánh để quản lý điểm bán Nhập mã tên địa
+
+30
+00:02:19,816 --> 00:02:23,385
+chỉ liên hệ và người phụ trách lưu sau khi kiểm tra
+
+31
+00:02:24,760 --> 00:02:30,161
+Vào Kho Danh sách kho để tạo kho tại địa điểm tương ứng Kho bán dùng loại hàng
+
+32
+00:02:30,161 --> 00:02:35,419
+được bán kho cách ly dành cho hàng chưa đủ điều kiện bán Chọn mặc định và cấp
+
+33
+00:02:35,419 --> 00:02:36,463
+quyền cho nhân viên
+
+34
+00:02:37,817 --> 00:02:43,502
+Trước khi ngừng kho xử lý tồn chứng từ chờ và hàng đang chuyển Chuyển kho mặc
+
+35
+00:02:43,502 --> 00:02:48,425
+định trước Không xóa dữ liệu trực tiếp muốn chuyển sang địa điểm mới thì tạo
+
+36
+00:02:48,425 --> 00:02:49,765
+kho mới và chuyển hàng
+
+37
+00:02:51,120 --> 00:02:57,525
+Tạo đơn vị tính trước sau đó thêm sản phẩm với mã tên barcode đơn vị cơ sở giá
+
+38
+00:02:57,718 --> 00:03:02,655
+thuế và chính sách đổi trả bảo hành Mỗi mặt hàng cần mã rõ ràng
+
+39
+00:03:04,037 --> 00:03:09,166
+Chọn kiểu theo dõi hàng thường hàng theo lô và hạn sử dụng hoặc theo serial
+
+40
+00:03:10,057 --> 00:03:14,142
+Thiết lập quy đổi theo từng sản phẩm ví dụ một thùng bằng hai mươi bốn cái
+
+41
+00:03:15,507 --> 00:03:20,779
+Biến thể hiện mới là thông tin dạng chữ chưa sinh tổ hợp từ thuộc tính Dùng
+
+42
+00:03:20,779 --> 00:03:25,767
+các mã sản phẩm riêng cho từng loại Kiểm tra đơn vị và tỷ lệ trước khi nhập
+
+43
+00:03:25,767 --> 00:03:27,313
+tồn để tránh sai số lượng
+
+44
+00:03:28,707 --> 00:03:33,967
+Khách hàng đối tác và nhà cung cấp dùng chung dữ liệu gốc Tìm mã hoặc số điện
+
+45
+00:03:33,967 --> 00:03:38,967
+thoại trước khi thêm Trong đơn bán dùng biểu tượng cộng tại ô Khách hàng để
+
+46
+00:03:38,967 --> 00:03:39,534
+tạo nhanh
+
+47
+00:03:40,907 --> 00:03:46,940
+Nhà cung cấp có ba tab Thông tin chung bắt buộc gồm mã tên loại đối tượng điện
+
+48
+00:03:46,940 --> 00:03:52,429
+thoại email và địa chỉ Thông tin bổ sung và thông tin thanh toán không bắt buộc
+
+49
+00:03:53,787 --> 00:03:59,240
+Đối tượng vừa mua vừa bán thì thêm vai trò vào cùng hồ sơ tránh tạo trùng Số
+
+50
+00:03:59,240 --> 00:04:03,441
+ngày công nợ là thông tin theo dõi hiện không tự chặn bán khi quá hạn
+
+51
+00:04:04,810 --> 00:04:10,430
+Vào Mua hàng và chọn nhập hàng trực tiếp Chọn kho nhận nhà cung cấp sản phẩm
+
+52
+00:04:10,624 --> 00:04:16,655
+đơn vị lượng thực nhận đơn giá và thuế Hàng theo lô hoặc serial phải nhập đúng
+
+53
+00:04:16,655 --> 00:04:17,698
+thông tin theo dõi
+
+54
+00:04:19,067 --> 00:04:24,314
+Nhập số tiền thực tế đã trả và phương thức thanh toán Chưa trả thì để bằng không
+
+55
+00:04:25,203 --> 00:04:28,798
+Kiểm tra tổng tiền lưu nháp rồi gửi duyệt theo nút trên màn hình
+
+56
+00:04:30,147 --> 00:04:35,213
+Phiếu chờ duyệt chưa tăng tồn Người duyệt mở Cần duyệt hoặc chi tiết phiếu mua
+
+57
+00:04:36,115 --> 00:04:41,785
+Sau ghi sổ đối chiếu tồn và công nợ nhà cung cấp Phí mua biết sau chưa có luồng
+
+58
+00:04:41,785 --> 00:04:43,319
+điều chỉnh giá vốn đầy đủ
+
+59
+00:04:44,677 --> 00:04:49,420
+Khi cần đặt mua trước đi từ đề nghị đến đơn mua gửi và duyệt từng chứng từ theo
+
+60
+00:04:49,420 --> 00:04:54,370
+chính sách Một đơn mua có thể nhập nhiều lần mỗi lần ghi đúng lượng nhận thực
+
+61
+00:04:54,370 --> 00:04:54,743
+tế
+
+62
+00:04:56,087 --> 00:05:01,128
+Chênh lệch lượng hoặc giá cần người có quyền xác nhận Xem tiến độ nhận sau khi
+
+63
+00:05:01,128 --> 00:05:06,424
+ghi sổ Không nhận tiếp thì đóng phần còn lại không hủy phiếu nhập đã ghi sổ
+
+64
+00:05:07,767 --> 00:05:13,722
+Trả mua phải chọn phiếu nhập gốc dòng hàng và lượng còn được trả Gửi duyệt rồi
+
+65
+00:05:13,722 --> 00:05:18,967
+đối chiếu tồn và công nợ Tiền nhà cung cấp hoàn cần kế toán đối chiếu riêng
+
+66
+00:05:20,320 --> 00:05:26,546
+Vào Bán tại quầy chọn đúng kho Tìm tên mã hoặc quét barcode thêm hàng và chọn
+
+67
+00:05:26,546 --> 00:05:31,662
+số lượng đơn vị Chọn khách hàng khi cần lưu lịch sử hoặc bán công nợ
+
+68
+00:05:33,050 --> 00:05:38,864
+Đơn giá lấy theo dữ liệu có sẵn chưa có giá thì nhập tay Kiểm thuế tổng tiền
+
+69
+00:05:38,864 --> 00:05:44,469
+và thực thu Nếu khách đưa dư kiểm tra tiền trả lại không ghi số đã thanh toán
+
+70
+00:05:44,469 --> 00:05:45,268
+vượt tổng phiếu
+
+71
+00:05:46,637 --> 00:05:52,747
+Chỉ coi bán thành công khi đã ghi sổ Nếu thiếu tồn kiểm tra kho duyệt nhập hạn
+
+72
+00:05:52,747 --> 00:05:59,126
+dùng cách ly serial và kiểm kê Có thể chuyển cả giỏ sang đặt trước hiện chưa
+
+73
+00:05:59,126 --> 00:06:00,956
+tự tách phần đủ và phần thiếu
+
+74
+00:06:02,320 --> 00:06:08,572
+Vào Đơn bán hàng tạo đơn hoặc chuyển từ báo giá Chọn khách kho kênh bán rồi
+
+75
+00:06:08,572 --> 00:06:15,350
+chọn sản phẩm từ danh sách xổ xuống Nhập lượng đơn vị giá thuế địa chỉ và ghi
+
+76
+00:06:15,350 --> 00:06:15,724
+chú
+
+77
+00:06:17,107 --> 00:06:23,784
+Lưu nháp kiểm tra tiền và gửi Đặt trước không tự giữ hay trừ tồn Khi có hàng
+
+78
+00:06:24,029 --> 00:06:28,062
+lập phiếu xuất cho lượng giao lần này mỗi kho lập phiếu riêng và gửi duyệt theo
+
+79
+00:06:28,062 --> 00:06:28,501
+chính sách
+
+80
+00:06:29,837 --> 00:06:35,161
+Đơn mười sản phẩm có thể xuất bốn rồi sáu Thu cọc được ghi nhận trước khi có
+
+81
+00:06:35,161 --> 00:06:40,522
+công nợ mới phân bổ Khách hủy phần chưa xuất thì đóng phần đó với lý do hàng
+
+82
+00:06:40,522 --> 00:06:42,416
+đã xuất phải xử lý theo luồng trả
+
+83
+00:06:43,780 --> 00:06:49,697
+Từ phiếu bán hoặc xuất bán đã ghi sổ tạo đợt giao Nhập đơn vị vận chuyển mã
+
+84
+00:06:49,697 --> 00:06:55,805
+vận đơn COD phí và ghi chú Cập nhật trạng thái theo thực tế hiện chưa đồng bộ
+
+85
+00:06:55,805 --> 00:06:56,965
+API vận chuyển
+
+86
+00:06:58,327 --> 00:07:03,831
+Khi đối soát nhập tiền thu trước phí và phí thực tế Ví dụ thu một trăm nghìn
+
+87
+00:07:04,089 --> 00:07:08,561
+phí mười lăm nghìn thì ròng tám mươi lăm nghìn Không nhập tiền ròng rồi trừ
+
+88
+00:07:08,561 --> 00:07:09,476
+phí lần nữa
+
+89
+00:07:10,817 --> 00:07:15,574
+Nhiều đợt giao cần kiểm tổng COD không vượt nợ Trạng thái giao thất bại không
+
+90
+00:07:15,574 --> 00:07:20,729
+tự hủy đơn hay nhập lại hàng Chỉ nhận hàng hoàn khi có thực tế và đúng chứng
+
+91
+00:07:20,729 --> 00:07:21,296
+từ nguồn
+
+92
+00:07:22,637 --> 00:07:28,412
+Kho và Tồn cho biết số lượng cách ly khả dụng và lịch sử biến động Số khả dụng
+
+93
+00:07:28,412 --> 00:07:33,760
+trên bảng chưa loại hết lô quá hạn khi bán cần kiểm tra lô Hệ thống chặn bán
+
+94
+00:07:33,760 --> 00:07:34,662
+hàng hết hạn
+
+95
+00:07:36,037 --> 00:07:41,980
+Chuyển kho theo thứ tự đề nghị duyệt xuất nguồn đang chuyển rồi nhận đích Nhận
+
+96
+00:07:41,980 --> 00:07:47,212
+từng phần theo lượng thực tế ghi thiếu hoặc hỏng Hàng chưa nhận chưa tăng tồn
+
+97
+00:07:47,212 --> 00:07:47,598
+kho đích
+
+98
+00:07:48,980 --> 00:07:54,806
+Kiểm kê chỉ khóa sản phẩm đang đếm tại kho đó Bắt đầu kiểm kê nhập số thực kết
+
+99
+00:07:54,807 --> 00:08:00,760
+thúc và gửi duyệt chờ duyệt vẫn khóa Duyệt xong đối chiếu chênh lệch Không nhận
+
+100
+00:08:00,760 --> 00:08:02,513
+đủ giả để xử lý hàng thiếu
+
+101
+00:08:03,857 --> 00:08:09,194
+Đổi trả phải tìm được phiếu bán gốc chọn dòng và lượng còn được trả Có thể nhận
+
+102
+00:08:09,194 --> 00:08:14,413
+tại chi nhánh khác khi có quyền Serial phải đúng chiếc đã bán kiểm thời hạn
+
+103
+00:08:14,413 --> 00:08:15,766
+và chính sách tại giao dịch
+
+104
+00:08:17,127 --> 00:08:22,245
+Hàng tốt được trả theo điều kiện Hàng mở bao bì chỉ trả khi chính sách cho phép
+
+105
+00:08:22,503 --> 00:08:27,619
+hàng đã dùng hoặc lỗi chuyển bảo hành theo luồng hiện tại Gửi và duyệt rồi đối
+
+106
+00:08:27,619 --> 00:08:29,049
+chiếu tồn và công nợ
+
+107
+00:08:30,397 --> 00:08:35,760
+Hoàn tiền theo phần đã thu còn đủ điều kiện phương thức khác cần lý do Đổi hàng
+
+108
+00:08:35,760 --> 00:08:41,932
+là trả rồi bán mới chưa tự bù trừ tiền Bảo hành còn nhập ID dòng bán gốc nhờ
+
+109
+00:08:41,932 --> 00:08:43,775
+quản trị tra không tự đoán
+
+110
+00:08:45,140 --> 00:08:49,908
+Vào Kế toán Thu chi để ghi tiền thực thu hoặc chi đúng đối tượng và phương thức
+
+111
+00:08:50,812 --> 00:08:56,327
+Vào Công nợ để xem phải thu phải trả số đã thanh toán số còn lại và hạn nợ
+
+112
+00:08:57,667 --> 00:09:02,978
+Thu tiền chưa phân bổ chưa làm hết nợ Chọn tiền dư và khoản nợ cùng đối tượng
+
+113
+00:09:03,236 --> 00:09:08,648
+phân bổ trong giới hạn cả hai Nợ một trăm nghìn thu và phân bổ sáu mươi nghìn
+
+114
+00:09:08,648 --> 00:09:09,808
+thì còn bốn mươi nghìn
+
+115
+00:09:11,197 --> 00:09:15,980
+Hoa hồng nhập thủ công theo đơn hoặc phần bổ sung tháng Đã ghi một trăm nghìn
+
+116
+00:09:15,980 --> 00:09:20,709
+theo đơn tháng bổ sung hai mươi nghìn thì chỉ ghi hai mươi nghìn Phiếu tiền
+
+117
+00:09:20,709 --> 00:09:23,892
+sai cần kế toán xử lý chưa có đảo tiền đầy đủ
+
+118
+00:09:25,280 --> 00:09:31,738
+Vào CRM Khách hàng để tìm hồ sơ và xem lịch sử mua Dữ liệu dùng chung với khách
+
+119
+00:09:31,738 --> 00:09:36,506
+hàng của Bán hàng và dữ liệu gốc không tạo hồ sơ CRM riêng cho cùng người
+
+120
+00:09:37,867 --> 00:09:42,107
+Ghi nội dung chăm sóc và thời gian hẹn lưu rồi đánh dấu hoàn thành sau khi xử
+
+121
+00:09:42,107 --> 00:09:45,562
+lý Đầu ngày xem những lịch hẹn cần thực hiện
+
+122
+00:09:46,950 --> 00:09:51,810
+Nhắc lịch hiện gồm thời gian và trạng thái hoàn thành Chưa có quản lý cuộc gọi
+
+123
+00:09:51,810 --> 00:09:57,789
+đầy đủ hoặc tự gửi SMS email Nhân viên theo dõi lịch trực tiếp trên màn hình
+
+124
+00:09:59,173 --> 00:10:05,167
+Tải mẫu đúng loại dữ liệu chọn file Excel hoặc CSV rồi xem trước Giới hạn hai
+
+125
+00:10:05,167 --> 00:10:11,030
+mê ga bai năm trăm dòng sheet đầu tiên không công thức Ngày theo năm tháng ngày
+
+126
+00:10:11,288 --> 00:10:13,195
+serial ngăn bằng dấu gạch đứng
+
+127
+00:10:14,547 --> 00:10:19,691
+Sửa lỗi trước khi xác nhận nhập Phiếu tồn và nợ đầu kỳ sau nhập vẫn là nháp
+
+128
+00:10:19,884 --> 00:10:25,567
+phải gửi và duyệt Xem trước chưa bắt hết lỗi nếu nhập báo lỗi kiểm kết quả trước
+
+129
+00:10:25,567 --> 00:10:26,946
+khi nhập lại để tránh trùng
+
+130
+00:10:28,300 --> 00:10:35,415
+Tổng quan có sáu tab nghiệp vụ Báo cáo chọn kỳ xem và xuất CSV theo quyền Đối
+
+131
+00:10:35,415 --> 00:10:39,990
+chiếu kỳ phạm vi và số dòng vì một số nguồn có giới hạn file xuất chưa chắc
+
+132
+00:10:39,990 --> 00:10:41,717
+giữ toàn bộ bộ lọc trên màn hình
+
+133
+00:10:43,087 --> 00:10:49,004
+Đầu ngày kiểm tra tài khoản kho và kết nối Xử lý nhập hàng chờ duyệt kiểm hàng
+
+134
+00:10:49,004 --> 00:10:51,916
+hết hạn cách ly đang chuyển và lịch chăm sóc
+
+135
+00:10:53,300 --> 00:10:58,223
+Cuối ngày xem đơn chưa xuất đặt trước chứng từ chờ duyệt tiền chưa phân bổ COD
+
+136
+00:10:58,223 --> 00:11:03,714
+chưa đối soát trả hàng hoàn tiền và bảo hành Kiểm thêm chuyển kho thiếu và kiểm
+
+137
+00:11:03,714 --> 00:11:04,526
+kê chờ duyệt
+
+138
+00:11:05,887 --> 00:11:11,095
+Xuất dữ liệu cần lưu theo quyền Quản trị kiểm nhật ký và sao lưu môi trường
+
+139
+00:11:11,984 --> 00:11:16,224
+Phiên bản hiện tại không có ca bán và kiểm đếm tiền cuối ca không thêm số liệu
+
+140
+00:11:16,224 --> 00:11:17,564
+giả để hoàn tất checklist
+
+141
+00:11:18,907 --> 00:11:23,289
+Failed to fetch thường cần kiểm tra mạng phiên đăng nhập backend hoặc proxy
+
+142
+00:11:24,180 --> 00:11:29,450
+Không bấm lưu liên tục Nếu lưu hết thời gian chờ kiểm tra chứng từ đã có trước
+
+143
+00:11:29,450 --> 00:11:30,210
+khi thử lại
+
+144
+00:11:31,590 --> 00:11:37,054
+Có tồn mà không bán được thì kiểm kho lô hết hạn hàng cách ly serial và kiểm
+
+145
+00:11:37,054 --> 00:11:43,344
+kê Thu tiền mà nợ còn thì kiểm phân bổ Phiếu chờ duyệt chưa có tồn là trạng
+
+146
+00:11:43,344 --> 00:11:44,182
+thái bình thường
+
+147
+00:11:45,550 --> 00:11:51,828
+Báo lỗi kèm thời gian môi trường module số phiếu và thao tác Che dữ liệu riêng
+
+148
+00:11:51,828 --> 00:11:57,742
+trong ảnh không gửi mật khẩu hoặc token Chứng từ đã ghi sổ xử lý trả hoàn đúng
+
+149
+00:11:57,742 --> 00:12:00,165
+nguồn không sửa trực tiếp cơ sở dữ liệu
+
+150
+00:12:01,537 --> 00:12:06,616
+Phần này dành cho quản trị kỹ thuật Trước khi bật hoặc tắt module kiểm tra các
+
+151
+00:12:06,616 --> 00:12:12,235
+phụ thuộc và những module đang sử dụng nó Tắt module sẽ ẩn menu và chặn API
+
+152
+00:12:12,235 --> 00:12:13,279
+nhưng giữ dữ liệu
+
+153
+00:12:14,627 --> 00:12:19,202
+Đưa gói sang core khác cần kiểm tra phiên bản tương thích sao lưu chạy thử import
+
+154
+00:12:19,421 --> 00:12:24,629
+build và khởi động lại Gói mã nguồn không mang theo cơ sở dữ liệu nhập code
+
+155
+00:12:24,629 --> 00:12:26,253
+chưa đồng nghĩa đã chuyển dữ liệu
+
+156
+00:12:27,627 --> 00:12:31,906
+Hiện chưa tải gói trực tiếp từ màn hình và chưa tự tách cơ sở dữ liệu theo thuê
+
+157
+00:12:31,906 --> 00:12:37,642
+bao Nhân viên vận hành không chạy SQL hoặc tự import module giao đội kỹ thuật
+
+158
+00:12:37,642 --> 00:12:38,235
+xử lý
+
+159
+00:12:39,627 --> 00:12:43,815
+Quản trị tạo người dùng gán vai trò và khóa tài khoản khi nhân viên ngừng làm
+
+160
+00:12:43,815 --> 00:12:50,093
+việc Tổ chức là cấu trúc nhân sự không thay cho địa điểm hoặc kho Bàn giao mật
+
+161
+00:12:50,093 --> 00:12:51,240
+khẩu qua kênh riêng
+
+162
+00:12:52,627 --> 00:12:58,028
+Tra nhật ký theo thời gian người dùng và tài nguyên khi có sự cố Chạy lại tác
+
+163
+00:12:58,028 --> 00:13:03,299
+vụ chỉ khi hiểu tác động Cài đặt tệp và tích hợp kỹ thuật cần đúng quyền và
+
+164
+00:13:03,299 --> 00:13:04,536
+kiểm tra trước khi đổi
+
+165
+00:13:05,910 --> 00:13:11,144
+Bạn đã xem toàn bộ luồng chính của runbook Khi vận hành luôn dùng đúng dữ liệu
+
+166
+00:13:11,144 --> 00:13:16,608
+thực tế kiểm trạng thái ghi sổ và đối chiếu sau giao dịch Xem tài liệu runbook
+
+167
+00:13:16,608 --> 00:13:18,399
+đi kèm để tra chi tiết từng bước

@@ -1,0 +1,3 @@
+"use client";
+import type {ModuleWorkspaceProps} from "../../module-contract";import SharedWorkspace from "../shared-workspace";import SalesWorkspace from "./sales-workspace";import PartnerMaster from "../partner-master";
+export default function Workspace(props:ModuleWorkspaceProps){if(props.view==="retail-sales-customers")return <PartnerMaster request={props.request} customerOnly context="sales" onNavigate={props.onNavigate}/>;if(props.view==="retail-returns")return <SharedWorkspace {...props}/>;return <SalesWorkspace view={props.view} request={props.request} onNavigate={props.onNavigate}/>;}

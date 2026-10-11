@@ -27,3 +27,20 @@ Kiểm tra bằng Microsoft Edge/Chromium với viewport và thiết bị mô ph
 ## Chưa triển khai trong đợt này
 Tách/chuyển các module sang core khác chưa triển khai. Người dùng đã duyệt commit main và triển khai server với nội dung “Tối ưu mobile app”; kết quả triển khai được ghi riêng sau kiểm tra.
 
+
+## Cập nhật 10/10/2026 — Làm gọn Trang chủ và menu mobile
+
+Trạng thái: đã triển khai, build và chạy trên local http://localhost:3205. Chưa commit, push Git hoặc triển khai server trong đợt này.
+
+- Thanh đầu: bỏ hamburger trên mobile; tên màn hình 17px, thông báo và avatar gọn.
+- Thanh dưới: Tổng quan → Bán hàng → Kho → Mua → Thêm; nhãn một dòng, lọc theo Navigation Registry đã cấp quyền. Màn hình ngoài bốn nhóm chính đánh dấu Thêm. Không đánh dấu Trang chủ core thành Tổng quan kinh doanh.
+- Thêm: danh mục toàn màn hình nền sáng, tìm kiếm không dấu, nhóm Nghiệp vụ / Vận hành / Báo cáo & Quản trị, mở nhóm rồi chọn chức năng. Ẩn thanh dưới trong lúc mở; khóa cuộn nền, hỗ trợ Escape/focus và trả focus về nút Thêm khi đóng. Yêu thích desktop giữ nguyên.
+- Trang chủ: giữ chức năng core, lời chào ngắn, Việt hóa chỉ số, bốn thẻ gọn, thông tin kỹ thuật mở rộng, lối tắt lọc theo quyền. Tạo tài nguyên thực hiện tại module Tài nguyên.
+- Backend, database và nghiệp vụ không sửa trong đợt này. Kiểm tra giao diện không lưu chứng từ hay master; yêu cầu lưu tùy chọn điều hướng được mô phỏng trong kiểm tra.
+- Production Docker build và TypeScript đạt. ESLint hai file TypeScript thay đổi: 0 lỗi; page.tsx còn 10 cảnh báo có sẵn về hook, ảnh và component chưa dùng.
+- Production UI: 320/390/430px và desktop1440px không cuộn ngang, đúng thứ tự tab, tìm Địa điểm bằng `dia diem`, đóng menu và chuyển tab đúng. Tám màn hình nghiệp vụ không tràn ngang hoặc lỗi JavaScript. Kiểm tra focus, Escape, tìm không có kết quả và registry bị giới hạn; đăng nhập email/password giữ 16px.
+- Evidence và ảnh: backups/mobile-refresh-20261010/ui-check.json, smoke-check.json, home-390.png, directory-390.png. Giới hạn: Edge/Chromium mô phỏng; chưa nghiệm thu Safari iPhone hoặc Android thật. Không xác nhận bán hàng/ghi sổ bằng kiểm tra giao diện này.
+
+## Phát hành 11/10/2026
+
+Người dùng đã duyệt đồng bộ toàn bộ source hiện tại lên main và server erp.aicrm.vn. Bản phát hành gồm tách module đợt 3, tài liệu BA/SRS/runbook hiện hành và giao diện mobile hoàn thiện ngày 10/10. Build frontend và kiểm tra giao diện đã qua trước phát hành; thông tin commit và trạng thái deployment được xác nhận theo release sau khi triển khai.

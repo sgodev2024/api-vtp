@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
+import {installedModules} from "./installed-modules";
 import Link from "next/link";
 import { AppIcon } from "./components/app-icon";
 import MobileAppChrome from "./components/mobile-app-chrome";
@@ -13,7 +13,6 @@ class ApiProblemError extends Error {
   constructor(message: string, readonly code?: string, readonly status?: number) { super(message); }
 }
 const API_URL = process.env.NEXT_PUBLIC_CORE_API_URL ?? "http://localhost:8185";
-const RetailWorkspace = dynamic(() => import("./retail/workspace"), { ssr: false });
 type UserInfo = { id: string; email: string; displayName: string; role: string };
 type NavigationItem = { key:string; parentKey:string; ownerModule:string; label:string; labelKey:string; icon:string; type:"GROUP"|"PAGE"; viewKey:string; route:string; sortOrder:number; keywords:string[] };
 type NavigationSection = { key:string; label:string; labelKey:string; icon:string; sortOrder:number; items:NavigationItem[] };
@@ -162,7 +161,7 @@ function LoginScreen({ onAuthenticated }: { onAuthenticated: (session: SessionDa
             <button className="auth-submit" disabled={loading}>{loading ? "Đang xác thực..." : "Tiếp tục"}<span>→</span></button>
           </form>
           <div className="auth-security"><span><AppIcon name="lock" size={15}/></span><p><strong>Kết nối được bảo vệ</strong><small>Phiên đăng nhập được mã hóa và ghi nhận audit.</small></p></div>
-          <Link href="/business/retail/overview" className="auth-link" style={{display:"inline-block",marginTop:16}}>Mở ứng dụng Bán hàng · Kho · Mua hàng →</Link>
+          <Link href="/home" className="auth-link" style={{display:"inline-block",marginTop:16}}>Mở ứng dụng →</Link>
         </> : <>
           <button className="auth-back" onClick={() => { setStep("login"); setError(""); }}>← Quay lại</button>
           <div className="auth-heading"><span className="mfa-icon"><AppIcon name="shield" size={22}/></span><h2>Xác thực hai lớp</h2><p>Nhập mã 6 chữ số từ ứng dụng xác thực của bạn.</p></div>
@@ -256,45 +255,45 @@ function PageTitle({ eyebrow, title, description, action }: { eyebrow: string; t
   );
 }
 
-function Overview({ onNavigate, data, displayName }: { onNavigate: (view: View) => void; data: BootstrapData; displayName?: string }) {
+function Overview({ onNavigate, data, displayName, availableViews }: { onNavigate: (view: View) => void; data: BootstrapData; displayName?: string; availableViews: string[] }) {
   const { summary, activities } = data;
   return (
-    <>
+    <div className="core-home">
       <PageTitle
-        eyebrow="Core Control Plane"
-        title={`Xin chào, ${displayName || "Quản trị viên hệ thống"}`}
-        description={`Hệ thống đang hoạt động. Có ${summary.pendingOutbox} sự kiện outbox và ${summary.runningJobs} background job đang xử lý.`}
-        action={<button className="primary-button" onClick={() => onNavigate("resources")}><span>＋</span> Tạo resource</button>}
+        eyebrow="Nền tảng AICRM"
+        title="Xin chào"
+        description={`Chào mừng ${displayName || "bạn"} trở lại hệ thống.`}
       />
 
       <section className="health-banner" aria-label="Trạng thái hệ thống">
         <div className="health-mark"><AppIcon name="check-circle" size={18}/></div>
         <div className="health-copy">
-          <div className="health-title"><strong>Tất cả dịch vụ cốt lõi đang hoạt động</strong><span className="live-pill"><StatusDot /> Live</span></div>
-          <p>Dữ liệu tổng hợp trực tiếp từ backend · Các trạng thái lỗi sẽ được hiển thị tại khu vực vận hành</p>
+          <div className="health-title"><strong>Đã kết nối hệ thống</strong></div>
+          <p>Xem trạng thái chi tiết tại khu vực vận hành.</p>
         </div>
-        <button className="text-button" onClick={() => onNavigate("activity")}>Xem chi tiết <span>→</span></button>
+        {availableViews.includes("activity")&&<button className="text-button" onClick={() => onNavigate("activity")}>Chi tiết <span>→</span></button>}
       </section>
 
       <section className="metric-grid" aria-label="Chỉ số chính">
         <article className="metric-card">
-          <div className="metric-icon blue"><AppIcon name="database"/></div><span className="metric-label">Resource records</span>
-          <strong className="metric-value">{summary.resources.toLocaleString("vi-VN")}</strong><span className="metric-trend positive">Live</span><small>dữ liệu từ PostgreSQL</small>
+          <div className="metric-icon blue"><AppIcon name="database"/></div><span className="metric-label">Bản ghi tài nguyên</span>
+          <strong className="metric-value">{summary.resources.toLocaleString("vi-VN")}</strong><small>Bản ghi đã lưu</small>
         </article>
         <article className="metric-card">
-          <div className="metric-icon violet"><AppIcon name="modules"/></div><span className="metric-label">Modules hoạt động</span>
-          <strong className="metric-value">{data.modules.filter(x => x.status !== "DISABLED").length} <em>/ {summary.modules}</em></strong><span className="metric-trend neutral">Đã đăng ký</span><small>module runtime</small>
+          <div className="metric-icon violet"><AppIcon name="modules"/></div><span className="metric-label">Module đang bật</span>
+          <strong className="metric-value">{data.modules.filter(x => x.status !== "DISABLED").length} <em>/ {summary.modules}</em></strong><small>Trên tổng số module</small>
         </article>
         <article className="metric-card">
-          <div className="metric-icon amber"><AppIcon name="webhook"/></div><span className="metric-label">Outbox đang chờ</span>
-          <strong className="metric-value">{summary.pendingOutbox}</strong><span className="metric-trend warning">Pending</span><small>outbox chờ xử lý</small>
+          <div className="metric-icon amber"><AppIcon name="webhook"/></div><span className="metric-label">Sự kiện chờ xử lý</span>
+          <strong className="metric-value">{summary.pendingOutbox}</strong><small>Đợi chuyển tới nơi nhận</small>
         </article>
         <article className="metric-card">
-          <div className="metric-icon teal"><AppIcon name="clock"/></div><span className="metric-label">Background jobs</span>
-          <strong className="metric-value">{summary.runningJobs}</strong><span className="metric-trend positive">Live</span><small>tác vụ đang xử lý</small>
+          <div className="metric-icon teal"><AppIcon name="clock"/></div><span className="metric-label">Tác vụ đang chạy</span>
+          <strong className="metric-value">{summary.runningJobs}</strong><small>Đang thực hiện</small>
         </article>
       </section>
 
+      <details className="core-technical-details"><summary>Thông tin kỹ thuật</summary><p>Phiên bản core: {summary.coreVersion} · Môi trường: {summary.environment}</p><p>Outbox: {summary.pendingOutbox} sự kiện chờ · Background jobs: {summary.runningJobs} tác vụ đang chạy.</p></details>
       <div className="dashboard-grid">
         <section className="panel activity-panel">
           <div className="panel-header"><div><h2>Hoạt động gần đây</h2><p>Luồng sự kiện và tác vụ trên toàn hệ thống</p></div><button className="ghost-button" onClick={() => onNavigate("activity")}>Xem tất cả</button></div>
@@ -312,13 +311,14 @@ function Overview({ onNavigate, data, displayName }: { onNavigate: (view: View) 
 
         <aside className="panel quick-panel">
           <div className="panel-header"><div><h2>Truy cập nhanh</h2><p>Các tác vụ thường dùng</p></div></div>
-          <button onClick={() => onNavigate("modules")}><span className="quick-icon"><AppIcon name="modules"/></span><div><strong>Quản lý modules</strong><small>Bật, tắt và kiểm tra phiên bản</small></div><b>→</b></button>
-          <button onClick={() => onNavigate("access")}><span className="quick-icon"><AppIcon name="shield"/></span><div><strong>Phân quyền</strong><small>Vai trò, policy và phạm vi</small></div><b>→</b></button>
-          <button onClick={() => onNavigate("files")}><span className="quick-icon"><AppIcon name="files"/></span><div><strong>Kho tệp</strong><small>{summary.files.toLocaleString("vi-VN")} tệp · {summary.storageGb.toFixed(2)} GB</small></div><b>→</b></button>
+          {availableViews.includes("modules")&&<button onClick={() => onNavigate("modules")}><span className="quick-icon"><AppIcon name="modules"/></span><div><strong>Quản lý module</strong><small>Bật, tắt và kiểm tra phiên bản</small></div><b>→</b></button>}
+          {availableViews.includes("access")&&<button onClick={() => onNavigate("access")}><span className="quick-icon"><AppIcon name="shield"/></span><div><strong>Phân quyền</strong><small>Vai trò, chính sách và phạm vi</small></div><b>→</b></button>}
+          {availableViews.includes("files")&&<button onClick={() => onNavigate("files")}><span className="quick-icon"><AppIcon name="files"/></span><div><strong>Kho tệp</strong><small>{summary.files.toLocaleString("vi-VN")} tệp · {summary.storageGb.toFixed(2)} GB</small></div><b>→</b></button>}
+          {availableViews.includes("resources")&&<button onClick={()=>onNavigate("resources")}><span className="quick-icon"><AppIcon name="database"/></span><div><strong>Tài nguyên</strong><small>Quản lý và tạo tài nguyên</small></div><b>→</b></button>}
         </aside>
       </div>
 
-    </>
+    </div>
   );
 }
 
@@ -392,8 +392,8 @@ function Users() {
   const [items,setItems]=useState<AccessUser[]>([]);const [roles,setRoles]=useState<AccessRole[]>([]);const [organizations,setOrganizations]=useState<Organization[]>([]);
   const [email,setEmail]=useState("");const [displayName,setDisplayName]=useState("");const [password,setPassword]=useState("");const [roleId,setRoleId]=useState("");const [orgId,setOrgId]=useState("");const [message,setMessage]=useState("");const [createOpen,setCreateOpen]=useState(false);const [creating,setCreating]=useState(false);const [createPasswordCopied,setCreatePasswordCopied]=useState(false);const [resetOpen,setResetOpen]=useState(false);const [resetUser,setResetUser]=useState<AccessUser|null>(null);const [resetPassword,setResetPassword]=useState("");const [resetPasswordCopied,setResetPasswordCopied]=useState(false);const [resetCompleted,setResetCompleted]=useState(false);const [resetting,setResetting]=useState(false);
   const [editingRoles,setEditingRoles]=useState<AccessUser|null>(null),[chosenRoles,setChosenRoles]=useState<string[]>([]),[rolesRevision,setRolesRevision]=useState(0),[rolesReason,setRolesReason]=useState(""),[rolesBusy,setRolesBusy]=useState(false),[rolesError,setRolesError]=useState("");
-  const openRoles=async(item:AccessUser)=>{setEditingRoles(item);setChosenRoles([]);setRolesReason("");setRolesError("");setRolesBusy(true);try{const [preview,currentRoles]=await Promise.all([apiRequest<{roleIds:string[];revision:number}>("/api/v1/retail/permissions/users/"+item.id+"/preview"),apiRequest<AccessRole[]>("/api/v1/access/roles")]);setRoles(currentRoles);setChosenRoles(preview.roleIds);setRolesRevision(preview.revision);}catch(e){setRolesError(e instanceof Error?e.message:"Không tải được vai trò");}finally{setRolesBusy(false);}};
-  const saveRoles=async()=>{if(!editingRoles)return;setRolesBusy(true);setRolesError("");try{await apiRequest("/api/v1/retail/permissions/users/"+editingRoles.id+"/roles",{method:"POST",body:JSON.stringify({revision:rolesRevision,reason:rolesReason,roleIds:chosenRoles})});await load();setEditingRoles(null);setMessage("Đã cập nhật vai trò người dùng.");}catch(e){setRolesError(e instanceof Error?e.message:"Không lưu được vai trò");}finally{setRolesBusy(false);}};
+  const openRoles=async(item:AccessUser)=>{setEditingRoles(item);setChosenRoles([]);setRolesReason("");setRolesError("");setRolesBusy(true);try{const [preview,currentRoles]=await Promise.all([apiRequest<{roleIds:string[];revision:number}>("/api/v1/access/users/"+item.id+"/roles"),apiRequest<AccessRole[]>("/api/v1/access/roles")]);setRoles(currentRoles);setChosenRoles(preview.roleIds);setRolesRevision(preview.revision);}catch(e){setRolesError(e instanceof Error?e.message:"Không tải được vai trò");}finally{setRolesBusy(false);}};
+  const saveRoles=async()=>{if(!editingRoles)return;setRolesBusy(true);setRolesError("");try{await apiRequest("/api/v1/access/users/"+editingRoles.id+"/roles",{method:"POST",body:JSON.stringify({revision:rolesRevision,reason:rolesReason,roleIds:chosenRoles})});await load();setEditingRoles(null);setMessage("Đã cập nhật vai trò người dùng.");}catch(e){setRolesError(e instanceof Error?e.message:"Không lưu được vai trò");}finally{setRolesBusy(false);}};
   const load=async()=>{try{const [usersData,rolesData,orgData]=await Promise.all([apiRequest<AccessUser[]>("/api/v1/access/users"),apiRequest<AccessRole[]>("/api/v1/access/roles"),apiRequest<Organization[]>("/api/v1/access/organizations")]);setItems(usersData);setRoles(rolesData);setOrganizations(orgData);if(!roleId&&rolesData[0])setRoleId(rolesData[0].id);setMessage("");}catch(error){setMessage(error instanceof Error?error.message:"Không thể tải người dùng");}};
   useEffect(()=>{void load();},[]);
   const openCreate=()=>{setMessage("");setCreatePasswordCopied(false);setCreateOpen(true);};
@@ -676,13 +676,13 @@ export default function Home() {
     return ()=>{active=false;setSystemLogoUrl(previous=>{if(previous)URL.revokeObjectURL(previous);return "";});};
   },[authenticated]);
 
-  const selectRoute=(model:NavigationModel)=>{const pages=model.sections.flatMap(section=>section.items.filter(item=>item.type==="PAGE").map(item=>({section,item})));const route=window.location.pathname;const selected=pages.find(entry=>entry.item.route===route)||pages.find(entry=>entry.item.key==="core.home")||pages.find(entry=>entry.item.viewKey==="retail-overview")||pages[0];if(selected){setView(selected.item.viewKey as View);setExpandedSection(selected.section.key);setExpandedGroup(selected.item.parentKey);if(route!==selected.item.route)window.history.replaceState(null,"",selected.item.route);}};
+  const selectRoute=(model:NavigationModel)=>{const pages=model.sections.flatMap(section=>section.items.filter(item=>item.type==="PAGE").map(item=>({section,item})));const route=window.location.pathname;const selected=pages.find(entry=>entry.item.route===route)||pages.find(entry=>entry.item.key==="core.home")||pages[0];if(selected){setView(selected.item.viewKey as View);setExpandedSection(selected.section.key);setExpandedGroup(selected.item.parentKey);if(route!==selected.item.route)window.history.replaceState(null,"",selected.item.route);}};
   const loadNavigation=async()=>{const model=await apiRequest<NavigationModel>("/api/v1/navigation/me");setNavigation(model);selectRoute(model);return model;};
   const refresh=async()=>setData(await apiRequest<BootstrapData>("/api/v1/control-plane/bootstrap"));
 
-  useEffect(()=>{if(!authenticated||passwordChangeRequired)return;void(async()=>{try{const [me,model]=await Promise.all([apiRequest<UserInfo>("/api/v1/auth/me"),loadNavigation()]);setUser(me);if(model.sections.some(section=>section.key==="system-administration"))await refresh();if(window.location.pathname==="/"||window.location.pathname==="/home"){const setupItem=model.sections.flatMap(s=>s.items).find(i=>i.viewKey==="retail-setup");if(setupItem){try{const caps=await apiRequest<Record<string,string[]>>("/api/v1/retail/permissions/capabilities");if(caps.setup?.includes("UPDATE")&&caps.scope?.includes("ALL_BRANCHES")){const onboarding=await apiRequest<{company:{onboarding_step?:number}}>("/api/v1/retail/onboarding");if((onboarding.company.onboarding_step||1)<5){setView("retail-setup" as View);setExpandedSection("retail-general");window.history.replaceState(null,"",setupItem.route);}}}catch{}}}setApiOnline(true);setOperationError("");}catch(error){if(error instanceof ApiProblemError&&error.code==="PASSWORD_CHANGE_REQUIRED"){setPasswordChangeRequired(true);setNavigation(null);return;}setApiOnline(false);setOperationError("Không thể khởi tạo ứng dụng. Vui lòng đăng nhập lại hoặc kiểm tra backend.");}})();},[authenticated,passwordChangeRequired]);
+  useEffect(()=>{if(!authenticated||passwordChangeRequired)return;void(async()=>{try{const [me,model]=await Promise.all([apiRequest<UserInfo>("/api/v1/auth/me"),loadNavigation()]);setUser(me);if(model.sections.some(section=>section.key==="system-administration"))await refresh();if(window.location.pathname==="/"||window.location.pathname==="/home"){for(const installedModule of installedModules){const next=await installedModule.bootstrap?.(apiRequest,v=>model.sections.some(s=>s.items.some(i=>i.viewKey===v)));const entry=model.sections.flatMap(section=>section.items.map(item=>({section,item}))).find(e=>e.item.viewKey===next);if(entry){setView(entry.item.viewKey as View);setExpandedSection(entry.section.key);window.history.replaceState(null,"",entry.item.route);break;}}}setApiOnline(true);setOperationError("");}catch(error){if(error instanceof ApiProblemError&&error.code==="PASSWORD_CHANGE_REQUIRED"){setPasswordChangeRequired(true);setNavigation(null);return;}setApiOnline(false);setOperationError("Không thể khởi tạo ứng dụng. Vui lòng đăng nhập lại hoặc kiểm tra backend.");}})();},[authenticated,passwordChangeRequired]);
   useEffect(()=>{const handler=(event:KeyboardEvent)=>{if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==="k"){event.preventDefault();setCommandOpen(true);}if(event.key==="Escape"){setCommandOpen(false);setNotificationsOpen(false);setProfileOpen(false);setLogoutOpen(false);setSidebarOpen(false);}};window.addEventListener("keydown",handler);return()=>window.removeEventListener("keydown",handler);},[]);
-  useEffect(()=>{if(!navigation)return;const handler=()=>selectRoute(navigation);window.addEventListener("popstate",handler);return()=>window.removeEventListener("popstate",handler);},[navigation]);
+  useEffect(()=>{if(!navigation)return;const handler=()=>{selectRoute(navigation);setSidebarOpen(false);};window.addEventListener("popstate",handler);return()=>window.removeEventListener("popstate",handler);},[navigation]);
 
   const sections=navigation?.sections??[];const allPages=useMemo(()=>sections.flatMap(section=>section.items.filter(item=>item.type==="PAGE").map(item=>({section,item}))),[sections]);
   const currentEntry=allPages.find(entry=>entry.item.viewKey===view);const currentLabel=currentEntry?.item.label??"Trang chủ";const currentSection=currentEntry?.section;const currentSectionLabel=currentSection?.key==="home"?"Ứng dụng":currentSection?.label||"Ứng dụng";
@@ -702,16 +702,18 @@ export default function Home() {
   const signOut=async()=>{const accessToken=storedToken();if(accessToken)await fetch(`${API_URL}/api/v1/auth/logout`,{method:"POST",headers:{Authorization:`Bearer ${accessToken}`}}).catch(()=>undefined);clearSession();window.history.replaceState(null,"","/");setAuthenticated(false);setPasswordChangeRequired(false);setNavigation(null);setData(null);setUser(null);setLogoutOpen(false);setProfileOpen(false);setView("home");};
   const initials=(user?.displayName||user?.email||"CP").split(/\s+/).map(part=>part[0]).join("").slice(0,2).toUpperCase();const businessSection=sections.find(section=>section.key==="retail")||sections.find(section=>section.key==="business");
   const renderPageButton=(item:NavigationItem,compact=false)=><div className={`nav-entry ${compact?"compact":""}`} key={item.key}><button className={view===item.viewKey?"active":""} onClick={()=>openItem(item)}><span className="nav-icon"><AppIcon name={item.icon} size={17}/></span><span>{item.label}</span></button><button className={`favorite-toggle ${navigation?.favoriteKeys.includes(item.key)?"selected":""}`} aria-label={`${navigation?.favoriteKeys.includes(item.key)?"Bỏ":"Thêm"} yêu thích ${item.label}`} onClick={()=>toggleFavorite(item)}><AppIcon name="star" size={14}/></button></div>;
-  const renderSection=(section:NavigationSection)=>{const rootItems=section.items.filter(item=>!item.parentKey);if(["home","retail-overview","retail-reports"].includes(section.key)){const home=rootItems.find(item=>item.type==="PAGE");return home?renderPageButton(home):null;}const open=expandedSection===section.key;return <section className={`nav-section ${open?"open":""}`} key={section.key}><button className={`nav-section-trigger ${currentSection?.key===section.key?"active":""}`} aria-expanded={open} onClick={()=>setExpandedSection(open?"":section.key)}><span className="nav-icon"><AppIcon name={section.icon} size={17}/></span><span>{section.label}</span><b><AppIcon name="chevron-down" size={13}/></b></button>{open&&<div className="nav-section-children">{rootItems.map(item=>item.type==="GROUP"?<div className={`nav-group ${expandedGroup===item.key?"open":""}`} key={item.key}><button className="nav-group-trigger" aria-expanded={expandedGroup===item.key} onClick={()=>setExpandedGroup(expandedGroup===item.key?"":item.key)}><span className="nav-icon"><AppIcon name={item.icon} size={17}/></span><span>{item.label}</span><b><AppIcon name="chevron-down" size={13}/></b></button>{expandedGroup===item.key&&<div className="nav-children">{section.items.filter(child=>child.parentKey===item.key&&child.type==="PAGE").map(child=>renderPageButton(child))}</div>}</div>:renderPageButton(item))}{rootItems.length===0&&<span className="nav-section-empty">Chưa có module được cấp quyền</span>}</div>}</section>;};
+  const renderSection=(section:NavigationSection)=>{const rootItems=section.items.filter(item=>!item.parentKey);if((rootItems.length===1&&rootItems[0].type==="PAGE")){const home=rootItems.find(item=>item.type==="PAGE");return home?renderPageButton(home):null;}const open=expandedSection===section.key;return <section className={`nav-section ${open?"open":""}`} key={section.key}><button className={`nav-section-trigger ${currentSection?.key===section.key?"active":""}`} aria-expanded={open} onClick={()=>setExpandedSection(open?"":section.key)}><span className="nav-icon"><AppIcon name={section.icon} size={17}/></span><span>{section.label}</span><b><AppIcon name="chevron-down" size={13}/></b></button>{open&&<div className="nav-section-children">{rootItems.map(item=>item.type==="GROUP"?<div className={`nav-group ${expandedGroup===item.key?"open":""}`} key={item.key}><button className="nav-group-trigger" aria-expanded={expandedGroup===item.key} onClick={()=>setExpandedGroup(expandedGroup===item.key?"":item.key)}><span className="nav-icon"><AppIcon name={item.icon} size={17}/></span><span>{item.label}</span><b><AppIcon name="chevron-down" size={13}/></b></button>{expandedGroup===item.key&&<div className="nav-children">{section.items.filter(child=>child.parentKey===item.key&&child.type==="PAGE").map(child=>renderPageButton(child))}</div>}</div>:renderPageButton(item))}{rootItems.length===0&&<span className="nav-section-empty">Chưa có module được cấp quyền</span>}</div>}</section>;};
 
   if(!authReady)return <div className="auth-loading" aria-label="Đang kiểm tra phiên đăng nhập"><span/></div>;
   if(!authenticated)return <LoginScreen onAuthenticated={signIn}/>;
   if(passwordChangeRequired)return <PasswordChangeScreen onChanged={()=>{setPasswordChangeRequired(false);setNavigation(null);}} onSignOut={()=>void signOut()}/>;
   if(!navigation)return <div className="auth-loading" aria-label="Đang tải Navigation Registry"><span/></div>;
 
-  const mobileTabs=[{section:"retail-overview",label:"Tổng quan",icon:"home",preferred:["retail-overview"]},{section:"retail",label:"Bán hàng",icon:"shopping-bag",preferred:["retail-pos","retail-orders"]},{section:"retail-stock",label:"Kho",icon:"layers",preferred:["retail-stock","retail-warehouses"]},{section:"retail-purchase",label:"Mua hàng",icon:"download",preferred:["retail-purchase"]}].flatMap(t=>{const entries=allPages.filter(e=>e.section.key===t.section);const target=t.preferred.map(v=>entries.find(e=>e.item.viewKey===v)).find(Boolean)||entries[0];return target?[{label:t.label,icon:t.icon,active:currentSection?.key===t.section,onSelect:()=>openItem(target.item)}]:[];});
+  const mobileOrder=["retail-overview","retail","retail-stock","retail-purchase"];
+  const mobileTabs=installedModules.flatMap(m=>m.mobile?[m.mobile]:[]).filter(t=>mobileOrder.includes(t.section)).sort((a,b)=>mobileOrder.indexOf(a.section)-mobileOrder.indexOf(b.section)).slice(0,4).flatMap(t=>{const entries=allPages.filter(e=>e.section.key===t.section);const target=t.preferred.map(v=>entries.find(e=>e.item.viewKey===v)).find(Boolean)||entries[0];return target?[{label:t.section==="retail-purchase"?"Mua":t.label,icon:t.icon,active:currentSection?.key===t.section,onSelect:()=>openItem(target.item)}]:[];});
+  const mobileEntries=allPages.map(({section,item})=>({key:item.key,label:item.label,icon:item.icon,section:section.key,sectionLabel:section.label,keywords:item.keywords,active:view===item.viewKey,onSelect:()=>openItem(item)}));
   return <div className="app-shell">
-    <MobileAppChrome tabs={mobileTabs} moreOpen={sidebarOpen} onMore={()=>setSidebarOpen(v=>!v)}/>
+    <MobileAppChrome tabs={mobileTabs} entries={mobileEntries} moreOpen={sidebarOpen} onMore={()=>{setNotificationsOpen(false);setProfileOpen(false);setSidebarOpen(v=>!v);}}/>
     <aside className={`sidebar ${sidebarOpen?"open":""}`}>
       <div className="brand">{systemLogoUrl?<img className="brand-logo" src={systemLogoUrl} alt="Logo hệ thống" />:<div className="brand-mark"><i/><i/><i/><i/></div>}<div><strong>AICRM</strong><span>Sales Platform</span></div></div>
       <nav aria-label="Điều hướng ứng dụng">
@@ -725,11 +727,8 @@ export default function Home() {
       {notificationsOpen&&<div className="notification-popover"><div><strong>Thông báo</strong><button aria-label="Đóng thông báo" onClick={()=>setNotificationsOpen(false)}><AppIcon name="x" size={16}/></button></div><article><span className="notice teal"><AppIcon name="check-circle" size={15}/></span><p><strong>Navigation Registry đã đồng bộ</strong><small>Menu được lọc theo module, quyền và nhiệm vụ hiện tại.</small></p><time>Live</time></article></div>}
 
       {profileOpen&&<div className="profile-popover"><div className="profile-summary"><span>{initials}</span><p><strong>{user?.displayName||"Người dùng"}</strong><small>{user?.email}</small></p></div><div className="profile-role"><span>{user?.role==="PLATFORM_ADMIN"?"SYSTEM ADMINISTRATOR":"APPLICATION USER"}</span><em>Dedicated deployment</em></div>{settingsItem&&<button onClick={()=>{openItem(settingsItem);setProfileOpen(false);}}><span><AppIcon name="settings" size={15}/></span> Hồ sơ & bảo mật</button>}<button onClick={()=>setLogoutOpen(true)} className="logout-action"><span><AppIcon name="logout" size={15}/></span> Đăng xuất</button></div>}
-    </header><main>{operationError&&<p className="auth-error" role="alert">{operationError}</p>}{view==="home"&&businessSection&&(data?<Overview onNavigate={navigate} data={data} displayName={user?.displayName}/>:<BusinessHome section={businessSection} onOpen={openItem}/>)}{view.startsWith("retail-")&&<RetailWorkspace key={view} view={view} request={apiRequest} apiUrl={API_URL} onNavigate={navigate}/>} {data&&view==="modules"&&<Modules items={data.modules} onStatus={changeModuleStatus}/>} {data&&view==="resources"&&<Resources items={data.resources} onChanged={refresh}/>} {view==="users"&&<Users/>} {view==="organizations"&&<Organizations/>} {view==="access"&&<Access/>} {data&&view==="activity"&&<Activity items={data.activities}/>} {data&&view==="files"&&<Files items={data.files} storageGb={data.summary.storageGb} onUpload={uploadFile} onDownload={downloadFile}/>} {data&&view==="settings"&&<Settings values={data.settings} onSave={items=>mutate("/api/v1/control-plane/settings","PUT",items)} onLogoChange={updateSystemLogo}/>} {currentSection?.key==="system-administration"&&!data&&<div className="auth-loading" aria-label="Đang tải dữ liệu quản trị"><span/></div>}</main></div>
-{/* =======
-      {profileOpen&&<div className="profile-popover"><div className="profile-summary"><span>{initials}</span><p><strong>{user?.displayName||"Người dùng"}</strong><small>{user?.email}</small></p></div><div className="profile-role"><span>{user?.role==="PLATFORM_ADMIN"?"SYSTEM ADMINISTRATOR":"APPLICATION USER"}</span><em>Dedicated deployment</em></div><button onClick={openProfile}><span><AppIcon name="settings" size={15}/></span> Hồ sơ & bảo mật</button><button onClick={()=>setLogoutOpen(true)} className="logout-action"><span><AppIcon name="logout" size={15}/></span> Đăng xuất</button></div>}
-    </header><main>{operationError&&<p className="auth-error" role="alert">{operationError}</p>}{view==="profile"&&user&&<AccountProfile user={user}/>} {view==="home"&&businessSection&&(data?<Overview onNavigate={navigate} data={data} displayName={user?.displayName}/>:<BusinessHome section={businessSection} onOpen={openItem}/>)}{view.startsWith("retail-")&&<RetailWorkspace key={view} view={view} request={apiRequest} apiUrl={API_URL} onNavigate={navigate}/>} {data&&view==="modules"&&<Modules items={data.modules} onStatus={changeModuleStatus}/>} {data&&view==="resources"&&<Resources items={data.resources} onChanged={refresh}/>} {view==="users"&&<Users/>} {view==="organizations"&&<Organizations/>} {view==="access"&&<Access/>} {data&&view==="activity"&&<Activity items={data.activities}/>} {data&&view==="files"&&<Files items={data.files} storageGb={data.summary.storageGb} onUpload={uploadFile} onDownload={downloadFile}/>} {data&&view==="settings"&&<Settings values={data.settings} onSave={items=>mutate("/api/v1/control-plane/settings","PUT",items)}/>} {currentSection?.key==="system-administration"&&!data&&<div className="auth-loading" aria-label="Đang tải dữ liệu quản trị"><span/></div>}</main></div>
->>>>>>> 7b4b62c17d5bf4b761d6918d85f482d419df0f16 */}
+    </header><main>{operationError&&<p className="auth-error" role="alert">{operationError}</p>}{view==="home"&&businessSection&&(data?<Overview onNavigate={navigate} data={data} displayName={user?.displayName} availableViews={allPages.map(e=>e.item.viewKey)}/>:<BusinessHome section={businessSection} onOpen={openItem}/>)}{installedModules.filter(m=>m.views.includes(view)).map(m=><m.Workspace key={m.key+view} view={view} request={apiRequest} apiUrl={API_URL} onNavigate={navigate}/>)} {data&&view==="modules"&&<Modules items={data.modules} onStatus={changeModuleStatus}/>} {data&&view==="resources"&&<Resources items={data.resources} onChanged={refresh}/>} {view==="users"&&<Users/>} {view==="organizations"&&<Organizations/>} {view==="access"&&<Access/>} {data&&view==="activity"&&<Activity items={data.activities}/>} {data&&view==="files"&&<Files items={data.files} storageGb={data.summary.storageGb} onUpload={uploadFile} onDownload={downloadFile}/>} {data&&view==="settings"&&<Settings values={data.settings} onSave={items=>mutate("/api/v1/control-plane/settings","PUT",items)} onLogoChange={updateSystemLogo}/>} {currentSection?.key==="system-administration"&&!data&&<div className="auth-loading" aria-label="Đang tải dữ liệu quản trị"><span/></div>}</main></div>
+
     {commandOpen&&<div className="modal-backdrop" role="presentation" onMouseDown={()=>setCommandOpen(false)}><section className="command-modal" role="dialog" aria-modal="true" aria-label="Tìm chức năng" onMouseDown={event=>event.stopPropagation()}><div className="command-input"><span><AppIcon name="search" size={17}/></span><input autoFocus value={commandQuery} onChange={event=>setCommandQuery(event.target.value)} placeholder="Tìm module hoặc chức năng..."/><kbd>ESC</kbd></div><p>{commandQuery?"Kết quả":"Gần đây và chức năng được cấp quyền"}</p>{commandEntries.slice(0,12).map(entry=><button key={entry.item.key} onClick={()=>openItem(entry.item)}><span><AppIcon name={entry.item.icon}/></span><div><strong>{entry.item.label}</strong><small>{entry.section.label} · {entry.item.ownerModule}</small></div><kbd>→</kbd></button>)}{commandEntries.length===0&&<div className="command-empty">Không tìm thấy chức năng phù hợp với quyền hiện tại.</div>}</section></div>}
     {logoutOpen&&<div className="modal-backdrop logout-backdrop" role="presentation" onMouseDown={()=>setLogoutOpen(false)}><section className="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logout-title" onMouseDown={event=>event.stopPropagation()}><span className="logout-icon"><AppIcon name="logout"/></span><h2 id="logout-title">Đăng xuất khỏi Core Platform?</h2><p>Phiên làm việc hiện tại sẽ kết thúc. Bạn cần xác thực lại để tiếp tục truy cập.</p><div><button className="secondary-button" onClick={()=>setLogoutOpen(false)}>Ở lại</button><button className="danger-button" onClick={signOut}>Đăng xuất</button></div></section></div>}
   </div>;

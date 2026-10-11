@@ -27,6 +27,8 @@ public class ApiExceptionHandler {
     p.setProperty("correlationId", CorrelationIdFilter.current());
     return ResponseEntity.badRequest().body(p);
   }
+  @ExceptionHandler({org.springframework.web.servlet.resource.NoResourceFoundException.class, org.springframework.web.servlet.NoHandlerFoundException.class})
+  ResponseEntity<ProblemDetail> missingRoute(Exception error,HttpServletRequest request){return handle(new ApiProblem(HttpStatus.NOT_FOUND,"NOT_FOUND","API hoặc tài nguyên chưa được cài đặt"),request);}
   @ExceptionHandler(Exception.class)
   ResponseEntity<ProblemDetail> unexpected(Exception error, HttpServletRequest request) {
     log.error("Unhandled error correlationId={} uri={} type={}", CorrelationIdFilter.current(), request.getRequestURI(), error.getClass().getName(), error);

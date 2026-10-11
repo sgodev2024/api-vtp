@@ -52,13 +52,14 @@ export default function LegacyRetailWorkspace({view,request,apiUrl,onNavigate}:{
       tasks.push(catalogTask);
       const dashboard=["overview","reports"].includes(screen);
       const accounting=["finance","cashflow","debt"].includes(screen);
-      if(dashboard||accounting)tasks.push(request<Row>("/api/v1/retail/summary").then(setSummary));
+
       if(["orders","purchase","transfer","approvals","returns","stock"].includes(screen))tasks.push(request<Page>("/api/v1/retail/documents?type="+(screen==="stock"?"COUNT":filterType)+"&status="+(screen==="approvals"?"PENDING":"")+"&q="+encodeURIComponent(query)+"&page="+page).then(setDocs));
 
 
       if(screen==="returns")tasks.push(request<Row[]>("/api/v1/retail/warranties").then(setWarranties));
       tasks.push(catalogTask.then(async cat=>{
         const extra:Promise<unknown>[]=[];
+        if(screen==="overview"&&cat.capabilities?.["$modules"]?.includes("aicrm-overview"))extra.push(request<Row>("/api/v1/retail/summary").then(setSummary));
         if((dashboard||screen==="stock")&&(!cat.capabilities?.["$modules"]||cat.capabilities["$modules"].includes("aicrm-stock")))extra.push(request<Row[]>("/api/v1/retail/stock").then(setStock));else setStock([]);
         if((accounting||screen==="orders")&&cat.capabilities?.delivery?.includes("VIEW"))extra.push(request<Row[]>("/api/v1/retail/deliveries").then(setDeliveries));else setDeliveries([]);
         if((dashboard||["finance","cashflow","debt"].includes(screen))&&cat.permissions.includes("FINANCE"))extra.push(request<{openItems:Row[];payments:Row[]}>("/api/v1/retail/finance").then(setFinance));

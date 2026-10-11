@@ -11,9 +11,9 @@ import static vn.aicrm.shared.RetailAccess.*;
 
 @Service
 public class RetailDocuments {
-  private final RetailAccess r;private final RetailCatalog catalog;private final InventoryPort inventory;private final RetailFinance finance;
+  private final RetailAccess r;private final CatalogPort catalog;private final InventoryPort inventory;private final FinancePort finance;
   private static final Set<String> TYPES=Set.of("QUOTE","SALE_ORDER","POS","ISSUE","PURCHASE_REQUEST","PURCHASE_ORDER","PURCHASE_RECEIPT","PURCHASE_RETURN","SALE_RETURN","TRANSFER","COUNT","OTHER_RECEIPT","OTHER_ISSUE","REFUND","OPENING_STOCK","OPENING_AR","OPENING_AP");
-  public RetailDocuments(RetailAccess r,RetailCatalog catalog,InventoryPort inventory,RetailFinance finance){this.r=r;this.catalog=catalog;this.inventory=inventory;this.finance=finance;}
+  public RetailDocuments(RetailAccess r,CatalogPort catalog,InventoryPort inventory,FinancePort finance){this.r=r;this.catalog=catalog;this.inventory=inventory;this.finance=finance;}
   private String action(String type){return type.startsWith("PURCHASE")?"PURCHASE":Set.of("TRANSFER","COUNT","OTHER_RECEIPT","OTHER_ISSUE","OPENING_STOCK").contains(type)?"STOCK":Set.of("REFUND","OPENING_AR","OPENING_AP").contains(type)?"FINANCE":"SELL";}
   private boolean sale(String type){return Set.of("QUOTE","SALE_ORDER","POS","ISSUE").contains(type);}
   private boolean requiredApproval(String type){return Set.of("PURCHASE_REQUEST","PURCHASE_ORDER","PURCHASE_RECEIPT","PURCHASE_RETURN","SALE_RETURN","TRANSFER","COUNT","OTHER_RECEIPT","OTHER_ISSUE","REFUND","OPENING_STOCK","OPENING_AR","OPENING_AP").contains(type);}
@@ -26,7 +26,7 @@ public class RetailDocuments {
   public Object create(Authentication a,JsonNode x){
     String type=required(x,"type",30);if(!TYPES.contains(type))throw problem("INVALID_DOCUMENT_TYPE","Loại chứng từ không hợp lệ");r.gate(a,RetailPermissions.feature(type),"CREATE");
     var t=r.tenant(a);UUID wh=uuid(x,"warehouseId");var w=r.warehouse(a,wh);if(!Boolean.TRUE.equals(w.get("active")))throw problem("INACTIVE_WAREHOUSE","Kho đã ngừng sử dụng");if(Set.of("POS","SALE_ORDER","QUOTE","ISSUE").contains(type)&&"QUARANTINE".equals(w.get("kind")))throw problem("QUARANTINE_WAREHOUSE","Kho cách ly / hàng lỗi không được dùng để bán hàng");UUID branch=(UUID)w.get("branch_id"),partner=optional(x,"partnerId"),source=optional(x,"sourceId"),dest=optional(x,"destinationId");
-    if(partner!=null){var p=r.one("partner",t,partner);boolean recovery=source!=null&&Set.of("ISSUE","PURCHASE_RECEIPT","SALE_RETURN","PURCHASE_RETURN","REFUND").contains(type);if(!recovery){if(!Boolean.TRUE.equals(p.get("active")))throw problem("INACTIVE_PARTNER","Đối tác đã ngừng sử dụng");String role=type.startsWith("PURCHASE")||type.equals("OPENING_AP")?"SUPPLIER":sale(type)||type.equals("OPENING_AR")?"CUSTOMER":null;if(role!=null&&!RetailPartners.hasRole(r,p,role))throw problem("PARTNER_ROLE_REQUIRED","Chọn đối tác có vai trò đang hoạt động phù hợp giao dịch");}}
+    if(partner!=null){var p=r.one("partner",t,partner);boolean recovery=source!=null&&Set.of("ISSUE","PURCHASE_RECEIPT","SALE_RETURN","PURCHASE_RETURN","REFUND").contains(type);if(!recovery){if(!Boolean.TRUE.equals(p.get("active")))throw problem("INACTIVE_PARTNER","Đối tác đã ngừng sử dụng");String role=type.startsWith("PURCHASE")||type.equals("OPENING_AP")?"SUPPLIER":sale(type)||type.equals("OPENING_AR")?"CUSTOMER":null;if(role!=null&&!PartnersPort.hasRole(r,p,role))throw problem("PARTNER_ROLE_REQUIRED","Chọn đối tác có vai trò đang hoạt động phù hợp giao dịch");}}
     if((type.startsWith("PURCHASE")&&!type.equals("PURCHASE_REQUEST"))||Set.of("SALE_ORDER","OPENING_AR","OPENING_AP").contains(type))if(partner==null)throw problem("PARTNER_REQUIRED","Cần chọn khách hàng/nhà cung cấp");
     if(type.equals("TRANSFER")){if(dest==null||dest.equals(wh))throw problem("TRANSFER_DESTINATION","Kho đích phải khác kho nguồn");var dw=r.one("warehouse",t,dest);if(!Boolean.TRUE.equals(dw.get("active")))throw problem("INACTIVE_WAREHOUSE","Kho đích đã ngừng sử dụng");}
     Map<String,Object> sourceDoc=null;

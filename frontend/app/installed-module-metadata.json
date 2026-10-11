@@ -1,0 +1,102 @@
+[
+  {
+    "key": "aicrm-retail",
+    "frontend": {
+      "entry": "./retail/permissions"
+    }
+  },
+  {
+    "key": "aicrm-products",
+    "frontend": {
+      "entry": "./retail/products"
+    }
+  },
+  {
+    "key": "aicrm-partners",
+    "frontend": {
+      "entry": "./retail/partners"
+    }
+  },
+  {
+    "key": "aicrm-operations",
+    "frontend": {
+      "entry": "./retail/operations"
+    }
+  },
+  {
+    "key": "aicrm-accounting",
+    "frontend": {
+      "entry": "./retail/accounting"
+    }
+  },
+  {
+    "key": "aicrm-stock",
+    "frontend": {
+      "entry": "./retail/inventory",
+      "mobile": {
+        "section": "retail-stock",
+        "label": "Kho",
+        "icon": "layers",
+        "preferred": [
+          "retail-stock",
+          "retail-warehouses"
+        ]
+      }
+    }
+  },
+  {
+    "key": "aicrm-sales",
+    "frontend": {
+      "entry": "./retail/sales",
+      "mobile": {
+        "section": "retail",
+        "label": "Bán hàng",
+        "icon": "shopping-bag",
+        "preferred": [
+          "retail-pos",
+          "retail-orders"
+        ]
+      }
+    }
+  },
+  {
+    "key": "aicrm-purchase",
+    "frontend": {
+      "entry": "./retail/purchase",
+      "mobile": {
+        "section": "retail-purchase",
+        "label": "Mua hàng",
+        "icon": "download",
+        "preferred": [
+          "retail-purchase"
+        ]
+      }
+    }
+  },
+  {
+    "key": "aicrm-crm",
+    "frontend": {
+      "entry": "./retail/crm"
+    }
+  },
+  {
+    "key": "aicrm-overview",
+    "frontend": {
+      "entry": "./retail/overview",
+      "mobile": {
+        "section": "retail-overview",
+        "label": "Tổng quan",
+        "icon": "home",
+        "preferred": [
+          "retail-overview"
+        ]
+      }
+    }
+  },
+  {
+    "key": "aicrm-reports",
+    "frontend": {
+      "entry": "./retail/reports"
+    }
+  }
+]

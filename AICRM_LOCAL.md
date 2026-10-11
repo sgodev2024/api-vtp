@@ -1,60 +1,39 @@
-# AICRM — ứng dụng local trên Java Core
+# Khởi động và dữ liệu local AICRM
 
-Dự án độc lập tại `aicrm-java`, nền Core ghi trong `CORE_BASELINE`. Repository đồng bộ: https://github.com/sgodev2024/aicrm-java. Chỉ vận hành local, chưa triển khai server. BA/SRS nằm trong `docs/`.
+Tham chiếu [BA](docs/BA_HIEN_HANH.md), [SRS](docs/SRS_HIEN_HANH.md), [Runbook](docs/RUNBOOK_SU_DUNG.md). Tài liệu này cho dev/quản trị kỹ thuật.
 
 ## Khởi động
 
-Yêu cầu Docker Desktop đang chạy. Khi clone mới, sao chép `.env.example` thành `.env` và đặt ba mật khẩu riêng trước khi chạy. `.env` không được đưa lên Git. Máy local hiện tại đã được giữ cấu hình trong `.env`. Tại thư mục dự án:
+Docker Desktop phải chạy. Clone mới tạo .env từ .env.example và đặt secrets riêng. Không chia sẻ cấu hình production hoặc commit .env.
 
 ```powershell
 docker compose up -d --build
 docker compose ps
+docker compose logs --tail 100 backend frontend
 ```
 
-| Thành phần | Địa chỉ |
-|---|---|
-| Ứng dụng | http://localhost:3205/business/retail/overview |
-| Đăng nhập | http://localhost:3205/ |
-| Backend readiness | http://localhost:8185/actuator/health/readiness |
-| PostgreSQL | localhost:55437 |
+Web http://localhost:3205/; readiness http://localhost:8185/actuator/health/readiness; PostgreSQL localhost:55437. Admin local admin@core.local, mật khẩu từ AICRM_BOOTSTRAP_PASSWORD trong .env. Local tối thiểu8 ký tự, không ép độ phức tạp/MFA/đổi lần đầu; hash/throttle giữ nguyên. Chính sách production cần kiểm tra riêng.
 
-Chỉ bind loopback. Tài khoản local: `admin@core.local`; mật khẩu lấy từ `AICRM_BOOTSTRAP_PASSWORD` trong `.env`. Theo yêu cầu dự án: MFA mặc định tắt, không buộc đổi mật khẩu lần đầu/sau reset, tối thiểu 8 ký tự, không bắt buộc chữ hoa/số/ký tự đặc biệt. Hash và giới hạn thử sai vẫn sử dụng Core.
+## Đồng bộ code và database
 
-`/prototype` chuyển đến ứng dụng có đăng nhập. Màn hình nghiệp vụ dùng API và lưu PostgreSQL; tải lại trang giữ giao dịch. Dữ liệu có tên “QA / kiểm thử” là dữ liệu kiểm thử local.
+Không cần cài lại DB khi lấy code mới. Giữ .env và volume, backup trước, build/start để Flyway chạy migration mới. Không sửa V1–V33 đã chạy, không xóa volume và không restore dump khởi tạo chồng DB có giao dịch.
 
-## Bắt đầu vận hành
-
-1. Đăng nhập, mở **Thiết lập ban đầu**. Tạo chi nhánh, kho, hàng hóa/SKU và khách/NCC. Khai báo đơn vị phụ, serial/lô và chính sách đổi trả/bảo hành theo SKU.
-2. Trong quản trị Core, tạo người dùng và gán quyền nghiệp vụ. Trong Thiết lập, gán kho phụ trách. Quyền thuộc resource `aicrm-retail`; người không có `ALL_BRANCHES` phải được gán kho. Quản trị mặc định có quyền toàn công ty.
-3. Tạo người duyệt khác người lập: nhập mua, trả hàng, chuyển kho, kiểm kê, tồn/công nợ đầu kỳ, hoàn tiền và bán ngoại lệ cần người khác xác nhận.
-4. Nhập mua trực tiếp hoặc lập đơn mua. Chờ duyệt chưa tăng tồn/nợ. Đã ghi sổ tạo tồn, giá vốn bình quân và phải trả NCC.
-5. Bán tại quầy: chọn kho, tìm/quét hàng, chọn khách nếu ghi nợ, lượng/đơn vị và tiền trả. Đơn online nhập tay tại Đơn bán hàng; xuất từng phần khi có tồn. Không xuất âm.
-6. Trả hàng từ phiếu gốc, kiểm đúng serial/lô và thời hạn. Nhận khác kho được; hàng chờ kiểm cách ly. Hoàn tiền dùng chứng từ riêng cần duyệt. Đổi hàng lập bán mới liên kết phiếu trả.
-7. Chuyển kho: đề nghị → duyệt → xuất nguồn → đang chuyển → nhận đích từng phần. Kiểm kê: mở kỳ → ghi số đếm → hoàn tất → người khác duyệt. Hàng trong kỳ bị khóa xuất nhập.
-8. Thu chi/công nợ: nhập khoản tiền, phân bổ vào khoản phải thu/phải trả. Cọc liên kết đơn chỉ phân bổ khi xuất/nhập. COD và vận chuyển nhập tay.
-
-## Kiểm chứng
+Backup DB core_platform với service postgres/user core_admin:
 
 ```powershell
-$env:AICRM_ADMIN_PASSWORD='<mật khẩu local trong .env>'
-node scripts/retail-smoke.mjs
+New-Item -ItemType Directory -Force -Path backups/database | Out-Null
+docker compose exec -T postgres pg_dump -U core_admin -d core_platform -Fc -f /tmp/aicrm-before-upgrade.dump
+docker compose cp postgres:/tmp/aicrm-before-upgrade.dump backups/database/aicrm-before-upgrade.dump
 ```
 
-Script tạo dữ liệu QA riêng bằng mã ngẫu nhiên, chạy giao dịch thật và vô hiệu hóa tài khoản QA sau khi xong; dữ liệu chứng từ được giữ để đối chiếu. Không chạy script trên dữ liệu khách hàng thật.
+Dùng tên riêng mỗi lần, kiểm tra exit code/file khác0byte và thử restore DB cách ly. Dump chứa dữ liệu nhạy cảm, không Git. Storage tệp/cấu hình cần backup riêng. Restore DB thật cần kế hoạch và backup hiện trạng, không phải bước đồng bộ thường ngày.
 
-Kết quả và giới hạn nghiệm thu: `docs/LOCAL_VERIFICATION.md`, `docs/IMPLEMENTATION_STATUS.md`. Kết quả máy đọc: `docs/retail-smoke-result.json`.
+## Thiết lập và module
 
-## Lưu dữ liệu và khôi phục
+Đăng nhập→Doanh nghiệp & Địa điểm→Kho chính→Danh mục→Đầu kỳ→Hoàn tất. Mặc định đã tạo. Import đầu kỳ là nháp cần gửi/duyệt; admin đủ điều kiện tự duyệt, staff theo kho cấp. Kiểm kê chỉ khóa SKU trong kho đang đếm.
 
-Dừng giữ volume: `docker compose down`. Không dùng `down -v` khi cần giữ dữ liệu.
+[Hướng dẫn module đợt3](docs/BUSINESS_MODULES_PHASE3.md): pack/export-core/dry-run/import/start. Core API1.1.0/contract2; source import không mang data/secrets; lỗi startup/migration không tự rollback DB. Module tắt vẫn giữ dữ liệu/migration.
 
-```powershell
-docker compose exec -T postgres pg_dump -U core_admin -d core_platform --no-owner --file=/tmp/aicrm.sql
-docker compose cp postgres:/tmp/aicrm.sql ./backups/aicrm.sql
-```
+Failed to fetch: xem compose ps/logs/readiness, proxy/baseURL/session và bản chạy. Timeout kiểm phiếu trước khi tạo lại; retry cùng Idempotency-Key/payload. Không xóa volume chữa kết nối.
 
-Tạo thư mục `backups` trước. Bản kiểm thử đã lưu tại `docs/local-backup/aicrm-local-verification.sql`, được bỏ qua bởi Git. Khi khôi phục, tạo database trống có tên mới, bảo đảm role `core_app` tồn tại, chép dump vào container rồi chạy `psql -v ON_ERROR_STOP=1 -U core_admin -d <database_mới> -f <dump>`. Chuyển DB_URL sau khi đối chiếu và tắt ứng dụng ghi dữ liệu trong thời điểm cutover. Sao lưu riêng volume file Core, cấu hình và khóa ứng dụng; dump database không thay thế các bản sao này.
-
-## Kiến trúc tách khách hàng
-
-Nghiệp vụ nằm trong `vn.aicrm.retail`, schema `retail`; Core cấp đăng nhập, quyền, navigation, audit, outbox và tenant context. 23 bảng retail có forced RLS theo tenant; API áp dụng thêm phạm vi kho/chi nhánh. Đây là nền để nâng cấp SaaS, chưa phải gói vận hành SaaS hoàn chỉnh. Chạy riêng có thể dùng cùng source với database/config riêng. Tách dữ liệu một khách từ database SaaS chung, provisioning, subscription và vận hành SaaS còn cần triển khai và nghiệm thu riêng.
+Snapshot tài liệu09/10: main ae59355 cộng local chưa commit, chưa xác minh server cùng bản. Evidence lịch sử trong docs/audit và BUSINESS_MODULES_PHASE3_PROGRESS.md không thay regression release mới.

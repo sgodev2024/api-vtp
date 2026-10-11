@@ -2,8 +2,8 @@ package vn.aicrm.sales;
 import java.util.*;import com.fasterxml.jackson.databind.JsonNode;import org.springframework.web.bind.annotation.*;import org.springframework.security.core.Authentication;import vn.aicrm.shared.*;import static vn.aicrm.shared.RetailAccess.*;
 @RestController @RequestMapping("/api/v1/retail")
 public class SalesController {
- private final RetailAccess r;private final RetailCatalog catalog;private final InventoryPort inventory;private final RetailOperations operations;private final RetailCommands commands;
- public SalesController(RetailAccess r,RetailCatalog catalog,InventoryPort inventory,RetailOperations operations,RetailCommands commands){this.r=r;this.catalog=catalog;this.inventory=inventory;this.operations=operations;this.commands=commands;}
+ private final RetailAccess r;private final CatalogPort catalog;private final InventoryPort inventory;private final SalesOperationsPort operations;private final RetailCommands commands;
+ public SalesController(RetailAccess r,CatalogPort catalog,InventoryPort inventory,SalesOperationsPort operations,RetailCommands commands){this.r=r;this.catalog=catalog;this.inventory=inventory;this.operations=operations;this.commands=commands;}
   @PostMapping("/price") Object price(Authentication a,@RequestBody JsonNode x){r.modules.require(BusinessModules.SALES);r.require(a,"SELL");var w=r.warehouse(a,uuid(x,"warehouseId"));return catalog.price(a,uuid(x,"skuId"),optional(x,"partnerId"),(UUID)w.get("branch_id"),text(x,"channel","COUNTER"),positive(x,"qty"));}
   @GetMapping("/deliveries") Object deliveries(Authentication a){return operations.deliveries(a);}
   @PostMapping("/deliveries") Object createDelivery(Authentication a,@RequestBody JsonNode x,@RequestHeader("Idempotency-Key") String key){return commands.execute(a,key,"DELIVERY_CREATE",x,()->operations.createDelivery(a,x));}

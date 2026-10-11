@@ -1,0 +1,101 @@
+{
+  "chapters": 21,
+  "scenes": 63,
+  "durationSeconds": 799.68,
+  "subtitleCues": 167,
+  "voice": "vi-VN-HoaiMyNeural",
+  "resolution": "1920x1080",
+  "fps": 15,
+  "businessWrites": 0,
+  "source": "docs/RUNBOOK_SU_DUNG.md",
+  "timeline": [
+    [
+      0.0,
+      "Bắt đầu sử dụng"
+    ],
+    [
+      32.51,
+      "01 · Đăng nhập"
+    ],
+    [
+      62.72,
+      "02 · Thiết lập lần đầu"
+    ],
+    [
+      96.08,
+      "03 · Người dùng và phân quyền"
+    ],
+    [
+      133.54,
+      "04 · Địa điểm và kho"
+    ],
+    [
+      170.98,
+      "05 · Sản phẩm và đơn vị"
+    ],
+    [
+      208.58,
+      "06 · Khách hàng và nhà cung cấp"
+    ],
+    [
+      244.67,
+      "07 · Nhập mua trực tiếp"
+    ],
+    [
+      284.55,
+      "08 · Đơn mua và trả mua"
+    ],
+    [
+      320.18,
+      "09 · Bán tại quầy"
+    ],
+    [
+      362.18,
+      "10 · Đơn bán và đặt cọc"
+    ],
+    [
+      403.64,
+      "11 · Giao hàng và COD"
+    ],
+    [
+      442.51,
+      "12 · Tồn kho, chuyển kho, kiểm kê"
+    ],
+    [
+      483.73,
+      "13 · Đổi trả và bảo hành"
+    ],
+    [
+      525.0,
+      "14 · Thu chi, công nợ, hoa hồng"
+    ],
+    [
+      565.14,
+      "15 · Chăm sóc khách hàng"
+    ],
+    [
+      599.02,
+      "16 · Nhập file và báo cáo"
+    ],
+    [
+      642.96,
+      "17 · Kiểm tra đầu và cuối ngày"
+    ],
+    [
+      678.78,
+      "18 · Xử lý lỗi thường gặp"
+    ],
+    [
+      721.41,
+      "19 · Quản lý gói module"
+    ],
+    [
+      759.5,
+      "20 · Quản trị core và kết thúc"
+    ]
+  ],
+  "videoCodec": "h264",
+  "audioCodec": "aac",
+  "subtitleCodec": "mov_text",
+  "audioCheck": "All 63 audio files decode and subtitle timestamps fit; no silent files"
+}

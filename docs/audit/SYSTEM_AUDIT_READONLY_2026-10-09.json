@@ -1,0 +1,917 @@
+{
+  "checkedAt": "2026-10-09T06:52:44.416Z",
+  "mode": "Read-only business audit; login creates an authentication session",
+  "businessWrites": 0,
+  "api": [
+    {
+      "path": "/api/v1/control-plane/bootstrap",
+      "status": 200,
+      "durationMs": 40,
+      "shape": [
+        "summary",
+        "modules",
+        "resources",
+        "activities",
+        "roles",
+        "files",
+        "audit",
+        "settings"
+      ]
+    },
+    {
+      "path": "/api/v1/control-plane/jobs",
+      "status": 200,
+      "durationMs": 19,
+      "shape": "array(0)"
+    },
+    {
+      "path": "/api/v1/control-plane/outbox",
+      "status": 200,
+      "durationMs": 31,
+      "shape": "array(100)"
+    },
+    {
+      "path": "/api/v1/control-plane/audit",
+      "status": 200,
+      "durationMs": 31,
+      "shape": "array(50)"
+    },
+    {
+      "path": "/actuator/health/readiness",
+      "status": 200,
+      "durationMs": 19,
+      "shape": [
+        "status"
+      ]
+    },
+    {
+      "path": "/api/v1/navigation/me",
+      "status": 200,
+      "durationMs": 25,
+      "shape": [
+        "revision",
+        "sections",
+        "favoriteKeys",
+        "recentKeys"
+      ]
+    },
+    {
+      "path": "/api/v1/retail/catalog",
+      "status": 200,
+      "durationMs": 33,
+      "shape": [
+        "priceRules",
+        "partners",
+        "permissions",
+        "branches",
+        "accountId",
+        "discountLimit",
+        "skus",
+        "promotions",
+        "warehouses",
+        "canSelfApprove",
+        "capabilities"
+      ]
+    },
+    {
+      "path": "/api/v1/retail/stock",
+      "status": 200,
+      "durationMs": 20,
+      "shape": "array(1)"
+    },
+    {
+      "path": "/api/v1/retail/movements",
+      "status": 200,
+      "durationMs": 38,
+      "shape": "array(1)"
+    },
+    {
+      "path": "/api/v1/retail/finance",
+      "status": 200,
+      "durationMs": 31,
+      "shape": [
+        "openItems",
+        "payments"
+      ]
+    },
+    {
+      "path": "/api/v1/retail/summary",
+      "status": 200,
+      "durationMs": 36,
+      "shape": [
+        "reminders",
+        "sales",
+        "payables",
+        "receivables",
+        "pending",
+        "openOrders"
+      ]
+    },
+    {
+      "path": "/api/v1/retail/reports?from=2026-01-01&to=2026-10-09",
+      "status": 200,
+      "durationMs": 30,
+      "shape": [
+        "sales",
+        "inventory"
+      ]
+    },
+    {
+      "path": "/api/v1/retail/documents",
+      "status": 200,
+      "durationMs": 24,
+      "shape": [
+        "page",
+        "items",
+        "total"
+      ]
+    },
+    {
+      "path": "/api/v1/retail/partners",
+      "status": 200,
+      "durationMs": 35,
+      "shape": [
+        "page",
+        "items",
+        "total"
+      ]
+    },
+    {
+      "path": "/api/v1/retail/deliveries",
+      "status": 200,
+      "durationMs": 25,
+      "shape": "array(0)"
+    },
+    {
+      "path": "/api/v1/retail/warranties",
+      "status": 200,
+      "durationMs": 30,
+      "shape": "array(0)"
+    },
+    {
+      "path": "/api/v1/retail/commissions",
+      "status": 200,
+      "durationMs": 35,
+      "shape": [
+        "balances",
+        "entries"
+      ]
+    },
+    {
+      "path": "/api/v1/retail/imports",
+      "status": 200,
+      "durationMs": 31,
+      "shape": "array(0)"
+    },
+    {
+      "path": "/api/v1/retail/onboarding",
+      "status": 200,
+      "durationMs": 38,
+      "shape": [
+        "company",
+        "branches",
+        "warehouses"
+      ]
+    },
+    {
+      "path": "/api/v1/retail/locations/branches",
+      "status": 200,
+      "durationMs": 23,
+      "shape": "array(1)"
+    },
+    {
+      "path": "/api/v1/retail/locations/warehouses",
+      "status": 200,
+      "durationMs": 35,
+      "shape": "array(1)"
+    },
+    {
+      "path": "/api/v1/retail/uom-conversions",
+      "status": 200,
+      "durationMs": 29,
+      "shape": [
+        "units",
+        "conversions"
+      ]
+    },
+    {
+      "path": "/api/v1/retail/warehouse-config",
+      "status": 200,
+      "durationMs": 19,
+      "shape": "array(7)"
+    },
+    {
+      "path": "/api/v1/retail/scopes",
+      "status": 200,
+      "durationMs": 27,
+      "shape": "array(1)"
+    },
+    {
+      "path": "/api/v1/retail/permissions/capabilities",
+      "status": 200,
+      "durationMs": 22,
+      "shape": [
+        "locations",
+        "warehouses",
+        "pos",
+        "orders",
+        "issue",
+        "delivery",
+        "purchase-order",
+        "purchase-receipt",
+        "purchase-return",
+        "stock",
+        "count",
+        "transfer",
+        "warehouse-config",
+        "products",
+        "product-groups",
+        "product-brands",
+        "product-units",
+        "uom-conversions",
+        "product-attributes",
+        "customer",
+        "supplier",
+        "partners",
+        "crm",
+        "receipt",
+        "payment",
+        "receivables",
+        "payables",
+        "opening-stock",
+        "opening-ar",
+        "opening-ap",
+        "commission",
+        "returns",
+        "warranty",
+        "refund",
+        "setup",
+        "scope",
+        "sensitive",
+        "overview-sales",
+        "overview-purchase",
+        "overview-stock",
+        "overview-products",
+        "overview-crm",
+        "overview-finance",
+        "report-sales",
+        "report-purchase",
+        "report-stock",
+        "report-products",
+        "report-crm",
+        "report-finance",
+        "$modules"
+      ]
+    }
+  ],
+  "ui": [
+    {
+      "screen": "overview",
+      "width": 1440,
+      "durationMs": 1671,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Tổng quan kinh doanh"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "pos",
+      "width": 1440,
+      "durationMs": 1629,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Bán tại quầy"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "orders",
+      "width": 1440,
+      "durationMs": 1638,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Đơn bán hàng"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "sales-customers",
+      "width": 1440,
+      "durationMs": 1603,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Khách hàng"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "purchase",
+      "width": 1440,
+      "durationMs": 1615,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Mua hàng"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "suppliers",
+      "width": 1440,
+      "durationMs": 1590,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Nhà cung cấp"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "stock",
+      "width": 1440,
+      "durationMs": 1606,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Kho & tồn"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "warehouses",
+      "width": 1440,
+      "durationMs": 1596,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Danh sách kho"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "transfer",
+      "width": 1440,
+      "durationMs": 1621,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Chuyển kho"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "products",
+      "width": 1440,
+      "durationMs": 1603,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Danh sách sản phẩm"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "product-groups",
+      "width": 1440,
+      "durationMs": 1589,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Nhóm sản phẩm"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "product-brands",
+      "width": 1440,
+      "durationMs": 1596,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Thương hiệu"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "product-units",
+      "width": 1440,
+      "durationMs": 1602,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Đơn vị tính"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "uom-conversions",
+      "width": 1440,
+      "durationMs": 1607,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Quy đổi đơn vị tính"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "product-attributes",
+      "width": 1440,
+      "durationMs": 1602,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Thuộc tính"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "warehouse-config",
+      "width": 1440,
+      "durationMs": 1644,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Cấu hình kho"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "master-customers",
+      "width": 1440,
+      "durationMs": 1593,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Khách hàng"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "master-partners",
+      "width": 1440,
+      "durationMs": 1656,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Đối tác"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "customers",
+      "width": 1440,
+      "durationMs": 1601,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Khách hàng"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "cashflow",
+      "width": 1440,
+      "durationMs": 1608,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Thu chi"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "debt",
+      "width": 1440,
+      "durationMs": 1618,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Công nợ"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "returns",
+      "width": 1440,
+      "durationMs": 1613,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Đổi trả & bảo hành"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "locations",
+      "width": 1440,
+      "durationMs": 1627,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Địa điểm / Chi nhánh"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "approvals",
+      "width": 1440,
+      "durationMs": 1633,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Chứng từ cần duyệt"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "setup",
+      "width": 1440,
+      "durationMs": 1601,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Thiết lập ban đầu"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "reports",
+      "width": 1440,
+      "durationMs": 1593,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Báo cáo kinh doanh"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "permissions",
+      "width": 1440,
+      "durationMs": 1610,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Phân quyền theo module"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "overview",
+      "width": 390,
+      "durationMs": 1610,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Tổng quan kinh doanh"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "pos",
+      "width": 390,
+      "durationMs": 1598,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Bán tại quầy"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "orders",
+      "width": 390,
+      "durationMs": 1600,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Đơn bán hàng"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "sales-customers",
+      "width": 390,
+      "durationMs": 1660,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Khách hàng"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "purchase",
+      "width": 390,
+      "durationMs": 1583,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Mua hàng"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "suppliers",
+      "width": 390,
+      "durationMs": 1621,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Nhà cung cấp"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "stock",
+      "width": 390,
+      "durationMs": 1591,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Kho & tồn"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "warehouses",
+      "width": 390,
+      "durationMs": 1606,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Danh sách kho"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "transfer",
+      "width": 390,
+      "durationMs": 1600,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Chuyển kho"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "products",
+      "width": 390,
+      "durationMs": 1588,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Danh sách sản phẩm"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "product-groups",
+      "width": 390,
+      "durationMs": 1612,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Nhóm sản phẩm"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "product-brands",
+      "width": 390,
+      "durationMs": 1598,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Thương hiệu"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "product-units",
+      "width": 390,
+      "durationMs": 1600,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Đơn vị tính"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "uom-conversions",
+      "width": 390,
+      "durationMs": 1587,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Quy đổi đơn vị tính"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "product-attributes",
+      "width": 390,
+      "durationMs": 1589,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Thuộc tính"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "warehouse-config",
+      "width": 390,
+      "durationMs": 1610,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Cấu hình kho"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "master-customers",
+      "width": 390,
+      "durationMs": 1627,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Khách hàng"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "master-partners",
+      "width": 390,
+      "durationMs": 1616,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Đối tác"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "customers",
+      "width": 390,
+      "durationMs": 1619,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Khách hàng"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "cashflow",
+      "width": 390,
+      "durationMs": 1651,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Thu chi"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "debt",
+      "width": 390,
+      "durationMs": 1598,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Công nợ"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "returns",
+      "width": 390,
+      "durationMs": 1653,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Đổi trả & bảo hành"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "locations",
+      "width": 390,
+      "durationMs": 1619,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Địa điểm / Chi nhánh"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "approvals",
+      "width": 390,
+      "durationMs": 1591,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Chứng từ cần duyệt"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "setup",
+      "width": 390,
+      "durationMs": 1591,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Thiết lập ban đầu"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "reports",
+      "width": 390,
+      "durationMs": 1594,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Báo cáo kinh doanh"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    },
+    {
+      "screen": "permissions",
+      "width": 390,
+      "durationMs": 1594,
+      "title": "AICRM — Quản lý bán hàng",
+      "headings": [
+        "Phân quyền theo module"
+      ],
+      "horizontalOverflow": false,
+      "alerts": [],
+      "errors": []
+    }
+  ]
+}

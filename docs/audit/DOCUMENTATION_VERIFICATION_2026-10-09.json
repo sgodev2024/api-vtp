@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-09",
+  "baseline": "main ae59355 + local phase3 uncommitted",
+  "scope": "documentation only; no runtime business transaction, commit, push, deploy or fresh server/live DB verification",
+  "status": "passed document structural, link and Word visual checks; business review pending",
+  "FR": 26,
+  "AT": 26,
+  "BR": 10,
+  "businessApiRoutes": 73,
+  "permissionFeatures": 49,
+  "files": [
+    {
+      "source": "docs/BA_HIEN_HANH.md",
+      "word": "docs/BA_HIEN_HANH.docx",
+      "pages": 7,
+      "sourceSha256": "8971551b7903b536bea7256aac2f29e5a7022bee3de5c7bc975d175358e63b3d",
+      "wordSha256": "d7763d44fada90146546c54d434d04d48cdbfc5733b7973eac6cbb59400746ad"
+    },
+    {
+      "source": "docs/SRS_HIEN_HANH.md",
+      "word": "docs/SRS_HIEN_HANH.docx",
+      "pages": 17,
+      "sourceSha256": "43379e22a6a1b0da8de5edbab6aa09bbba6d88ad11096335ebc11acb0fc8ba91",
+      "wordSha256": "03e0485b0d4a821ecda75e8601713dba5afe4291d880d146142a7d7efcb4852c"
+    },
+    {
+      "source": "docs/RUNBOOK_SU_DUNG.md",
+      "word": "docs/RUNBOOK_SU_DUNG.docx",
+      "pages": 6,
+      "sourceSha256": "4b2fbfcf57d5c26af19643c8c92bc05ff128ee38e9dd66afdd9af7b6e394d2d1",
+      "wordSha256": "65d7af2e846e38a00fe6d2c735fa5035cc4aaf08d9645bc3226f24ee801ee569"
+    }
+  ],
+  "removedFromActiveDocs": [
+    "BA_HE_THONG_v2.0.md",
+    "BA_TRUONG_DU_LIEU_v2.0.md",
+    "SRS_HE_THONG_v2.0.md"
+  ],
+  "originalBackups": [
+    {
+      "file": "backups/documentation-20261009/BA_HE_THONG_v2.0.md",
+      "sha256": "71b209f2e7fcc17a0e9e09005a0fbf6c96dc5eaf714d5b444a5b6ab9e4edad0a"
+    },
+    {
+      "file": "backups/documentation-20261009/BA_TRUONG_DU_LIEU_v2.0.md",
+      "sha256": "c990d7ea4aff4d263bbf61d5801bf87287038317eb4b14f28257e81c770e7d21"
+    },
+    {
+      "file": "backups/documentation-20261009/SRS_HE_THONG_v2.0.md",
+      "sha256": "67c9f9415c1aa2720cee61a7c064432d9990f0d444dde7fb1972b143d2574b48"
+    }
+  ],
+  "visualQA": {
+    "pages": 30,
+    "inspected": "all pages as PNG pairs; table headers, numbering and CSV wrapping repaired",
+    "renderer": "packaged render_docx failed: LibreOffice soffice.exe missing; fallback hidden native Microsoft Word PDF export + bundled Poppler PNG",
+    "internalQADirectory": "backups/documentation-20261009/render"
+  },
+  "task": "DOC-01 In review; other task statuses preserved"
+}

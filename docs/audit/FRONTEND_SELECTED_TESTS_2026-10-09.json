@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-10-09T06:52:44.416Z",
+  "command": "node --test --test-name-pattern=\"approval demo|ESG login|home is a standalone\" frontend/tests/rendered-html.test.mjs",
+  "passed": 1,
+  "failed": 2,
+  "cases": [
+    {
+      "name": "approval demo is isolated from the production application shell",
+      "status": "failed",
+      "reason": "Test assumes a direct dynamic demo import removed by core/module separation"
+    },
+    {
+      "name": "home is a standalone top-level entry and business owns module navigation",
+      "status": "failed",
+      "reason": "Test assumes old inline navigation markup"
+    },
+    {
+      "name": "ESG login copy, semantic icons and real operations APIs are enforced",
+      "status": "passed"
+    }
+  ],
+  "notes": "Selected tests only, not full build/test run"
+}

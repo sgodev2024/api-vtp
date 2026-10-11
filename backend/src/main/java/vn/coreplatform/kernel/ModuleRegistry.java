@@ -27,6 +27,7 @@ public class ModuleRegistry implements InitializingBean, ApplicationRunner {
   public ModuleRegistry(List<ModuleContributor> contributors, JdbcTemplate jdbc) { this.contributors = contributors; this.jdbc = jdbc; }
 
   public List<ModuleDescriptor> modules() { return orderedModules; }
+  public boolean isCoreModule(String key) { return contributors.stream().anyMatch(c -> c.descriptor().key().equals(key) && org.springframework.util.ClassUtils.getUserClass(c).getPackageName().startsWith("vn.coreplatform.")); }
 
   @Override public void afterPropertiesSet() {
     orderedModules = List.copyOf(validate(contributors.stream().map(ModuleContributor::descriptor).toList()));

@@ -1,0 +1,2 @@
+import type {ModuleRequest} from "../module-contract";
+export async function bootstrap(request:ModuleRequest,hasView:(v:string)=>boolean){if(!hasView("retail-setup"))return null;try{const caps=await request<Record<string,string[]>>("/api/v1/retail/permissions/capabilities");if(caps.setup?.includes("UPDATE")&&caps.scope?.includes("ALL_BRANCHES")){const state=await request<{company:{onboarding_step?:number}}>("/api/v1/retail/onboarding");if((state.company.onboarding_step||1)<5)return "retail-setup";}}catch{}return null;}

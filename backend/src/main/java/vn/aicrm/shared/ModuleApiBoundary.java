@@ -7,7 +7,7 @@ public class ModuleApiBoundary implements WebMvcConfigurer {
  public ModuleApiBoundary(ModuleRuntime modules){this.modules=modules;}
  public void addInterceptors(InterceptorRegistry registry){registry.addInterceptor(new HandlerInterceptor(){
   public boolean preHandle(HttpServletRequest request,HttpServletResponse response,Object handler){
-   if(handler instanceof HandlerMethod method){String pkg=method.getBeanType().getPackageName();String owner=pkg.startsWith("vn.aicrm.sales")?BusinessModules.SALES:pkg.startsWith("vn.aicrm.purchase")?BusinessModules.PURCHASE:pkg.startsWith("vn.aicrm.inventory")?BusinessModules.STOCK:BusinessModules.SHARED;modules.require(owner);}
+   if(handler instanceof HandlerMethod method){String pkg=method.getBeanType().getPackageName();String owner=BusinessModules.packageOwner(pkg);modules.require(owner);}
    return true;
   }
  }).addPathPatterns("/api/v1/retail/**");}

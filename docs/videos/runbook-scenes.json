@@ -1,0 +1,191 @@
+[
+  [
+    "Bắt đầu sử dụng",
+    "overview",
+    [
+      "Chào mừng bạn đến với hướng dẫn sử dụng A I C R M. Video có thuyết minh tiếng Việt và phụ đề, dựa trên runbook phiên bản ngày chín tháng mười năm hai nghìn không trăm hai mươi sáu.",
+      "Các màn hình minh họa được lấy từ hệ thống local. Video không lưu thêm chứng từ. Khi thao tác thực tế, chỉ coi giao dịch hoàn tất sau khi hệ thống xác nhận đã ghi sổ.",
+      "Bạn có thể xem theo thứ tự hoặc chọn chương trong mục lục đi kèm. Các nội dung chưa hoàn chỉnh được nêu rõ để tránh hiểu nhầm trong vận hành."
+    ]
+  ],
+  [
+    "01 · Đăng nhập",
+    "overview",
+    [
+      "Mở hệ thống trên trình duyệt và đăng nhập bằng tài khoản được quản trị cấp. Cần có Internet; phiên bản hiện tại chưa hỗ trợ bán hàng khi mất mạng.",
+      "Sau khi đăng nhập, kiểm tra đúng tài khoản và kho phụ trách. Nếu không thấy menu, nhờ quản trị kiểm tra vai trò, phạm vi kho và trạng thái module.",
+      "Không dùng chung tài khoản quản trị cho nhân viên. Trang chủ là màn hình nền tảng; Tổng quan là nơi xem số liệu nghiệp vụ theo quyền được cấp."
+    ]
+  ],
+  [
+    "02 · Thiết lập lần đầu",
+    "setup",
+    [
+      "Vào Vận hành chung, chọn Thiết lập ban đầu. Bắt đầu với thông tin doanh nghiệp và địa điểm, tiếp theo là kho chính, danh mục, rồi dữ liệu đầu kỳ.",
+      "Mỗi doanh nghiệp có ít nhất một địa điểm và một kho. Cửa hàng duy nhất sử dụng địa điểm mặc định, không cần tạo thêm chi nhánh chỉ để hoàn thành thiết lập.",
+      "Nhập tồn và công nợ đầu kỳ đúng thực tế. Mở các phiếu đầu kỳ để gửi và duyệt, đối chiếu Kho và Công nợ trước khi bấm Hoàn tất. Hoàn tất hướng dẫn chưa đồng nghĩa đã ghi sổ."
+    ]
+  ],
+  [
+    "03 · Người dùng và phân quyền",
+    "permissions",
+    [
+      "Vào Quản trị hệ thống, Phân quyền. Thêm vai trò, nhập mã, tên và lý do, rồi tích các quyền cần dùng. Quyền xem không tự bao gồm quyền tạo hay duyệt.",
+      "Lưu vai trò, mở lại kiểm tra. Trong Người dùng, chọn nhân viên và gán vai trò. Cấp thêm phạm vi kho phụ trách; thông tin người quản lý không tự tạo quyền truy cập.",
+      "Nhân viên thường cần người khác duyệt. Tài khoản quản trị được tự duyệt khi đủ điều kiện của hệ thống. Nếu có lỗi phiên bản phân quyền, tải lại trước khi lưu, không ghi đè thay đổi mới."
+    ]
+  ],
+  [
+    "04 · Địa điểm và kho",
+    "locations",
+    [
+      "Vào Vận hành chung, Địa điểm và Chi nhánh để quản lý điểm bán. Nhập mã, tên, địa chỉ, liên hệ và người phụ trách; lưu sau khi kiểm tra.",
+      "Vào Kho, Danh sách kho để tạo kho tại địa điểm tương ứng. Kho bán dùng loại hàng được bán; kho cách ly dành cho hàng chưa đủ điều kiện bán. Chọn mặc định và cấp quyền cho nhân viên.",
+      "Trước khi ngừng kho, xử lý tồn, chứng từ chờ và hàng đang chuyển. Chuyển kho mặc định trước. Không xóa dữ liệu trực tiếp; muốn chuyển sang địa điểm mới thì tạo kho mới và chuyển hàng."
+    ]
+  ],
+  [
+    "05 · Sản phẩm và đơn vị",
+    "products",
+    [
+      "Tạo đơn vị tính trước, sau đó thêm sản phẩm với mã, tên, barcode, đơn vị cơ sở, giá, thuế và chính sách đổi trả, bảo hành. Mỗi mặt hàng cần mã rõ ràng.",
+      "Chọn kiểu theo dõi: hàng thường, hàng theo lô và hạn sử dụng, hoặc theo serial. Thiết lập quy đổi theo từng sản phẩm, ví dụ một thùng bằng hai mươi bốn cái.",
+      "Biến thể hiện mới là thông tin dạng chữ, chưa sinh tổ hợp từ thuộc tính. Dùng các mã sản phẩm riêng cho từng loại. Kiểm tra đơn vị và tỷ lệ trước khi nhập tồn để tránh sai số lượng."
+    ]
+  ],
+  [
+    "06 · Khách hàng và nhà cung cấp",
+    "suppliers-form",
+    [
+      "Khách hàng, đối tác và nhà cung cấp dùng chung dữ liệu gốc. Tìm mã hoặc số điện thoại trước khi thêm. Trong đơn bán, dùng biểu tượng cộng tại ô Khách hàng để tạo nhanh.",
+      "Nhà cung cấp có ba tab. Thông tin chung bắt buộc gồm mã, tên, loại đối tượng, điện thoại, email và địa chỉ. Thông tin bổ sung và thông tin thanh toán không bắt buộc.",
+      "Đối tượng vừa mua vừa bán thì thêm vai trò vào cùng hồ sơ, tránh tạo trùng. Số ngày công nợ là thông tin theo dõi, hiện không tự chặn bán khi quá hạn."
+    ]
+  ],
+  [
+    "07 · Nhập mua trực tiếp",
+    "purchase-form",
+    [
+      "Vào Mua hàng và chọn nhập hàng trực tiếp. Chọn kho nhận, nhà cung cấp, sản phẩm, đơn vị, lượng thực nhận, đơn giá và thuế. Hàng theo lô hoặc serial phải nhập đúng thông tin theo dõi.",
+      "Nhập số tiền thực tế đã trả và phương thức thanh toán. Chưa trả thì để bằng không. Kiểm tra tổng tiền, lưu nháp rồi gửi duyệt theo nút trên màn hình.",
+      "Phiếu chờ duyệt chưa tăng tồn. Người duyệt mở Cần duyệt hoặc chi tiết phiếu mua. Sau ghi sổ, đối chiếu tồn và công nợ nhà cung cấp. Phí mua biết sau chưa có luồng điều chỉnh giá vốn đầy đủ."
+    ]
+  ],
+  [
+    "08 · Đơn mua và trả mua",
+    "purchase",
+    [
+      "Khi cần đặt mua trước, đi từ đề nghị đến đơn mua, gửi và duyệt từng chứng từ theo chính sách. Một đơn mua có thể nhập nhiều lần; mỗi lần ghi đúng lượng nhận thực tế.",
+      "Chênh lệch lượng hoặc giá cần người có quyền xác nhận. Xem tiến độ nhận sau khi ghi sổ. Không nhận tiếp thì đóng phần còn lại, không hủy phiếu nhập đã ghi sổ.",
+      "Trả mua phải chọn phiếu nhập gốc, dòng hàng và lượng còn được trả. Gửi, duyệt, rồi đối chiếu tồn và công nợ. Tiền nhà cung cấp hoàn cần kế toán đối chiếu riêng."
+    ]
+  ],
+  [
+    "09 · Bán tại quầy",
+    "pos",
+    [
+      "Vào Bán tại quầy, chọn đúng kho. Tìm tên, mã hoặc quét barcode, thêm hàng và chọn số lượng, đơn vị. Chọn khách hàng khi cần lưu lịch sử hoặc bán công nợ.",
+      "Đơn giá lấy theo dữ liệu có sẵn; chưa có giá thì nhập tay. Kiểm thuế, tổng tiền và thực thu. Nếu khách đưa dư, kiểm tra tiền trả lại, không ghi số đã thanh toán vượt tổng phiếu.",
+      "Chỉ coi bán thành công khi đã ghi sổ. Nếu thiếu tồn, kiểm tra kho, duyệt nhập, hạn dùng, cách ly, serial và kiểm kê. Có thể chuyển cả giỏ sang đặt trước; hiện chưa tự tách phần đủ và phần thiếu."
+    ]
+  ],
+  [
+    "10 · Đơn bán và đặt cọc",
+    "orders-form",
+    [
+      "Vào Đơn bán hàng, tạo đơn hoặc chuyển từ báo giá. Chọn khách, kho, kênh bán, rồi chọn sản phẩm từ danh sách xổ xuống. Nhập lượng, đơn vị, giá, thuế, địa chỉ và ghi chú.",
+      "Lưu nháp, kiểm tra tiền và gửi. Đặt trước không tự giữ hay trừ tồn. Khi có hàng, lập phiếu xuất cho lượng giao lần này; mỗi kho lập phiếu riêng và gửi duyệt theo chính sách.",
+      "Đơn mười sản phẩm có thể xuất bốn rồi sáu. Thu cọc được ghi nhận trước; khi có công nợ mới phân bổ. Khách hủy phần chưa xuất thì đóng phần đó với lý do; hàng đã xuất phải xử lý theo luồng trả."
+    ]
+  ],
+  [
+    "11 · Giao hàng và COD",
+    "orders",
+    [
+      "Từ phiếu bán hoặc xuất bán đã ghi sổ, tạo đợt giao. Nhập đơn vị vận chuyển, mã vận đơn, COD, phí và ghi chú. Cập nhật trạng thái theo thực tế; hiện chưa đồng bộ API vận chuyển.",
+      "Khi đối soát, nhập tiền thu trước phí và phí thực tế. Ví dụ thu một trăm nghìn, phí mười lăm nghìn thì ròng tám mươi lăm nghìn. Không nhập tiền ròng rồi trừ phí lần nữa.",
+      "Nhiều đợt giao cần kiểm tổng COD không vượt nợ. Trạng thái giao thất bại không tự hủy đơn hay nhập lại hàng. Chỉ nhận hàng hoàn khi có thực tế và đúng chứng từ nguồn."
+    ]
+  ],
+  [
+    "12 · Tồn kho, chuyển kho, kiểm kê",
+    "stock",
+    [
+      "Kho và Tồn cho biết số lượng, cách ly, khả dụng và lịch sử biến động. Số khả dụng trên bảng chưa loại hết lô quá hạn; khi bán cần kiểm tra lô. Hệ thống chặn bán hàng hết hạn.",
+      "Chuyển kho theo thứ tự đề nghị, duyệt, xuất nguồn, đang chuyển, rồi nhận đích. Nhận từng phần theo lượng thực tế, ghi thiếu hoặc hỏng. Hàng chưa nhận chưa tăng tồn kho đích.",
+      "Kiểm kê chỉ khóa sản phẩm đang đếm tại kho đó. Bắt đầu kiểm kê, nhập số thực, kết thúc và gửi duyệt; chờ duyệt vẫn khóa. Duyệt xong đối chiếu chênh lệch. Không nhận đủ giả để xử lý hàng thiếu."
+    ]
+  ],
+  [
+    "13 · Đổi trả và bảo hành",
+    "returns",
+    [
+      "Đổi trả phải tìm được phiếu bán gốc, chọn dòng và lượng còn được trả. Có thể nhận tại chi nhánh khác khi có quyền. Serial phải đúng chiếc đã bán; kiểm thời hạn và chính sách tại giao dịch.",
+      "Hàng tốt được trả theo điều kiện. Hàng mở bao bì chỉ trả khi chính sách cho phép; hàng đã dùng hoặc lỗi chuyển bảo hành theo luồng hiện tại. Gửi và duyệt, rồi đối chiếu tồn và công nợ.",
+      "Hoàn tiền theo phần đã thu còn đủ điều kiện, phương thức khác cần lý do. Đổi hàng là trả rồi bán mới, chưa tự bù trừ tiền. Bảo hành còn nhập ID dòng bán gốc; nhờ quản trị tra, không tự đoán."
+    ]
+  ],
+  [
+    "14 · Thu chi, công nợ, hoa hồng",
+    "debt",
+    [
+      "Vào Kế toán, Thu chi để ghi tiền thực thu hoặc chi, đúng đối tượng và phương thức. Vào Công nợ để xem phải thu, phải trả, số đã thanh toán, số còn lại và hạn nợ.",
+      "Thu tiền chưa phân bổ chưa làm hết nợ. Chọn tiền dư và khoản nợ cùng đối tượng, phân bổ trong giới hạn cả hai. Nợ một trăm nghìn, thu và phân bổ sáu mươi nghìn thì còn bốn mươi nghìn.",
+      "Hoa hồng nhập thủ công theo đơn hoặc phần bổ sung tháng. Đã ghi một trăm nghìn theo đơn, tháng bổ sung hai mươi nghìn thì chỉ ghi hai mươi nghìn. Phiếu tiền sai cần kế toán xử lý, chưa có đảo tiền đầy đủ."
+    ]
+  ],
+  [
+    "15 · Chăm sóc khách hàng",
+    "customers",
+    [
+      "Vào CRM, Khách hàng để tìm hồ sơ và xem lịch sử mua. Dữ liệu dùng chung với khách hàng của Bán hàng và dữ liệu gốc, không tạo hồ sơ CRM riêng cho cùng người.",
+      "Ghi nội dung chăm sóc và thời gian hẹn, lưu rồi đánh dấu hoàn thành sau khi xử lý. Đầu ngày xem những lịch hẹn cần thực hiện.",
+      "Nhắc lịch hiện gồm thời gian và trạng thái hoàn thành. Chưa có quản lý cuộc gọi đầy đủ hoặc tự gửi SMS, email. Nhân viên theo dõi lịch trực tiếp trên màn hình."
+    ]
+  ],
+  [
+    "16 · Nhập file và báo cáo",
+    "reports",
+    [
+      "Tải mẫu đúng loại dữ liệu, chọn file Excel hoặc CSV rồi xem trước. Giới hạn hai mê ga bai, năm trăm dòng, sheet đầu tiên, không công thức. Ngày theo năm tháng ngày; serial ngăn bằng dấu gạch đứng.",
+      "Sửa lỗi trước khi xác nhận nhập. Phiếu tồn và nợ đầu kỳ sau nhập vẫn là nháp, phải gửi và duyệt. Xem trước chưa bắt hết lỗi; nếu nhập báo lỗi, kiểm kết quả trước khi nhập lại để tránh trùng.",
+      "Tổng quan có sáu tab nghiệp vụ. Báo cáo chọn kỳ, xem và xuất CSV theo quyền. Đối chiếu kỳ, phạm vi và số dòng vì một số nguồn có giới hạn, file xuất chưa chắc giữ toàn bộ bộ lọc trên màn hình."
+    ]
+  ],
+  [
+    "17 · Kiểm tra đầu và cuối ngày",
+    "approvals",
+    [
+      "Đầu ngày kiểm tra tài khoản, kho và kết nối. Xử lý nhập hàng chờ duyệt; kiểm hàng hết hạn, cách ly, đang chuyển và lịch chăm sóc.",
+      "Cuối ngày xem đơn chưa xuất, đặt trước, chứng từ chờ duyệt, tiền chưa phân bổ, COD chưa đối soát, trả hàng, hoàn tiền và bảo hành. Kiểm thêm chuyển kho thiếu và kiểm kê chờ duyệt.",
+      "Xuất dữ liệu cần lưu theo quyền. Quản trị kiểm nhật ký và sao lưu môi trường. Phiên bản hiện tại không có ca bán và kiểm đếm tiền cuối ca; không thêm số liệu giả để hoàn tất checklist."
+    ]
+  ],
+  [
+    "18 · Xử lý lỗi thường gặp",
+    "stock",
+    [
+      "Failed to fetch thường cần kiểm tra mạng, phiên đăng nhập, backend hoặc proxy. Không bấm lưu liên tục. Nếu lưu hết thời gian chờ, kiểm tra chứng từ đã có trước khi thử lại.",
+      "Có tồn mà không bán được thì kiểm kho, lô hết hạn, hàng cách ly, serial và kiểm kê. Thu tiền mà nợ còn thì kiểm phân bổ. Phiếu chờ duyệt chưa có tồn là trạng thái bình thường.",
+      "Báo lỗi kèm thời gian, môi trường, module, số phiếu và thao tác. Che dữ liệu riêng trong ảnh; không gửi mật khẩu hoặc token. Chứng từ đã ghi sổ xử lý trả, hoàn đúng nguồn, không sửa trực tiếp cơ sở dữ liệu."
+    ]
+  ],
+  [
+    "19 · Quản lý gói module",
+    "core-modules",
+    [
+      "Phần này dành cho quản trị kỹ thuật. Trước khi bật hoặc tắt module, kiểm tra các phụ thuộc và những module đang sử dụng nó. Tắt module sẽ ẩn menu và chặn API nhưng giữ dữ liệu.",
+      "Đưa gói sang core khác cần kiểm tra phiên bản tương thích, sao lưu, chạy thử import, build và khởi động lại. Gói mã nguồn không mang theo cơ sở dữ liệu; nhập code chưa đồng nghĩa đã chuyển dữ liệu.",
+      "Hiện chưa tải gói trực tiếp từ màn hình và chưa tự tách cơ sở dữ liệu theo thuê bao. Nhân viên vận hành không chạy SQL hoặc tự import module; giao đội kỹ thuật xử lý."
+    ]
+  ],
+  [
+    "20 · Quản trị core và kết thúc",
+    "core-users",
+    [
+      "Quản trị tạo người dùng, gán vai trò và khóa tài khoản khi nhân viên ngừng làm việc. Tổ chức là cấu trúc nhân sự, không thay cho địa điểm hoặc kho. Bàn giao mật khẩu qua kênh riêng.",
+      "Tra nhật ký theo thời gian, người dùng và tài nguyên khi có sự cố. Chạy lại tác vụ chỉ khi hiểu tác động. Cài đặt, tệp và tích hợp kỹ thuật cần đúng quyền và kiểm tra trước khi đổi.",
+      "Bạn đã xem toàn bộ luồng chính của runbook. Khi vận hành, luôn dùng đúng dữ liệu thực tế, kiểm trạng thái ghi sổ và đối chiếu sau giao dịch. Xem tài liệu runbook đi kèm để tra chi tiết từng bước."
+    ]
+  ]
+]

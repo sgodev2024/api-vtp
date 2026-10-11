@@ -21,9 +21,9 @@ public class ModuleRuntime {
  public void change(UUID id,String state){
   var rows=db.queryForList("select id,module_key,status from platform.module order by module_key for update");
   var target=rows.stream().filter(r->id.equals(r.get("id"))).findFirst().orElseThrow(()->new ApiProblem(HttpStatus.NOT_FOUND,"MODULE_NOT_FOUND","Module không tồn tại"));
-  String key=target.get("module_key").toString();var states=new LinkedHashMap<String,String>();rows.forEach(r->states.put(r.get("module_key").toString(),r.get("status").toString()));
+  String key=target.get("module_key").toString();if(registry.modules().stream().noneMatch(m->m.key().equals(key)))throw new ApiProblem(HttpStatus.CONFLICT,"MODULE_NOT_INSTALLED","Không thể đổi trạng thái module chưa cài mã nguồn");var states=new LinkedHashMap<String,String>();rows.forEach(r->states.put(r.get("module_key").toString(),r.get("status").toString()));
   if("DISABLED".equals(state)){
-   if(!key.startsWith("aicrm-"))throw new ApiProblem(HttpStatus.CONFLICT,"CORE_MODULE_REQUIRED","Không được tắt module nền tảng trong runtime");
+   if(registry.isCoreModule(key))throw new ApiProblem(HttpStatus.CONFLICT,"CORE_MODULE_REQUIRED","Không được tắt module nền tảng trong runtime");
    var dependents=registry.modules().stream().filter(m->!m.key().equals(key)&&!"DISABLED".equals(states.get(m.key()))&&dependsOn(m.key(),key,new HashSet<>())).map(ModuleDescriptor::key).toList();
    if(!dependents.isEmpty())throw new ApiProblem(HttpStatus.CONFLICT,"MODULE_DEPENDENTS_ACTIVE","Tắt các module phụ thuộc trước: "+String.join(", ",dependents));
   }else{states.put(key,state);if(!available(key,states,new HashSet<>()))throw new ApiProblem(HttpStatus.CONFLICT,"MODULE_DEPENDENCY_DISABLED","Bật các phụ thuộc trước: "+String.join(", ",dependencies(key)));}
