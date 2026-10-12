@@ -2,3 +2,31 @@
 .loc-workspace .loc-check{display:flex}.loc-workspace .loc-fields label{display:flex}
 
 .loc-initial-data .p-title{display:none}.loc-initial-data .r-context{margin-top:0}
+.loc-workspace.warehouse-list-screen>.p-panel{margin-top:14px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+.loc-workspace.warehouse-list-screen .loc-filter{display:flex;gap:9px;align-items:center;margin:0 0 16px;padding:0;border:0}
+.loc-workspace.warehouse-list-screen .loc-filter input,.loc-workspace.warehouse-list-screen .loc-filter select{height:32px;padding:0 10px;border:1px solid #dce9df;border-radius:7px;font-size:10px}
+.loc-workspace.warehouse-list-screen .loc-filter input{flex:0 1 141px}
+.loc-workspace.warehouse-list-screen .loc-filter select{width:auto;min-width:112px}
+.loc-workspace.warehouse-list-screen .loc-filter span{margin-left:auto;color:#71847a;font-size:10px;white-space:nowrap}
+.loc-workspace.warehouse-list-screen .warehouse-records-wrap{width:100%;overflow-x:auto;border:1px solid #dce9df;border-radius:10px;background:#fff}
+.loc-workspace.warehouse-list-screen .warehouse-records-table{width:100%;min-width:900px;border:0;border-collapse:collapse;table-layout:fixed;font-size:10px}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th{height:36px;padding:9px 11px;border-bottom:1px solid #e1ebe3;background:#f3f8f4;color:#688274;font-size:10px;font-weight:650;letter-spacing:normal;text-align:left;white-space:nowrap}
+.loc-workspace.warehouse-list-screen .warehouse-records-table td{height:42px;padding:9px 11px;border-top:1px solid #edf2ee;color:#19382f;font-size:10px;line-height:1.4;vertical-align:middle}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th:first-child,.loc-workspace.warehouse-list-screen .warehouse-records-table td:first-child{width:5%;text-align:center;color:#71847a;font-variant-numeric:tabular-nums}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th:nth-child(2),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(2){width:9%;white-space:nowrap}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th:nth-child(3),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(3){width:12%}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th:nth-child(4),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(4){width:12%}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th:nth-child(5),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(5){width:12%}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th:nth-child(6),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(6){width:9%}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th:nth-child(7),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(7){width:13%}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th:nth-child(8),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(8){width:10%}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th:nth-child(9),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(9){width:9%;white-space:nowrap}
+.loc-workspace.warehouse-list-screen .warehouse-records-table th:nth-child(10),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(10){width:14%}
+.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(3),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(4),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(5),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(7),.loc-workspace.warehouse-list-screen .warehouse-records-table td:nth-child(8){overflow-wrap:anywhere}
+.loc-workspace.warehouse-list-screen .warehouse-records-table tbody tr:hover{background:#f8fcf9}
+.loc-workspace.warehouse-list-screen .warehouse-records-table td strong{color:#19382f;font-size:10px;font-weight:650}
+.loc-workspace.warehouse-list-screen .warehouse-records-table td small{display:block;margin-top:3px;color:#71847a;font-size:9px}
+.loc-workspace.warehouse-list-screen .warehouse-record-actions{display:flex;align-items:center;gap:5px;flex-wrap:nowrap;white-space:nowrap;margin:0}
+.loc-workspace.warehouse-list-screen .warehouse-record-actions button{flex:0 0 auto;padding:5px 7px;font-size:9px;white-space:nowrap}
+.loc-workspace.warehouse-list-screen .warehouse-records-wrap .loc-empty{display:grid;min-height:74px;place-items:center;margin:0;padding:10px;color:#82968b;font-size:9px}
+@media(max-width:760px){.loc-workspace.warehouse-list-screen .loc-filter input{flex:1 1 160px}.loc-workspace.warehouse-list-screen .loc-filter span{margin-left:0}}
