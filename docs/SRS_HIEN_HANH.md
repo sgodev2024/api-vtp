@@ -501,3 +501,7 @@ Tệp: name/mediaType/classification INTERNAL/CONFIDENTIAL/RESTRICTED, resourceT
 Settings key bắt buộc, tối đa 100, value bắt buộc, tối đa 500, chỉ quản trị thay; cấu hình MFA riêng theo core. Webhook gồm URL/eventTypes, tạo/vô hiệu hóa theo WEBHOOK quyền; không đồng nghĩa có API hãng vận chuyển. Cần kiểm tra SSRF/secret/delivery theo service trước thêm nhà cung cấp thực.
 
 AT-26: resource owner chưa đăng ký bị chặn; update If-Match cũ409; tệp chưa sạch không ACTIVE; owner-only không đọc file người khác; settings/webhook thiếu quyền 403.
+
+## Cập nhật local 12/10/2026 — CRM pipeline
+
+Thêm crm_lead/crm_opportunity qua V34, API /api/v1/retail/crm, resources aicrm-leads/aicrm-opportunities, views retail-leads/retail-opportunities. [Đặc tả CRM local](CRM_PIPELINE_LOCAL.md) mô tả fields/API/quyền/idempotency/version và evidence. Ranh giới module: service thuộc CRM, sử dụng PartnersPort, không import implementation module khác.

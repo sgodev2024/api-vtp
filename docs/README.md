@@ -15,3 +15,9 @@ Markdown là nguồn duy trì; Word cùng nội dung dùng bàn giao. BA/SRS v2.
 Khi thay nghiệp vụ: cập nhật BA/BR, SRS/FR/AT, runbook, task/evidence rồi xuất lại Word. Gap không được coi hoàn thành chỉ vì có trong tài liệu.
 
 Video hướng dẫn dựng ngày 10/10/2026 theo runbook 3.0: [MP4 tiếng Việt](videos/AICRM_Huong_dan_su_dung.mp4), [phụ đề SRT](videos/AICRM_Huong_dan_su_dung.vi.srt), [mục lục chương](videos/MUC_LUC_VIDEO.md), [kịch bản](videos/KICH_BAN_VIDEO.md). Video minh họa bằng ảnh giao diện local, có giọng đọc tổng hợp và phụ đề; không quay giao dịch thực tế.
+
+## Đặc tả mở rộng SaaS
+
+[Bộ BA/SRS và 35 task SaaS1.0](saas/README.md), ngày11/10/2026. Kiến trúc đã chốt, chi tiết chờ duyệt trước code; không thay nghiệp vụ hiện hành.
+
+CRM local12/10: [Tiềm năng và Cơ hội](CRM_PIPELINE_LOCAL.md). Markdown BA/SRS/runbook có phụ lục cập nhật; Word3.0 và video vẫn giữ snapshot trước bổ sung CRM, chưa xuất lại trong đợt này.

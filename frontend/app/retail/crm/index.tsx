@@ -1,3 +1,4 @@
 "use client";
 import SharedWorkspace from "../shared-workspace";import PartnerMaster from "../partner-master";
-export default function Workspace(props:Parameters<typeof SharedWorkspace>[0]){return <PartnerMaster key={props.view} request={props.request} customerOnly={props.view!=="retail-master-partners"} context={"crm"} onNavigate={props.onNavigate}/>;}
+import Pipeline from "./pipeline";
+export default function Workspace(props:Parameters<typeof SharedWorkspace>[0]){return ["retail-leads","retail-opportunities"].includes(props.view)?<Pipeline key={props.view} view={props.view} request={props.request}/>:<PartnerMaster key={props.view} request={props.request} customerOnly={true} context={"crm"} onNavigate={props.onNavigate}/>;}

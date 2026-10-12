@@ -214,3 +214,7 @@ Checklist vận hành: địa điểm/kho đúng, master không trùng, nhập �
 Các gap trong SYSTEM_AUDIT_DEV_BACKLOG_2026-10-09.md / DEV_TASKS_2026-10-09.json: tổ hợp variant; sửa SKU/nháp; giữ tồn; yêu cầu đóng/hủy; giao dòng/tổng COD; đổi tiền/đảo thu chi; warranty; quarantine/mất hàng; paginated report/export; import parity; CI/quyền. Không coi các mục đã hoàn thành.
 
 SRS_HIEN_HANH.md đặc tả kỹ thuật và AT; RUNBOOK_SU_DUNG.md hướng dẫn thao tác. BA này không thay đổi code/nghiệp vụ.
+
+## Cập nhật local 12/10/2026 — CRM
+
+CRM bổ sung Khách hàng tiềm năng và Cơ hội, cùng Khách hàng dùng Customer Master. Luồng, trường và quy tắc chuyển đổi theo [đặc tả CRM local](CRM_PIPELINE_LOCAL.md). Đây là phần mở rộng sau snapshot09/10; không xác nhận server đã cập nhật.

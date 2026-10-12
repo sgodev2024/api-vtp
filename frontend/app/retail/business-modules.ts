@@ -98,7 +98,9 @@ export const businessModules={
       "aicrm-partners"
     ],
     "screens": [
-      "customers"
+      "customers",
+      "leads",
+      "opportunities"
     ]
   },
   "aicrm-overview": {

@@ -219,3 +219,7 @@ Tài nguyên: khai báo resource owner/storage/schema theo đội kỹ thuật; 
 Quản lý module: xem dependencies và active dependents; tắt module sẽ mất menu/API nhưng giữ dữ liệu. Không tắt core hoặc gói đang được gói khác dùng. Bật theo phụ thuộc rồi đăng nhập kiểm tra lại. Chưa có upload gói trực tiếp trên màn hình, chuyển đội kỹ thuật thực hiện source import.
 
 Webhook/API kỹ thuật chưa phải kênh bán hay tích hợp vận chuyển hoàn chỉnh; chỉ cấu hình khi có thiết kế/kiểm thử. Khi vận hành nhiều tenant, quản trị deployment có quyền rộng hơn nhân viên công ty; không cấp control-plane cho khách SaaS như quyền bán hàng thông thường.
+
+## CRM: Tiềm năng và Cơ hội — local 12/10/2026
+
+Theo [hướng dẫn CRM](CRM_PIPELINE_LOCAL.md): thêm tiềm năng → liên hệ → tạo cơ hội → chuyển vào khách hàng dùng chung → cập nhật kết quả. Đây là cập nhật local sau bản3.0; server chưa triển khai bổ sung này.

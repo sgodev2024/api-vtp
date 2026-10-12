@@ -33,7 +33,7 @@ export const installedModules:InstalledFrontendModule[]=[
 {key:"aicrm-stock",views:["retail-stock","retail-warehouses","retail-warehouse-config","retail-transfer"],Workspace:Workspace5,mobile:{"section":"retail-stock","label":"Kho","icon":"layers","preferred":["retail-stock","retail-warehouses"]}},
 {key:"aicrm-sales",views:["retail-pos","retail-orders","retail-sales-customers","retail-returns"],Workspace:Workspace6,mobile:{"section":"retail","label":"Bán hàng","icon":"shopping-bag","preferred":["retail-pos","retail-orders"]}},
 {key:"aicrm-purchase",views:["retail-purchase","retail-suppliers"],Workspace:Workspace7,mobile:{"section":"retail-purchase","label":"Mua hàng","icon":"download","preferred":["retail-purchase"]}},
-{key:"aicrm-crm",views:["retail-customers"],Workspace:Workspace8},
+{key:"aicrm-crm",views:["retail-customers","retail-leads","retail-opportunities"],Workspace:Workspace8},
 {key:"aicrm-overview",views:["retail-overview"],Workspace:Workspace9,mobile:{"section":"retail-overview","label":"Tổng quan","icon":"home","preferred":["retail-overview"]}},
 {key:"aicrm-reports",views:["retail-reports"],Workspace:Workspace10}
 ];

@@ -37,6 +37,8 @@ public class RetailPermissions implements vn.coreplatform.kernel.NavigationCapab
     f("customer","Khách hàng / Đối tác","Khách hàng dùng chung","VIEW,CREATE,UPDATE,DEACTIVATE,IMPORT,EXPORT"),
     f("supplier","Mua hàng","Nhà cung cấp dùng chung","VIEW,CREATE,UPDATE,DEACTIVATE,IMPORT,EXPORT"),
     f("partners","Khách hàng / Đối tác","Đối tác / Vai trò","VIEW,CREATE,UPDATE,MANAGE_ROLES,DEACTIVATE,VIEW_BANK,UPDATE_BANK,IMPORT,EXPORT"),
+    f("leads","CRM","Khách hàng tiềm năng","VIEW,CREATE,UPDATE,CONVERT"),
+    f("opportunities","CRM","Cơ hội","VIEW,CREATE,UPDATE"),
     f("crm","CRM","Chăm sóc khách hàng","VIEW,CREATE,UPDATE,COMPLETE,VIEW_HISTORY,EXPORT"),
     f("receipt","Kế toán","Phiếu thu","VIEW,CREATE,ALLOCATE,PRINT,EXPORT"),
     f("payment","Kế toán","Phiếu chi","VIEW,CREATE,ALLOCATE,PRINT,EXPORT"),
@@ -83,6 +85,8 @@ public class RetailPermissions implements vn.coreplatform.kernel.NavigationCapab
     if(old!=null && x.has("active") && !x.path("active").asBoolean())require(a,"partners","DEACTIVATE");
   }
   public void command(Authentication a,String op,JsonNode x){
+    if(op.startsWith("CRM_LEAD_")){require(a,"leads",op.startsWith("CRM_LEAD_CONVERT_")?"CONVERT":op.equals("CRM_LEAD_CREATE")?"CREATE":"UPDATE");return;}
+    if(op.startsWith("CRM_OPPORTUNITY_")){require(a,"opportunities",op.equals("CRM_OPPORTUNITY_CREATE")?"CREATE":"UPDATE");return;}
     if(op.equals("ONBOARDING")){require(a,"setup","UPDATE");return;}
     if(op.startsWith("LOCATION_CREATE_")||op.startsWith("LOCATION_UPDATE_")){var kind=op.substring(op.lastIndexOf('_')+1);if(!Set.of("branches","warehouses").contains(kind))throw problem("INVALID_CATALOG","Danh mục không hợp lệ");require(a,kind.equals("branches")?"locations":"warehouses",op.startsWith("LOCATION_CREATE_")?"CREATE":"UPDATE");return;}
     if(x.hasNonNull("warehouseId"))r.warehouse(a,uuid(x,"warehouseId"));if(x.hasNonNull("branchId"))r.branch(a,uuid(x,"branchId"));

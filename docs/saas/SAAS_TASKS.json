@@ -1,0 +1,1449 @@
+{
+  "version": "1.0",
+  "date": "2026-10-11",
+  "status": "SPECIFICATION_ONLY",
+  "tasks": [
+    {
+      "id": "SAAS-01",
+      "title": "Audit core và sequence host/DB/auth",
+      "owner": "Lead",
+      "dependencies": [],
+      "requirements": [
+        "FR-S14"
+      ],
+      "acceptance": [
+        "AT-S02"
+      ],
+      "deliverable": "Inventory auth/datasource/worker và sơ đồ điểm sửa, giữ SINGLE",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S14 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ source hiện hành"
+      ],
+      "steps": [
+        "Chuẩn bị inventory hoặc fixture/phương án trong phạm vi task",
+        "Thực hiện rà soát/diễn tập/kiểm thử trên local hoặc bản sao theo phụ thuộc",
+        "Đối chiếu tiêu chí và ghi kết quả/evidence; không tác động dữ liệu live",
+        "Lead review kết quả và chốt đầu vào cho task kế tiếp"
+      ],
+      "definition_of_done": [
+        "Inventory auth/datasource/worker và sơ đồ điểm sửa, giữ SINGLE",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-02",
+      "title": "Schema control plane, API/state machine",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-01"
+      ],
+      "requirements": [
+        "FR-S01",
+        "FR-S16"
+      ],
+      "acceptance": [
+        "AT-S10"
+      ],
+      "deliverable": "DDL mới/OpenAPI/compatibility; không sửa migration lịch sử",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S01, FR-S16 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-01"
+      ],
+      "steps": [
+        "Chuẩn bị inventory hoặc fixture/phương án trong phạm vi task",
+        "Thực hiện rà soát/diễn tập/kiểm thử trên local hoặc bản sao theo phụ thuộc",
+        "Đối chiếu tiêu chí và ghi kết quả/evidence; không tác động dữ liệu live",
+        "Lead review kết quả và chốt đầu vào cho task kế tiếp"
+      ],
+      "definition_of_done": [
+        "DDL mới/OpenAPI/compatibility; không sửa migration lịch sử",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-03",
+      "title": "Fixture local control plane và hai DB",
+      "owner": "Intern 1",
+      "dependencies": [
+        "SAAS-02"
+      ],
+      "requirements": [
+        "FR-S15"
+      ],
+      "acceptance": [
+        "AT-S01"
+      ],
+      "deliverable": "Compose riêng; credential/seed test riêng; không production secrets",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NA",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S15 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-02"
+      ],
+      "steps": [
+        "Chuẩn bị inventory hoặc fixture/phương án trong phạm vi task",
+        "Thực hiện rà soát/diễn tập/kiểm thử trên local hoặc bản sao theo phụ thuộc",
+        "Đối chiếu tiêu chí và ghi kết quả/evidence; không tác động dữ liệu live",
+        "Lead review kết quả và chốt đầu vào cho task kế tiếp"
+      ],
+      "definition_of_done": [
+        "Compose riêng; credential/seed test riêng; không production secrets",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-04",
+      "title": "API CRUD doanh nghiệp",
+      "owner": "Intern 1",
+      "dependencies": [
+        "SAAS-02"
+      ],
+      "requirements": [
+        "FR-S01"
+      ],
+      "acceptance": [
+        "AT-S03"
+      ],
+      "deliverable": "Validation unique/version/quyền; không trả secret",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S01 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-02"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Validation unique/version/quyền; không trả secret",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-05",
+      "title": "UI danh sách/form doanh nghiệp",
+      "owner": "Intern 2",
+      "dependencies": [
+        "SAAS-04"
+      ],
+      "requirements": [
+        "FR-S01"
+      ],
+      "acceptance": [
+        "AT-S14"
+      ],
+      "deliverable": "STT/filter/page/form/mobile/error states",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NOT_STARTED",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S01 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-04"
+      ],
+      "steps": [
+        "Xác định route và tái sử dụng component/style core hiện hành",
+        "Dựng form/list/detail theo task; validation và loading/empty/error states",
+        "Tích hợp API thật; kiểm quyền và trạng thái; không chỉ mock",
+        "Chạy desktop/mobile và ca âm theo AT; lưu screenshot/report"
+      ],
+      "definition_of_done": [
+        "STT/filter/page/form/mobile/error states",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-06",
+      "title": "Host resolver và trusted proxy",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-02"
+      ],
+      "requirements": [
+        "FR-S14"
+      ],
+      "acceptance": [
+        "AT-S02"
+      ],
+      "deliverable": "Normalize/unknown-host/header spoof tests; trước auth",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S14 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-02"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Normalize/unknown-host/header spoof tests; trước auth",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-07",
+      "title": "Dynamic pool và RLS routing",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-03",
+        "SAAS-06"
+      ],
+      "requirements": [
+        "FR-S14",
+        "FR-S16"
+      ],
+      "acceptance": [
+        "AT-S08"
+      ],
+      "deliverable": "Bounded pools/eviction/transaction scope; CP datasource tách",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S14, FR-S16 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-03, SAAS-06"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Bounded pools/eviction/transaction scope; CP datasource tách",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-08",
+      "title": "Auth session/token ràng buộc tenant host",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-07"
+      ],
+      "requirements": [
+        "FR-S14"
+      ],
+      "acceptance": [
+        "AT-S02"
+      ],
+      "deliverable": "Cross-host deny/cookie/CSRF/login lookup/revocation",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S14 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-07"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Cross-host deny/cookie/CSRF/login lookup/revocation",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-09",
+      "title": "Frontend API same-origin/context/login",
+      "owner": "Intern 2",
+      "dependencies": [
+        "SAAS-08"
+      ],
+      "requirements": [
+        "FR-S13"
+      ],
+      "acceptance": [
+        "AT-S14"
+      ],
+      "deliverable": "Không hardcode API host; minimal context; trang host lỗi",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NOT_STARTED",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S13 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-08"
+      ],
+      "steps": [
+        "Xác định route và tái sử dụng component/style core hiện hành",
+        "Dựng form/list/detail theo task; validation và loading/empty/error states",
+        "Tích hợp API thật; kiểm quyền và trạng thái; không chỉ mock",
+        "Chạy desktop/mobile và ca âm theo AT; lưu screenshot/report"
+      ],
+      "definition_of_done": [
+        "Không hardcode API host; minimal context; trang host lỗi",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-10",
+      "title": "Operation/idempotency/checkpoint API",
+      "owner": "Intern 1",
+      "dependencies": [
+        "SAAS-02"
+      ],
+      "requirements": [
+        "FR-S07"
+      ],
+      "acceptance": [
+        "AT-S03"
+      ],
+      "deliverable": "202/status/key+hash/409/lock/retry validation",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S07 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-02"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "202/status/key+hash/409/lock/retry validation",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-11",
+      "title": "Provision DB/secret/migration executor",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-07",
+        "SAAS-10"
+      ],
+      "requirements": [
+        "FR-S15",
+        "FR-S16"
+      ],
+      "acceptance": [
+        "AT-S03"
+      ],
+      "deliverable": "Least privilege/checkpoint/error; không delete dữ liệu",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S15, FR-S16 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-07, SAAS-10"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Least privilege/checkpoint/error; không delete dữ liệu",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-12",
+      "title": "Bootstrap/admin activation/default location/kho",
+      "owner": "Intern 1",
+      "dependencies": [
+        "SAAS-11"
+      ],
+      "requirements": [
+        "FR-S15"
+      ],
+      "acceptance": [
+        "AT-S03"
+      ],
+      "deliverable": "Exactly once/no demo/hash token/TTL; lead review auth",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S15 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-11"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Exactly once/no demo/hash token/TTL; lead review auth",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-13",
+      "title": "UI provision status/retry",
+      "owner": "Intern 2",
+      "dependencies": [
+        "SAAS-10",
+        "SAAS-12"
+      ],
+      "requirements": [
+        "FR-S02",
+        "FR-S07"
+      ],
+      "acceptance": [
+        "AT-S03"
+      ],
+      "deliverable": "Step/error/state; refresh không duplicate task",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NOT_STARTED",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S02, FR-S07 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-10, SAAS-12"
+      ],
+      "steps": [
+        "Xác định route và tái sử dụng component/style core hiện hành",
+        "Dựng form/list/detail theo task; validation và loading/empty/error states",
+        "Tích hợp API thật; kiểm quyền và trạng thái; không chỉ mock",
+        "Chạy desktop/mobile và ca âm theo AT; lưu screenshot/report"
+      ],
+      "definition_of_done": [
+        "Step/error/state; refresh không duplicate task",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-14",
+      "title": "Suspend/resume/maintenance/drain",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-08",
+        "SAAS-10"
+      ],
+      "requirements": [
+        "FR-S03"
+      ],
+      "acceptance": [
+        "AT-S05"
+      ],
+      "deliverable": "Invalidate session/cache; chặn ghi/jobA; B không ảnh hưởng",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S03 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-08, SAAS-10"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Invalidate session/cache; chặn ghi/jobA; B không ảnh hưởng",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-15",
+      "title": "API gói/entitlement/dependency",
+      "owner": "Intern 1",
+      "dependencies": [
+        "SAAS-04"
+      ],
+      "requirements": [
+        "FR-S04"
+      ],
+      "acceptance": [
+        "AT-S06"
+      ],
+      "deliverable": "Limits null/0/version/closure; hạ quota không xóa",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S04 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-04"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Limits null/0/version/closure; hạ quota không xóa",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-16",
+      "title": "Backend gate module và atomic quota",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-14",
+        "SAAS-15"
+      ],
+      "requirements": [
+        "FR-S18"
+      ],
+      "acceptance": [
+        "AT-S06"
+      ],
+      "deliverable": "API direct deny/concurrent quota/scope",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S18 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-14, SAAS-15"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "API direct deny/concurrent quota/scope",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-17",
+      "title": "UI gói/module/limits",
+      "owner": "Intern 2",
+      "dependencies": [
+        "SAAS-15",
+        "SAAS-16"
+      ],
+      "requirements": [
+        "FR-S04"
+      ],
+      "acceptance": [
+        "AT-S06"
+      ],
+      "deliverable": "Effective permissions/dependency/errors; tenant summary",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NOT_STARTED",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S04 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-15, SAAS-16"
+      ],
+      "steps": [
+        "Xác định route và tái sử dụng component/style core hiện hành",
+        "Dựng form/list/detail theo task; validation và loading/empty/error states",
+        "Tích hợp API thật; kiểm quyền và trạng thái; không chỉ mock",
+        "Chạy desktop/mobile và ca âm theo AT; lưu screenshot/report"
+      ],
+      "definition_of_done": [
+        "Effective permissions/dependency/errors; tenant summary",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-18",
+      "title": "Domain CRUD/UI TXT/CNAME",
+      "owner": "Intern 3",
+      "dependencies": [
+        "SAAS-04",
+        "SAAS-06"
+      ],
+      "requirements": [
+        "FR-S05"
+      ],
+      "acceptance": [
+        "AT-S04"
+      ],
+      "deliverable": "Hostname unique/IDNA/instructions/token không log",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NOT_STARTED",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S05 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-04, SAAS-06"
+      ],
+      "steps": [
+        "Xác định route và tái sử dụng component/style core hiện hành",
+        "Dựng form/list/detail theo task; validation và loading/empty/error states",
+        "Tích hợp API thật; kiểm quyền và trạng thái; không chỉ mock",
+        "Chạy desktop/mobile và ca âm theo AT; lưu screenshot/report"
+      ],
+      "definition_of_done": [
+        "Hostname unique/IDNA/instructions/token không log",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-19",
+      "title": "DNS ownership/TLS adapter",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-18"
+      ],
+      "requirements": [
+        "FR-S17"
+      ],
+      "acceptance": [
+        "AT-S04"
+      ],
+      "deliverable": "Nonce expiry/verify/TLS gate/renewal provider contract",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S17 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-18"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Nonce expiry/verify/TLS gate/renewal provider contract",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-20",
+      "title": "Primary/remove/renewal UI và tác vụ",
+      "owner": "Intern 3",
+      "dependencies": [
+        "SAAS-19"
+      ],
+      "requirements": [
+        "FR-S06",
+        "FR-S17"
+      ],
+      "acceptance": [
+        "AT-S04"
+      ],
+      "deliverable": "Còn default route/GET redirect/invalidation/expiry",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NOT_STARTED",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S06, FR-S17 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-19"
+      ],
+      "steps": [
+        "Xác định route và tái sử dụng component/style core hiện hành",
+        "Dựng form/list/detail theo task; validation và loading/empty/error states",
+        "Tích hợp API thật; kiểm quyền và trạng thái; không chỉ mock",
+        "Chạy desktop/mobile và ca âm theo AT; lưu screenshot/report"
+      ],
+      "definition_of_done": [
+        "Còn default route/GET redirect/invalidation/expiry",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-21",
+      "title": "Tenant scope job/outbox/webhook/cache",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-07",
+        "SAAS-14"
+      ],
+      "requirements": [
+        "FR-S19"
+      ],
+      "acceptance": [
+        "AT-S07"
+      ],
+      "deliverable": "Context finally/dedupe/fairness/retry/suspend gates",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S19 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-07, SAAS-14"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Context finally/dedupe/fairness/retry/suspend gates",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-22",
+      "title": "File namespace/auth/quota",
+      "owner": "Intern 3",
+      "dependencies": [
+        "SAAS-08",
+        "SAAS-16"
+      ],
+      "requirements": [
+        "FR-S20"
+      ],
+      "acceptance": [
+        "AT-S07"
+      ],
+      "deliverable": "Traversal/download scope/signed link/staging quota race",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NOT_STARTED",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S20 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-08, SAAS-16"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Traversal/download scope/signed link/staging quota race",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-23",
+      "title": "Audit/metrics redaction và UI operation",
+      "owner": "Intern 2",
+      "dependencies": [
+        "SAAS-10",
+        "SAAS-14"
+      ],
+      "requirements": [
+        "FR-S23"
+      ],
+      "acceptance": [
+        "AT-S12"
+      ],
+      "deliverable": "Actor/requestId/scope/error masking; không secret",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NOT_STARTED",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S23 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-10, SAAS-14"
+      ],
+      "steps": [
+        "Xác định route và tái sử dụng component/style core hiện hành",
+        "Dựng form/list/detail theo task; validation và loading/empty/error states",
+        "Tích hợp API thật; kiểm quyền và trạng thái; không chỉ mock",
+        "Chạy desktop/mobile và ca âm theo AT; lưu screenshot/report"
+      ],
+      "definition_of_done": [
+        "Actor/requestId/scope/error masking; không secret",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-24",
+      "title": "Backup consistency/manifest/encryption",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-21",
+        "SAAS-22"
+      ],
+      "requirements": [
+        "FR-S21"
+      ],
+      "acceptance": [
+        "AT-S09"
+      ],
+      "deliverable": "DB+tệp cùngmốc/checksum/retention/READY conditions",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S21 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-21, SAAS-22"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "DB+tệp cùngmốc/checksum/retention/READY conditions",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-25",
+      "title": "UI backup và restore validation",
+      "owner": "Intern 3",
+      "dependencies": [
+        "SAAS-24"
+      ],
+      "requirements": [
+        "FR-S08",
+        "FR-S09"
+      ],
+      "acceptance": [
+        "AT-S09"
+      ],
+      "deliverable": "Version/evidence/quyền/xác nhận đúngtenant; không overwrite",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NOT_STARTED",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S08, FR-S09 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-24"
+      ],
+      "steps": [
+        "Xác định route và tái sử dụng component/style core hiện hành",
+        "Dựng form/list/detail theo task; validation và loading/empty/error states",
+        "Tích hợp API thật; kiểm quyền và trạng thái; không chỉ mock",
+        "Chạy desktop/mobile và ca âm theo AT; lưu screenshot/report"
+      ],
+      "definition_of_done": [
+        "Version/evidence/quyền/xác nhận đúngtenant; không overwrite",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-26",
+      "title": "Restore temp/cutover rehearsal",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-24",
+        "SAAS-25"
+      ],
+      "requirements": [
+        "FR-S21"
+      ],
+      "acceptance": [
+        "AT-S09"
+      ],
+      "deliverable": "Đối chiếu/drain/pool/atomic routing; fail không đổi nguồn",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S21 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-24, SAAS-25"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Đối chiếu/drain/pool/atomic routing; fail không đổi nguồn",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-27",
+      "title": "Migration batch/version/pilot",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-11",
+        "SAAS-24"
+      ],
+      "requirements": [
+        "FR-S16",
+        "FR-S10"
+      ],
+      "acceptance": [
+        "AT-S10"
+      ],
+      "deliverable": "Compatibility/pause/backup/rollback xét giao dịch",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S16, FR-S10 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-11, SAAS-24"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Compatibility/pause/backup/rollback xét giao dịch",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-28",
+      "title": "Support grant approve/revoke/expiry API",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-08",
+        "SAAS-23"
+      ],
+      "requirements": [
+        "FR-S12"
+      ],
+      "acceptance": [
+        "AT-S12"
+      ],
+      "deliverable": "Tenant approve/timebound/actor thật; backend deny khi expired",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NOT_STARTED",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S12 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-08, SAAS-23"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "Tenant approve/timebound/actor thật; backend deny khi expired",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-29",
+      "title": "UI phiên hỗ trợ/audit",
+      "owner": "Intern 2",
+      "dependencies": [
+        "SAAS-28"
+      ],
+      "requirements": [
+        "FR-S12"
+      ],
+      "acceptance": [
+        "AT-S12"
+      ],
+      "deliverable": "Request/approve/revoke theo quyền; scope/lýdo/expiry",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NOT_STARTED",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S12 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-28"
+      ],
+      "steps": [
+        "Xác định route và tái sử dụng component/style core hiện hành",
+        "Dựng form/list/detail theo task; validation và loading/empty/error states",
+        "Tích hợp API thật; kiểm quyền và trạng thái; không chỉ mock",
+        "Chạy desktop/mobile và ca âm theo AT; lưu screenshot/report"
+      ],
+      "definition_of_done": [
+        "Request/approve/revoke theo quyền; scope/lýdo/expiry",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-30",
+      "title": "MODE SINGLE và source package/export",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-16",
+        "SAAS-24"
+      ],
+      "requirements": [
+        "FR-S22",
+        "FR-S11"
+      ],
+      "acceptance": [
+        "AT-S11"
+      ],
+      "deliverable": "No CP dependency/secret; release/modules/licenses/config",
+      "status": "NOT_STARTED",
+      "backend": "NOT_STARTED",
+      "frontend": "NOT_STARTED",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S22, FR-S11 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-16, SAAS-24"
+      ],
+      "steps": [
+        "Chốt DTO/schema/service boundary và quyền theo FR",
+        "Triển khai validation, transaction/state và tenant scope trong phạm vi task",
+        "Viết test thành công, lỗi, chạy lặp/concurrent/cross-tenant khi liên quan",
+        "Tích hợp fixture hai tenant; chạy AT tương ứng, lưu report và gửi lead review"
+      ],
+      "definition_of_done": [
+        "No CP dependency/secret; release/modules/licenses/config",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-31",
+      "title": "Runbook standalone và test máy sạch",
+      "owner": "Intern 3",
+      "dependencies": [
+        "SAAS-30"
+      ],
+      "requirements": [
+        "FR-S22"
+      ],
+      "acceptance": [
+        "AT-S11"
+      ],
+      "deliverable": "Compose/install/backup/restore; network SaaS blocked smoke",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NA",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S22 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-30"
+      ],
+      "steps": [
+        "Chuẩn bị inventory hoặc fixture/phương án trong phạm vi task",
+        "Thực hiện rà soát/diễn tập/kiểm thử trên local hoặc bản sao theo phụ thuộc",
+        "Đối chiếu tiêu chí và ghi kết quả/evidence; không tác động dữ liệu live",
+        "Lead review kết quả và chốt đầu vào cho task kế tiếp"
+      ],
+      "definition_of_done": [
+        "Compose/install/backup/restore; network SaaS blocked smoke",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-32",
+      "title": "Rehearsal dữ liệu hiện tại",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-26",
+        "SAAS-27",
+        "SAAS-30"
+      ],
+      "requirements": [
+        "FR-S21",
+        "FR-S22"
+      ],
+      "acceptance": [
+        "AT-S13"
+      ],
+      "deliverable": "Đối chiếu IDs/account/role/tồn/nợ/phiếu/tệp; cutover plan",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S21, FR-S22 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-26, SAAS-27, SAAS-30"
+      ],
+      "steps": [
+        "Chuẩn bị inventory hoặc fixture/phương án trong phạm vi task",
+        "Thực hiện rà soát/diễn tập/kiểm thử trên local hoặc bản sao theo phụ thuộc",
+        "Đối chiếu tiêu chí và ghi kết quả/evidence; không tác động dữ liệu live",
+        "Lead review kết quả và chốt đầu vào cho task kế tiếp"
+      ],
+      "definition_of_done": [
+        "Đối chiếu IDs/account/role/tồn/nợ/phiếu/tệp; cutover plan",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-33",
+      "title": "Regression hai tenant/mobile",
+      "owner": "Intern 2",
+      "dependencies": [
+        "SAAS-13",
+        "SAAS-17",
+        "SAAS-20",
+        "SAAS-22",
+        "SAAS-29"
+      ],
+      "requirements": [
+        "FR-S14",
+        "FR-S18"
+      ],
+      "acceptance": [
+        "AT-S01",
+        "AT-S02",
+        "AT-S06",
+        "AT-S14"
+      ],
+      "deliverable": "Fixture API/UI/cross-tenant/screenshot 320/390/430px",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NA",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S14, FR-S18 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-13, SAAS-17, SAAS-20, SAAS-22, SAAS-29"
+      ],
+      "steps": [
+        "Chuẩn bị inventory hoặc fixture/phương án trong phạm vi task",
+        "Thực hiện rà soát/diễn tập/kiểm thử trên local hoặc bản sao theo phụ thuộc",
+        "Đối chiếu tiêu chí và ghi kết quả/evidence; không tác động dữ liệu live",
+        "Lead review kết quả và chốt đầu vào cho task kế tiếp"
+      ],
+      "definition_of_done": [
+        "Fixture API/UI/cross-tenant/screenshot 320/390/430px",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-34",
+      "title": "Load test và failure isolation",
+      "owner": "Intern 1",
+      "dependencies": [
+        "SAAS-21",
+        "SAAS-33"
+      ],
+      "requirements": [
+        "FR-S19"
+      ],
+      "acceptance": [
+        "AT-S08",
+        "AT-S14"
+      ],
+      "deliverable": "20tenant/100sessions; p95/poolmax/report; lead phân tích",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NA",
+      "estimate": "1–3 ngày tập trung sau khi đủ phụ thuộc; chia nhỏ nếu vượt 3 ngày",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S19 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-21, SAAS-33"
+      ],
+      "steps": [
+        "Chuẩn bị inventory hoặc fixture/phương án trong phạm vi task",
+        "Thực hiện rà soát/diễn tập/kiểm thử trên local hoặc bản sao theo phụ thuộc",
+        "Đối chiếu tiêu chí và ghi kết quả/evidence; không tác động dữ liệu live",
+        "Lead review kết quả và chốt đầu vào cho task kế tiếp"
+      ],
+      "definition_of_done": [
+        "20tenant/100sessions; p95/poolmax/report; lead phân tích",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    },
+    {
+      "id": "SAAS-35",
+      "title": "Pilot checklist/nghiệm thu",
+      "owner": "Lead",
+      "dependencies": [
+        "SAAS-26",
+        "SAAS-27",
+        "SAAS-31",
+        "SAAS-32",
+        "SAAS-33",
+        "SAAS-34"
+      ],
+      "requirements": [
+        "FR-S01",
+        "FR-S22"
+      ],
+      "acceptance": [
+        "AT-S01",
+        "AT-S11",
+        "AT-S13"
+      ],
+      "deliverable": "AT-S01..14 evidence; backup/rollback; chủ sản phẩm duyệt",
+      "status": "NOT_STARTED",
+      "backend": "NA",
+      "frontend": "NA",
+      "estimate": "Lead ước lượng sau SAAS-01; chưa cam kết lịch",
+      "reviewer": "Lead/senior",
+      "evidence": [],
+      "commit": null,
+      "blocker": null,
+      "inputs": [
+        "Đọc BA_SAAS.md và FR-S01, FR-S22 trong SRS_SAAS.md",
+        "Đối chiếu hợp đồng/fixture từ SAAS-26, SAAS-27, SAAS-31, SAAS-32, SAAS-33, SAAS-34"
+      ],
+      "steps": [
+        "Chuẩn bị inventory hoặc fixture/phương án trong phạm vi task",
+        "Thực hiện rà soát/diễn tập/kiểm thử trên local hoặc bản sao theo phụ thuộc",
+        "Đối chiếu tiêu chí và ghi kết quả/evidence; không tác động dữ liệu live",
+        "Lead review kết quả và chốt đầu vào cho task kế tiếp"
+      ],
+      "definition_of_done": [
+        "AT-S01..14 evidence; backup/rollback; chủ sản phẩm duyệt",
+        "Các AT liên kết có kết quả/evidence trong phạm vi task",
+        "Lead review; không secrets trong code/log/artifact",
+        "Cập nhật trạng thái backend/frontend riêng, commit/PR và ngày cập nhật"
+      ],
+      "updated_at": null
+    }
+  ]
+}

@@ -8,3 +8,17 @@ test('core export contains no business classes or business migrations',()=>{cons
 test('selective sales import resolves prerequisites and repeat import is idempotent',()=>{const target=path.join(fixture,'core'),file=path.join(fixture,'suite.module.json');fs.writeFileSync(file,JSON.stringify(bundle));main(['import','--target',target,'--file',file,'--modules','aicrm-sales','--dry-run']);assert(!fs.existsSync(path.join(target,'backend/src/main/java/vn/aicrm')));main(['import','--target',target,'--file',file,'--modules','aicrm-sales']);let state=JSON.parse(fs.readFileSync(path.join(target,'module-platform.json'),'utf8'));assert.equal(state.installedModules.length,7);assert(!state.installedModules.some(m=>m.key==='aicrm-crm'));assert(!fs.readFileSync(path.join(target,'frontend/app/installed-modules.tsx'),'utf8').includes('import("./retail/crm")'));main(['import','--target',target,'--file',file,'--modules','aicrm-sales']);});
 test('customized source blocks changed upgrade before any writes',()=>{const target=path.join(fixture,'core'),file=path.join(fixture,'upgrade.module.json');let x=copy();const f=x.modules[0].files.find(f=>f.path.endsWith('/RetailAccess.java'));const p=path.join(target,...f.path.split('/'));fs.appendFileSync(p,'\n// custom local source\n');const before=fs.readFileSync(p);f.content=Buffer.from('// proposed upgrade').toString('base64');f.sha256=crypto.createHash('sha256').update(Buffer.from(f.content,'base64')).digest('hex');fs.writeFileSync(file,JSON.stringify(x));assert.throws(()=>main(['import','--target',target,'--file',file]),/Local file changed/);assert.deepEqual(fs.readFileSync(p),before);});
 test('incompatible core rejected without writing business files',()=>{const target=path.join(fixture,'wrong-core');fs.mkdirSync(target);fs.writeFileSync(path.join(target,'module-platform.json'),JSON.stringify({importContractVersion:1,coreApiVersion:'1.0.0'}));assert.throws(()=>main(['import','--target',target,'--file',path.join(fixture,'suite.module.json')]),/Incompatible/);assert.equal(fs.readdirSync(target).length,1);});
+test('current CRM export owns its migration and selective import installs pipeline',()=>{
+ const file=path.join(fixture,'current-crm.module.json'),target=path.join(fixture,'crm-core');
+ main(['pack','--out',file]);
+ const current=JSON.parse(fs.readFileSync(file,'utf8'));
+ const migration='backend/src/main/resources/db/migration/V34__crm_leads_opportunities.sql';
+ assert.deepEqual(current.modules.filter(m=>m.files.some(f=>f.path===migration)).map(m=>m.key),['aicrm-crm']);
+ main(['export-core','--target',target]);
+ main(['import','--target',target,'--file',file,'--modules','aicrm-crm']);
+ assert(fs.existsSync(path.join(target,migration)));
+ assert(fs.existsSync(path.join(target,'backend/src/main/java/vn/aicrm/crm/CrmPipeline.java')));
+ const state=JSON.parse(fs.readFileSync(path.join(target,'module-platform.json'),'utf8'));
+ assert(state.installedModules.find(m=>m.key==='aicrm-crm').views.includes('retail-opportunities'));
+ assert(!state.installedModules.some(m=>m.key==='aicrm-sales'));
+});

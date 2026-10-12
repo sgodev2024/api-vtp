@@ -55,6 +55,8 @@ public class RetailModule implements ModuleContributor, ApplicationRunner {
       {"master-customers","Khách hàng","users","READ","retail-partner-master"},
       {"master-partners","Đối tác","users","READ","retail-partner-master"},
       {"customers","Khách hàng","users","CRM","retail-crm"},
+      {"leads","Khách hàng tiềm năng","users","CRM","retail-crm"},
+      {"opportunities","Cơ hội","activity","CRM","retail-crm"},
       {"cashflow","Thu chi","database","FINANCE","retail-accounting"},
       {"debt","Công nợ","clipboard-check","FINANCE","retail-accounting"},
       {"reports","Báo cáo","activity","REPORT","retail-reports"},
