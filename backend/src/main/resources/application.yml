@@ -50,4 +50,9 @@ core:
   jobs.initial-delay-ms: ${CORE_JOBS_INITIAL_DELAY_MS:4000}
   jobs.scheduler-poll-ms: ${CORE_JOBS_SCHEDULER_POLL_MS:5000}
   jobs.scheduler-initial-delay-ms: ${CORE_JOBS_SCHEDULER_INITIAL_DELAY_MS:5000}
+viettelpost:
+  api:
+    base-url: ${VIETTELPOST_API_URL:https://partnerdev.viettelpost.vn}
+  webhook:
+   secret: ${VIETTELPOST_WEBHOOK_SECRET:PtenjkwKjC7gIlDvodJSQAbF22W6DtrqVc3a275lHYEr}
 
