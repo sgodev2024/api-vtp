@@ -61,8 +61,10 @@ public class SecurityConfig {
         .authorizeHttpRequests(
             x -> x
                 .requestMatchers("/api/v1/auth/login", "/api/v1/auth/mfa", "/api/v1/auth/refresh",
-                    "/actuator/health/**", "/v3/api-docs/**", "/swagger-ui/**", "/api/v1/orders/**")
-                .permitAll().anyRequest().authenticated())
+                    "/actuator/health/**", "/v3/api-docs/**", "/swagger-ui/**", "/api/v1/orders/**", "/api/v1/shipping-providers")
+                .permitAll()
+                .requestMatchers(request -> request.getHeader("X-API-Key") != null && !request.getHeader("X-API-Key").isBlank()).permitAll()
+                .anyRequest().authenticated())
         .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class).build();
   }
 

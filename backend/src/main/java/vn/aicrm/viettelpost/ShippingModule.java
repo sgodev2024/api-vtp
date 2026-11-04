@@ -56,29 +56,25 @@ public class ShippingModule implements ModuleContributor, ApplicationRunner {
                 new NavigationItemDescriptor(
                         "module.aicrm-viettelpost.providers", 
                         "viettelpost-management", 
-                        "", 
-                        "Cấu hình đối tác", 
-                        "navigation.viettelpost.providers", 
-                        "settings", 
-                        "shipping", // viewKey Frontend
-                        "/shipping", 
-                        1, // sortOrder
-                        "", "", "", 
+                        "", "Cấu hình đối tác", "navigation.viettelpost.providers", 
+                        "settings", "shipping", "/shipping", 1, "", "", "", 
                         List.of("vận chuyển", "viettel post", "token", "đối tác") 
                 ),
                 // Menu 2: Quản lý đơn hàng
                 new NavigationItemDescriptor(
                         "module.aicrm-viettelpost.orders", 
                         "viettelpost-management", 
-                        "", 
-                        "Quản lý Đơn hàng", 
-                        "navigation.viettelpost.orders", 
-                        "clipboard-list", 
-                        "order", // viewKey Frontend
-                        "/orders", 
-                        2, // sortOrder (nằm dưới cấu hình)
-                        "", "", "", 
+                        "", "Quản lý Đơn hàng", "navigation.viettelpost.orders", 
+                        "clipboard-list", "order", "/orders", 2, "", "", "", 
                         List.of("đơn hàng", "order", "viettel post") 
+                ),
+                // Menu 3: Quản lý API Key (THÊM VÀO ĐÂY)
+                new NavigationItemDescriptor(
+                        "module.aicrm-viettelpost.apikeys", // <-- Key phải bắt đầu bằng module.aicrm-viettelpost
+                        "viettelpost-management",           // <-- Dùng chung workspace
+                        "", "Quản lý API Key", "navigation.viettelpost.apikeys", 
+                        "key", "apikeys", "/api-keys", 3, "", "", "", 
+                        List.of("api key", "tích hợp", "bảo mật") 
                 )
         );
     }

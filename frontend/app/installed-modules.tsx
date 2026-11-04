@@ -5,6 +5,7 @@ import PermissionBoundary from "./retail/permission-boundary";
 import { bootstrap } from "./retail/bootstrap";
 import OrderManagementPage from "./orders/OrderManagementPage";
 import ShippingConfigPage from "./shipping/ShippingConfigPage";
+import ApiKeyPage from "./api-keys/ApiKeyPage";
 
 const Entry0 = dynamic(() => import("./retail/permissions"), { ssr: false });
 function Workspace0(props: ModuleWorkspaceProps) { return <Entry0 {...props} />; }
@@ -63,5 +64,7 @@ export const installedModules: InstalledFrontendModule[] = [
       if (props.view === "order") return <OrderManagementPage />;
       return null;
     }
-  }
+  },
+  { key: "aicrm-shipping", views: ["apikeys"], Workspace: ApiKeyPage }
+  
 ];

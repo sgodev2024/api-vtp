@@ -9,18 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import vn.aicrm.shared.RetailAccess;
-import vn.aicrm.viettelpost.*;
-import vn.aicrm.viettelpost.dto.AddShippingProviderRequest;
-import vn.aicrm.viettelpost.dto.ShippingProviderResponse;
-import vn.aicrm.viettelpost.dto.UpdateAddressRequest;
+import vn.aicrm.viettelpost.dto.*;
 import vn.coreplatform.audit.AuditService;
 import vn.coreplatform.kernel.TenantContext;
 import vn.coreplatform.permission.PermissionService;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.HexFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-
 
 @Service
 public class ShippingProviderService {
@@ -41,90 +40,44 @@ public class ShippingProviderService {
 
     public List<ShippingProviderResponse> getAll(){
         UUID tenantId  = TenantContext.current();
-        List<ShippingProviderResponse> responses = shippingProviderRepository.getAll(tenantId);
-        return responses;
+        if (tenantId == null) throw new RuntimeException("Không xác định được Tenant");
+        return shippingProviderRepository.getAll(tenantId);
     }
+
 
     @Transactional
     public void updateEnabled(Long id, Boolean isEnabled) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID tenantId = retailAccess.tenant(authentication);
+        UUID actorId = retailAccess.actor(authentication);
+        permissionService.require(authentication, "shipping", "UPDATE", null);
+
+        boolean isUpdated = shippingProviderRepository.toggleShippingProvider(tenantId, actorId, id, isEnabled);
+        if (!isUpdated) throw new RuntimeException("Không tìm thấy nhà vận chuyển hoặc bạn không có quyền thao tác.");
+    }
+
+    @Transactional
+    public ShippingProviderResponse addShippingProvider(AddShippingProviderRequest request) {
+
+        if (!StringUtils.hasText(request.code()) || !StringUtils.hasText(request.name())) throw new IllegalArgumentException("Mã (code) và Tên (name) không được để trống");
+        if (!StringUtils.hasText(request.senderName()) || !StringUtils.hasText(request.senderPhone()) || !StringUtils.hasText(request.senderAddress())) throw new IllegalArgumentException("Tên, số điện thoại và địa chỉ người gửi không được để trống");
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID tenantId = retailAccess.tenant(authentication);
         UUID actorId = retailAccess.actor(authentication);
+        permissionService.require(authentication, "shipping", "CREATE", null);
 
-        permissionService.require(authentication, "shipping", "UPDATE", null);
-
-
-        boolean isUpdated = shippingProviderRepository.toggleShippingProvider(tenantId, actorId, id, isEnabled);
-
-        if (!isUpdated) {
-            throw new RuntimeException("Không tìm thấy nhà vận chuyển hoặc bạn không có quyền thao tác.");
-        }
-
-        // auditService.record(tenantId, actorId.toString(), null, "Update nable service", null, null, "Success", null);
-    }
-
-    @Transactional
-    public ShippingProviderResponse addShippingProvider(
-            AddShippingProviderRequest request
-    ) {
-        if (!StringUtils.hasText(request.code())
-                || !StringUtils.hasText(request.name())) {
-            throw new IllegalArgumentException(
-                    "Mã (code) và Tên (name) không được để trống"
-            );
-        }
-
-        if (!StringUtils.hasText(request.senderName())
-                || !StringUtils.hasText(request.senderPhone())
-                || !StringUtils.hasText(request.senderAddress())) {
-            throw new IllegalArgumentException(
-                    "Tên, số điện thoại và địa chỉ người gửi không được để trống"
-            );
-        }
-
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
-        UUID tenantId = retailAccess.tenant(authentication);
-        UUID actorId = retailAccess.actor(authentication);
-
-        permissionService.require(
-                authentication, "shipping", "CREATE", null
-        );
-
-        String normalizedCode =
-                request.code().trim().toUpperCase(Locale.ROOT);
-
+        String normalizedCode = request.code().trim().toUpperCase(Locale.ROOT);
         String trimmedName = request.name().trim();
         String senderName = request.senderName().trim();
         String senderPhone = request.senderPhone().trim();
         String senderAddress = request.senderAddress().trim();
 
         try {
-            Long newId = shippingProviderRepository.insert(
-                    tenantId, actorId, normalizedCode, trimmedName,
-                    senderName, senderPhone, senderAddress
-            );
-
-            return new ShippingProviderResponse(
-                    newId,
-                    normalizedCode,
-                    trimmedName,
-                    null,                
-                    false,                 
-                    request.senderName(),
-                    request.senderPhone(),
-                    request.senderAddress(),
-                    null                   
-        );
-
+            Long newId = shippingProviderRepository.insert(tenantId, actorId, normalizedCode, trimmedName, senderName, senderPhone, senderAddress);
+            return new ShippingProviderResponse(newId, normalizedCode, trimmedName, null, false, request.senderName(), request.senderPhone(), request.senderAddress(), null);
         } catch (DuplicateKeyException e) {
-            throw new RuntimeException(
-                    "Mã nhà vận chuyển '" + normalizedCode
-                            + "' đã tồn tại trên hệ thống.",
-                    e
-            );
+            throw new RuntimeException("Mã nhà vận chuyển '" + normalizedCode + "' đã tồn tại trên hệ thống.", e);
         }
     }
 
@@ -133,22 +86,38 @@ public class ShippingProviderService {
         UUID tenantId = TenantContext.current();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID actorID = retailAccess.actor(authentication);
-        
         permissionService.require(authentication, "shipping", "UPDATE",actorID);
 
         int updated = shippingProviderRepository.updateSenderAddress(tenantId, providerId, request, actorID);
-
-        if (updated == 0) {
-            throw new RuntimeException(
-                    "Không tìm thấy nhà vận chuyển hoặc bạn không có quyền cập nhật"
-            );
-        }
+        if (updated == 0) throw new RuntimeException("Không tìm thấy nhà vận chuyển hoặc bạn không có quyền cập nhật");
         return updated;
     } 
 
     public ShippingProviderResponse findById(Long providerId){
         UUID tenantId = TenantContext.current();
+        if (tenantId == null) throw new RuntimeException("Không xác định được Tenant");
         return shippingProviderRepository.getShippingProvider(tenantId, providerId);
     }
-    
+
+    public UUID findTenantIdByApiKey(String apiKey) {
+        try {
+            String prefix = apiKey.substring(0, Math.min(apiKey.length(), 12));
+            String hash = sha256(apiKey);
+            
+            return jdbcTemplate.queryForObject(
+                "SELECT tenant_id FROM identity.api_key WHERE prefix = ? AND key_hash = ? AND status = 'ACTIVE' AND (expires_at IS NULL OR expires_at > now())",
+                UUID.class, prefix, hash
+            );
+        } catch (Exception e) {
+            return null; // Trả về null nếu không tìm thấy
+        }
+    }
+
+    private String sha256(String value) {
+        try {
+            return HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8)));
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
 }
