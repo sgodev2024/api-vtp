@@ -23,25 +23,20 @@ public class OrderRepository {
     public BaseOrderResponse initOrder(
             UUID orderId,
             CreateOrderRequest request,
-            UUID tenantId,
-            String senderFullName, 
-            String senderPhone,    
-            String senderAddress   
+            UUID tenantId 
     ) {
-
         String orderCode = "ORD-" + orderId.toString().substring(0, 8).toUpperCase();
 
         String sql = """
             INSERT INTO retail.orders (
-                id, tenant_id, order_code, status, shipping_providers_id, total_amount, product_name,
+                id, tenant_id, order_code, status, total_amount, product_name,
                 receiver_name, receiver_phone, receiver_address,
-                sender_full_name, sender_phone, sender_address, money_collection
+                money_collection
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             RETURNING
                 id, order_code, status,
                 receiver_name, receiver_phone, receiver_address,
-                sender_full_name, sender_phone, sender_address,
                 product_name, total_amount, money_collection
             """;
 
@@ -51,36 +46,23 @@ public class OrderRepository {
                 rs.getObject("id", UUID.class),
                 rs.getString("order_code"),
                 rs.getString("status"),
-                
-                // Sender
-                rs.getString("sender_full_name"),
-                rs.getString("sender_phone"),
-                rs.getString("sender_address"),
-
-                // Receiver
                 rs.getString("receiver_name"),
                 rs.getString("receiver_phone"),
                 rs.getString("receiver_address"),
-
-                // Product
                 rs.getString("product_name"),
                 rs.getBigDecimal("total_amount"),
                 rs.getBigDecimal("money_collection")
             ),
-            orderId,
-            tenantId,
-            orderCode,
-            "PENDING",
-            request.shippingProviderId(),
-            request.totalPrice(),
-            request.productName(),
-            request.receiveFullName(), 
-            request.receiverPhone(),     
-            request.receiverAddress(), 
-            senderFullName,            
-            senderPhone,                
-            senderAddress,              
-            request.moneyCollection()
+            orderId,                          // 1. id
+            tenantId,                         // 2. tenant_id
+            orderCode,                        // 3. order_code
+            "PENDING",                        // 4. status
+            request.totalPrice(),             // 5. total_amount
+            request.productName(),            // 6. product_name
+            request.receiveFullName(),        // 7. receiver_name
+            request.receiverPhone(),          // 8. receiver_phone
+            request.receiverAddress(),        // 9. receiver_address
+            request.moneyCollection()         // 10. money_collection
         );
     }
 

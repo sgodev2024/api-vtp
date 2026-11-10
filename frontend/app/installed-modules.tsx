@@ -44,27 +44,15 @@ const Entry11 = dynamic(() => import("./shipping/ShippingConfigPage"), { ssr: fa
 function Workspace11(props: ModuleWorkspaceProps) { return <Entry11 />; }
 
 export const installedModules: InstalledFrontendModule[] = [
-  // { key: "aicrm-retail", views: ["retail-permissions"], Workspace: Workspace0 },
-  // { key: "aicrm-products", views: ["retail-products", "retail-product-groups", "retail-product-brands", "retail-product-units", "retail-uom-conversions", "retail-product-attributes"], Workspace: Workspace1 },
-  // { key: "aicrm-partners", views: ["retail-master-customers", "retail-master-partners"], Workspace: Workspace2 },
-  // { key: "aicrm-operations", views: ["retail-locations", "retail-setup", "retail-approvals"], Workspace: Workspace3, bootstrap },
-  // { key: "aicrm-accounting", views: ["retail-cashflow", "retail-debt"], Workspace: Workspace4 },
-  // { key: "aicrm-stock", views: ["retail-stock", "retail-warehouses", "retail-warehouse-config", "retail-transfer"], Workspace: Workspace5, mobile: { "section": "retail-stock", "label": "Kho", "icon": "layers", "preferred": ["retail-stock", "retail-warehouses"] } },
-  // { key: "aicrm-sales", views: ["retail-pos", "retail-orders", "retail-sales-customers", "retail-returns"], Workspace: Workspace6, mobile: { "section": "retail", "label": "Bán hàng", "icon": "shopping-bag", "preferred": ["retail-pos", "retail-orders"] } },
-  // { key: "aicrm-purchase", views: ["retail-purchase", "retail-suppliers"], Workspace: Workspace7, mobile: { "section": "retail-purchase", "label": "Mua hàng", "icon": "download", "preferred": ["retail-purchase"] } },
-  // { key: "aicrm-crm", views: ["retail-customers", "retail-leads", "retail-opportunities"], Workspace: Workspace8 },
-  // { key: "aicrm-overview", views: ["retail-overview"], Workspace: Workspace9, mobile: { "section": "retail-overview", "label": "Tổng quan", "icon": "home", "preferred": ["retail-overview"] } },
-  // { key: "aicrm-reports", views: ["retail-reports"], Workspace: Workspace10 },  
+  // Gộp chung cả 3 view vào 1 key module duy nhất
   { 
     key: "aicrm-viettelpost", 
-    views: ["shipping", "order"], 
+    views: ["shipping", "order", "apikeys"], 
     Workspace: (props) => {
-      // Tùy theo viewKey mà render component tương ứng
       if (props.view === "shipping") return <ShippingConfigPage />;
       if (props.view === "order") return <OrderManagementPage />;
+      if (props.view === "apikeys") return <ApiKeyPage />;
       return null;
     }
-  },
-  { key: "aicrm-shipping", views: ["apikeys"], Workspace: ApiKeyPage }
-  
+  }
 ];

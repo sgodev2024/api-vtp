@@ -5,7 +5,7 @@ CREATE TABLE retail.orders (
     order_code VARCHAR(50) NOT NULL,
 
     status VARCHAR(50) NOT NULL,
-    shipping_providers_id BIGINT NOT NULL,
+    shipping_providers_id BIGINT,
     product_name VARCHAR(255),
     total_amount NUMERIC(15, 2),
 

@@ -1,24 +1,21 @@
-package vn.aicrm.viettelpost.order.dto;
+    package vn.aicrm.viettelpost.order.dto;
 
-import java.math.BigDecimal;
-import java.util.UUID;
+    import java.math.BigDecimal;
+    import java.util.UUID;
 
-public record BaseOrderResponse(    
-    UUID id,
-    String orderCode,
-    String status,
-    String senderName,
-    String senderPhone,
+    public record BaseOrderResponse(    
+        UUID id,
+        String orderCode,
+        String status,
+        
+        String receiverName,
+        String receiverPhone,
+        String receiverAddress,
 
-    String senderAddress,
-    String receiverName,
-    String receiverPhone,
-    String receiverAddress,
-
-    String productName,
-    
-    BigDecimal totalPrice,
-    BigDecimal moneyCollection
-) {
-    
-}
+        String productName,
+        
+        BigDecimal totalPrice,
+        BigDecimal moneyCollection
+    ) {
+        
+    }

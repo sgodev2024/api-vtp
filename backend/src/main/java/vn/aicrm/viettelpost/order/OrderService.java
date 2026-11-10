@@ -41,20 +41,19 @@ public class OrderService {
     private final ObjectMapper objectMapper;
 
     @Transactional
-    public ViettelPostResponse<ViettelPostOrderResponse> createVTPOrder(CreateOrderRequest request){
+    public ViettelPostResponse<ViettelPostOrderResponse> createVTPOrder(UUID orderId, String vtpOrderService){
         
         UUID tenantId = TenantContext.current();
         if (tenantId == null) {
             throw new OrderException("Không xác định được Tenant. Vui lòng đăng nhập hoặc cung cấp API Key.");
         }
 
-        ShippingProviderResponse shippingProvider = shippingProviderService.findById(request.shippingProviderId());
-        UUID orderId = UUID.randomUUID();
-
-        BaseOrderResponse baseOrderResponse = orderRepository.initOrder(orderId, request, tenantId, shippingProvider.senderName(), shippingProvider.senderPhone(), shippingProvider.senderAddress());
-
         OrderResponse orderResponse = orderRepository.findById(tenantId, orderId)
             .orElseThrow(()-> new OrderException("Không tìm thấy order!"));
+
+        if (orderResponse.status() != OrderStatus.PENDING) {
+            throw new OrderException("Đơn hàng đã được xử lý hoặc không ở trạng thái PENDING.");
+        }
         
         long moneyCollection = orderResponse.moneyCollection() != null ? orderResponse.moneyCollection() : 0L;
         int orderPayment = 1; 
@@ -64,16 +63,16 @@ public class OrderService {
 
         ViettelPostOrderRequest viettelPostOrderRequest = new ViettelPostOrderRequest(
                 orderResponse.orderCode(), 
-                shippingProvider.senderName(), 
-                shippingProvider.senderPhone(), 
-                shippingProvider.senderAddress(), 
+                orderResponse.senderFullName(),
+                orderResponse.senderPhone(),
+                orderResponse.senderAddress(),
                 orderResponse.receiverName(),
                 orderResponse.receiverPhone(), 
                 orderResponse.receiverAddress(), 
                 orderResponse.productName(), 
                 orderResponse.moneyCollection(),
                 orderPayment, 
-                "VTK"
+                vtpOrderService
         );
         
         ViettelPostResponse<ViettelPostOrderResponse>  response = viettelPostService.createViettelPostOrder(orderResponse.shippingProvidersId(), viettelPostOrderRequest);
@@ -100,7 +99,7 @@ public class OrderService {
                                 tenantId,
                                 orderId,
                                 vtpData.orderNumber(),          
-                                "VTK",                   
+                                vtpOrderService,                   
                                 vtpData.moneyTotal(),           
                                 vtpData.moneyTotalFee(),        
                                 vtpData.moneyFee(),             
@@ -108,7 +107,7 @@ public class OrderService {
                                 vtpData.moneyVat(),             
                                 vtpData.exchangeWeight(),       
                                 vtpData.sortCode(),             
-                                requestJson,
+                                requestJson,   
                                 responseJson,
                                 status
             );
@@ -120,6 +119,63 @@ public class OrderService {
             throw new ViettelPostApiException("Tạo đơn VTP thất bại: " + errorMessage);
         }
     }
+
+    @Transactional
+    public BaseOrderResponse initVtpOrder(CreateOrderRequest request){
+        UUID tenantId = TenantContext.current();
+        if (tenantId == null) {
+            throw new OrderException("Không xác định được Tenant. Vui lòng đăng nhập hoặc cung cấp API Key.");
+        }
+
+        UUID orderId =  UUID.randomUUID();
+        log.info("Dang tao don!");
+        BaseOrderResponse baseOrder = orderRepository.initOrder(orderId, request, tenantId);
+
+        return baseOrder;
+    }
+
+    @Transactional
+    public GetViettelPostServiceResponse getVtpService(UUID orderId, Long shippingProviderId){
+        UUID tenantId = TenantContext.current();
+        if (tenantId == null) {
+            throw new OrderException("Không xác định được Tenant. Vui lòng đăng nhập hoặc cung cấp API Key.");
+        }
+
+        ShippingProviderResponse shippingProviderResponse = shippingProviderService.findById(shippingProviderId);
+        OrderResponse orderResponse = getOrder(orderId);
+
+        GetViettelPostServiceRequest viettelPostServiceRequest = new GetViettelPostServiceRequest(
+                                                                        shippingProviderResponse.senderAddress(), 
+                                                                        orderResponse.receiverAddress(),
+                                                                        "HH", 
+                                                                        50L,
+                                                                        1L
+                                                                    );
+        GetViettelPostServiceResponse response = viettelPostService.getViettelPostService(shippingProviderId, viettelPostServiceRequest);
+        
+        if(response != null && response.result() != null && !response.result().isEmpty()){
+            
+            // Cập nhật lại thông tin người gửi và nhà vận chuyển vào DB
+            jdbcTemplate.update("""
+                    UPDATE retail.orders
+                    SET sender_full_name = ?,
+                        sender_phone = ?,
+                        sender_address = ?,
+                        shipping_providers_id = ?,
+                        updated_at = NOW()
+                    WHERE id = ? AND tenant_id = ?
+                    """, 
+                    shippingProviderResponse.senderName(),
+                    shippingProviderResponse.senderPhone(),
+                    shippingProviderResponse.senderAddress(),
+                    shippingProviderId,
+                    orderId,
+                    tenantId
+            );
+        }
+        return response;
+    }
+
 
     public OrderResponse getOrder(UUID orderId){
         UUID tenantId = TenantContext.current();

@@ -19,7 +19,6 @@ public class OrderController {
     
     private final OrderService orderService;
 
-    // Hàm hỗ trợ lấy Tenant ID: Ưu tiên JWT, sau đó đến API Key
     private UUID resolveTenantId(String apiKey) {
         // 1. Ưu tiên JWT Token
         UUID tenantId = TenantContext.current();
@@ -36,20 +35,74 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createVTPOrder(
-            @RequestBody CreateOrderRequest request,
+    public ResponseEntity<?> initOrder(
+            @RequestBody CreateOrderRequest request, 
             @RequestHeader(value = "X-API-Key", required = false) String apiKey) {
         
         UUID tenantId = resolveTenantId(apiKey);
         if (tenantId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Chưa xác định được Tenant. Vui lòng cung cấp JWT hoặc X-API-Key."));
-        }
+        }  
         
         try {
             TenantContext.set(tenantId);
+            BaseOrderResponse baseOrderResponse = orderService.initVtpOrder(request);
             
-            ViettelPostResponse<ViettelPostOrderResponse> response = orderService.createVTPOrder(request);
+            if (baseOrderResponse != null) {
+                return ResponseEntity.status(HttpStatus.CREATED).body(baseOrderResponse);
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(Map.of("error", "Không thể khởi tạo đơn hàng. Vui lòng kiểm tra lại trường dữ liệu!"));
+            }
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                "error", "Lỗi hệ thống",
+                "details", e.getMessage()
+            ));
+        } finally {
+            TenantContext.clear(); 
+        }
+    }
+
+    @PostMapping("/{orderId}/vtp-service")
+    public ResponseEntity<?> getAvailableVtpService(
+            @PathVariable UUID orderId,
+            @RequestParam Long shippingProviderId) {
+        
+        // Lấy tenantId từ JWT Token (Admin đã đăng nhập)
+        UUID tenantId = TenantContext.current();
+        if (tenantId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Chưa xác định được Tenant. Vui lòng đăng nhập."));
+        }
+
+        try {
+            GetViettelPostServiceResponse response = orderService.getVtpService(orderId, shippingProviderId);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                "error", "Lỗi hệ thống",
+                "details", e.getMessage()
+            ));
+        }
+    }
+
+    @PostMapping("/{orderId}/vtp")
+    public ResponseEntity<?> createVTPOrder(
+            @PathVariable UUID orderId,
+            @RequestParam String vtpOrderService) {
+        
+        UUID tenantId = TenantContext.current();
+        if (tenantId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Chưa xác định được Tenant. Vui lòng đăng nhập."));
+        }
+
+        try {
+            // Gọi service với orderId và mã dịch vụ (VD: "VTK", "VCN")
+            ViettelPostResponse<ViettelPostOrderResponse> response = orderService.createVTPOrder(orderId, vtpOrderService);
             return ResponseEntity.ok(response);
             
         } catch (RestClientResponseException e) {
@@ -63,8 +116,6 @@ public class OrderController {
                 "error", "Lỗi hệ thống",
                 "details", e.getMessage()
             ));
-        } finally {
-            TenantContext.clear(); 
         }
     }
 
