@@ -28,6 +28,7 @@ public record OrderResponse(
     String vtpServiceId,
 
     String vtpOrderNumber,
+    Integer vtpOrderStatus,
 
     Long moneyCollection,
     Long moneyTotal,

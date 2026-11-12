@@ -34,90 +34,123 @@ public class OrderController {
         return null;
     }
 
-    @PostMapping
-    public ResponseEntity<?> initOrder(
-            @RequestBody CreateOrderRequest request, 
+    @PostMapping("/auto")
+    public ResponseEntity<?> autoCreateOrder(
+            @RequestBody CreateOrderRequest request,
             @RequestHeader(value = "X-API-Key", required = false) String apiKey) {
-        
+
         UUID tenantId = resolveTenantId(apiKey);
         if (tenantId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Chưa xác định được Tenant. Vui lòng cung cấp JWT hoặc X-API-Key."));
-        }  
-        
+        }
+
         try {
             TenantContext.set(tenantId);
-            BaseOrderResponse baseOrderResponse = orderService.initVtpOrder(request);
-            
-            if (baseOrderResponse != null) {
-                return ResponseEntity.status(HttpStatus.CREATED).body(baseOrderResponse);
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(Map.of("error", "Không thể khởi tạo đơn hàng. Vui lòng kiểm tra lại trường dữ liệu!"));
-            }
-            
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                "error", "Lỗi hệ thống",
-                "details", e.getMessage()
-            ));
-        } finally {
-            TenantContext.clear(); 
-        }
-    }
+            // Gọi hàm service tự động toàn bộ quy trình
+            ViettelPostResponse<ViettelPostOrderResponse> response = orderService.autoCreateViettelPostOrder(request);
+            return ResponseEntity.ok(response); // Hoặc HttpStatus.CREATED nếu muốn trả 201
 
-    @PostMapping("/{orderId}/vtp-service")
-    public ResponseEntity<?> getAvailableVtpService(
-            @PathVariable UUID orderId,
-            @RequestParam Long shippingProviderId) {
-        
-        // Lấy tenantId từ JWT Token (Admin đã đăng nhập)
-        UUID tenantId = TenantContext.current();
-        if (tenantId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Chưa xác định được Tenant. Vui lòng đăng nhập."));
-        }
-
-        try {
-            GetViettelPostServiceResponse response = orderService.getVtpService(orderId, shippingProviderId);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                "error", "Lỗi hệ thống",
-                "details", e.getMessage()
-            ));
-        }
-    }
-
-    @PostMapping("/{orderId}/vtp")
-    public ResponseEntity<?> createVTPOrder(
-            @PathVariable UUID orderId,
-            @RequestParam String vtpOrderService) {
-        
-        UUID tenantId = TenantContext.current();
-        if (tenantId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Chưa xác định được Tenant. Vui lòng đăng nhập."));
-        }
-
-        try {
-            // Gọi service với orderId và mã dịch vụ (VD: "VTK", "VCN")
-            ViettelPostResponse<ViettelPostOrderResponse> response = orderService.createVTPOrder(orderId, vtpOrderService);
-            return ResponseEntity.ok(response);
-            
         } catch (RestClientResponseException e) {
             return ResponseEntity.status(e.getStatusCode()).body(Map.of(
-                "error", "Lỗi từ Viettel Post",
-                "statusCode", e.getStatusCode().value(),
-                "details", e.getResponseBodyAsString()
+                    "error", "Lỗi từ Viettel Post",
+                    "statusCode", e.getStatusCode().value(),
+                    "details", e.getResponseBodyAsString()
             ));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
-                "error", "Lỗi hệ thống",
-                "details", e.getMessage()
+                    "error", "Lỗi hệ thống",
+                    "details", e.getMessage()
             ));
+        } finally {
+            TenantContext.clear();
         }
     }
+
+    // @PostMapping
+    // public ResponseEntity<?> initOrder(
+    //         @RequestBody CreateOrderRequest request, 
+    //         @RequestHeader(value = "X-API-Key", required = false) String apiKey) {
+        
+    //     UUID tenantId = resolveTenantId(apiKey);
+    //     if (tenantId == null) {
+    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+    //                 .body(Map.of("error", "Chưa xác định được Tenant. Vui lòng cung cấp JWT hoặc X-API-Key."));
+    //     }  
+        
+    //     try {
+    //         TenantContext.set(tenantId);
+    //         BaseOrderResponse baseOrderResponse = orderService.initVtpOrder(request);
+            
+    //         if (baseOrderResponse != null) {
+    //             return ResponseEntity.status(HttpStatus.CREATED).body(baseOrderResponse);
+    //         } else {
+    //             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    //                     .body(Map.of("error", "Không thể khởi tạo đơn hàng. Vui lòng kiểm tra lại trường dữ liệu!"));
+    //         }
+            
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+    //             "error", "Lỗi hệ thống",
+    //             "details", e.getMessage()
+    //         ));
+    //     } finally {
+    //         TenantContext.clear(); 
+    //     }
+    // }
+
+    // @PostMapping("/{orderId}/vtp-service")
+    // public ResponseEntity<?> getAvailableVtpService(
+    //         @PathVariable UUID orderId,
+    //         @RequestParam Long shippingProviderId) {
+        
+    //     // Lấy tenantId từ JWT Token (Admin đã đăng nhập)
+    //     UUID tenantId = TenantContext.current();
+    //     if (tenantId == null) {
+    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+    //                 .body(Map.of("error", "Chưa xác định được Tenant. Vui lòng đăng nhập."));
+    //     }
+
+    //     try {
+    //         GetViettelPostServiceResponse response = orderService.getVtpService(orderId, shippingProviderId);
+    //         return ResponseEntity.ok(response);
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+    //             "error", "Lỗi hệ thống",
+    //             "details", e.getMessage()
+    //         ));
+    //     }
+    // }
+
+    // @PostMapping("/{orderId}/vtp")
+    // public ResponseEntity<?> createVTPOrder(
+    //         @PathVariable UUID orderId,
+    //         @RequestParam String vtpOrderService) {
+        
+    //     UUID tenantId = TenantContext.current();
+    //     if (tenantId == null) {
+    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+    //                 .body(Map.of("error", "Chưa xác định được Tenant. Vui lòng đăng nhập."));
+    //     }
+
+    //     try {
+    //         // Gọi service với orderId và mã dịch vụ (VD: "VTK", "VCN")
+    //         ViettelPostResponse<ViettelPostOrderResponse> response = orderService.createVTPOrder(orderId, vtpOrderService);
+    //         return ResponseEntity.ok(response);
+            
+    //     } catch (RestClientResponseException e) {
+    //         return ResponseEntity.status(e.getStatusCode()).body(Map.of(
+    //             "error", "Lỗi từ Viettel Post",
+    //             "statusCode", e.getStatusCode().value(),
+    //             "details", e.getResponseBodyAsString()
+    //         ));
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+    //             "error", "Lỗi hệ thống",
+    //             "details", e.getMessage()
+    //         ));
+    //     }
+    // }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrder(

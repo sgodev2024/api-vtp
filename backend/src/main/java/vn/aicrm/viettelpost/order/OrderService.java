@@ -93,7 +93,7 @@ public class OrderService {
                 responseJson = "{}";
             }
 
-            String status = response.status() == 200 ? OrderStatus.SHIPPING.name() : OrderStatus.ERROR.name();
+            String status = response.status() == 200 ? OrderStatus.INITED.name() : OrderStatus.ERROR.name();
 
             orderRepository.updateVtpOrderInfo(
                                 tenantId,
@@ -132,6 +132,48 @@ public class OrderService {
         BaseOrderResponse baseOrder = orderRepository.initOrder(orderId, request, tenantId);
 
         return baseOrder;
+    }
+
+    @Transactional
+    public ViettelPostResponse<ViettelPostOrderResponse> autoCreateViettelPostOrder(CreateOrderRequest request) {
+        
+        UUID tenantId = TenantContext.current();
+        if (tenantId == null) {
+            throw new OrderException("Không xác định được Tenant. Vui lòng đăng nhập hoặc cung cấp API Key.");
+        }
+
+        Long shippingProviderId;
+        try {
+            shippingProviderId = jdbcTemplate.queryForObject(
+                "SELECT id FROM retail.shipping_providers WHERE tenant_id = ? AND is_enabled = true ORDER BY id ASC LIMIT 1",
+                Long.class, tenantId
+            );
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
+            throw new OrderException("Hệ thống chưa có nhà vận chuyển nào được bật. Vui lòng cấu hình trước.");
+        }
+
+        // BƯỚC 2: Tự động khởi tạo đơn hàng nháp trong DB (Trạng thái PENDING)
+        BaseOrderResponse baseOrder = initVtpOrder(request);
+        UUID orderId = baseOrder.id();
+        log.info("Đã tạo đơn hàng nháp: {}", baseOrder.orderCode());
+
+        // BƯỚC 3: Lấy danh sách dịch vụ từ Viettel Post
+        GetViettelPostServiceResponse serviceResponse = getVtpService(orderId, shippingProviderId);
+        
+        if (serviceResponse == null || serviceResponse.result() == null || serviceResponse.result().isEmpty()) {
+            throw new OrderException("Không có dịch vụ vận chuyển nào khả dụng cho tuyến đường này.");
+        }
+
+        // BƯỚC 4: Tìm dịch vụ có giá cước rẻ nhất (GIA_CUOC nhỏ nhất)
+        GetViettelPostServiceResponse.ServiceResult cheapestService = serviceResponse.result().stream()
+                .min(java.util.Comparator.comparing(GetViettelPostServiceResponse.ServiceResult::giaCuoc))
+                .orElseThrow(() -> new OrderException("Không tìm thấy dịch vụ vận chuyển phù hợp."));
+
+        String selectedServiceCode = cheapestService.maDvChinh();
+        log.info("Tự động chọn dịch vụ VTP rẻ nhất: {} - Cước phí: {}", selectedServiceCode, cheapestService.giaCuoc());
+
+        // BƯỚC 5: Gọi API tạo đơn hàng trên Viettel Post với dịch vụ đã chọn
+        return createVTPOrder(orderId, selectedServiceCode);
     }
 
     @Transactional
@@ -250,7 +292,8 @@ public class OrderService {
             case 501 -> OrderStatus.DELIVERED;
             case 504 -> OrderStatus.RETURNED;
             case 100, 102, 103, 104, 105 -> OrderStatus.PICKING;
-            case 200, 202, 300, 400, 500, 508, 509, 550 -> OrderStatus.SHIPPING;
+            case 400 -> OrderStatus.PROCESSING; 
+            case 200, 202, 300, 500, 508, 509, 550 -> OrderStatus.SHIPPING;
             default -> null;
         };
     }

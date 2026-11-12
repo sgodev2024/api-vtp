@@ -23,6 +23,7 @@ type OrderDetail = OrderSummary & {
   senderPhone: string;
   senderAddress: string;
   vtpServiceId: string;
+  vtpOrderStatus: number | null; // <-- THÊM TRƯỜNG NÀY
   moneyCollection: number;
   moneyTotal: number;
   moneyTotalFee: number;
@@ -48,23 +49,6 @@ type PageResponse<T> = {
   totalPages: number;
 };
 
-type ShippingProvider = {
-  id: number;
-  code: string;
-  name: string;
-  isEnable: boolean;
-  senderName: string | null;   
-  senderPhone: string | null;   
-  senderAddress: string | null; 
-};
-
-type VtpService = {
-  maDvChinh: string;
-  tenDichVu: string;
-  giaCuoc: number;
-  thoiGian: string;
-};
-
 export default function OrderManagementPage() {
   const [orders, setOrders] = useState<OrderSummary[]>([]);
   const [pageData, setPageData] = useState({ page: 1, totalPages: 1, totalElements: 0 });
@@ -73,15 +57,6 @@ export default function OrderManagementPage() {
 
   // State cho Modal Chi tiết
   const [selectedOrder, setSelectedOrder] = useState<OrderDetail | null>(null);
-
-  // State cho phần VTP
-  const [providers, setProviders] = useState<ShippingProvider[]>([]);
-  const [selectedProviderId, setSelectedProviderId] = useState<number | "">("");
-  const [vtpServices, setVtpServices] = useState<VtpService[]>([]);
-  const [selectedVtpService, setSelectedVtpService] = useState<string>("");
-  const [loadingServices, setLoadingServices] = useState(false);
-  const [creatingOrder, setCreatingOrder] = useState(false);
-  const [vtpError, setVtpError] = useState("");
 
   const API_URL = process.env.NEXT_PUBLIC_CORE_API_URL ?? "http://localhost:8185";
 
@@ -120,86 +95,17 @@ export default function OrderManagementPage() {
     }
   }, []);
 
-  // --- Load danh sách Nhà vận chuyển ---
-  const loadProviders = async () => {
-    try {
-      const res = await apiRequest(`/api/v1/shipping-providers`);
-      setProviders(res as ShippingProvider[]);
-    } catch (err: any) {
-      console.error("Lỗi tải nhà vận chuyển", err);
-    }
-  };
-
   useEffect(() => {
     void loadOrders(1);
-    void loadProviders();
   }, [loadOrders]);
 
   // --- Xem chi tiết đơn hàng ---
   const viewOrderDetail = async (orderId: string) => {
-    setVtpServices([]);
-    setSelectedVtpService("");
-    setVtpError("");
-    setSelectedProviderId(""); // Reset provider
     try {
       const res = await apiRequest(`/api/v1/orders/${orderId}`);
       setSelectedOrder(res as OrderDetail);
     } catch (err: any) {
       alert("Lỗi tải chi tiết: " + err.message);
-    }
-  };
-
-  // --- Lấy danh sách dịch vụ VTP ---
-  const fetchVtpServices = async () => {
-    if (!selectedOrder || !selectedProviderId) {
-      setVtpError("Vui lòng chọn nhà vận chuyển trước.");
-      return;
-    }
-    setLoadingServices(true);
-    setVtpError("");
-    setVtpServices([]);
-    setSelectedVtpService("");
-    try {
-      const res = await apiRequest(`/api/v1/orders/${selectedOrder.id}/vtp-service?shippingProviderId=${selectedProviderId}`, {
-        method: "POST"
-      });
-      
-      const rawServices = res.result || res.RESULT; 
-      
-      if (rawServices && rawServices.length > 0) {
-        const mappedServices = rawServices.map((svc: any) => ({
-          maDvChinh: svc.MA_DV_CHINH,
-          tenDichVu: svc.TEN_DICHVU,
-          giaCuoc: svc.GIA_CUOC,
-          thoiGian: svc.THOI_GIAN
-        }));
-        setVtpServices(mappedServices);
-      } else {
-        setVtpError("Không có dịch vụ nào khả dụng.");
-      }
-    } catch (err: any) {
-      setVtpError(err.message);
-    } finally {
-      setLoadingServices(false);
-    }
-  };
-
-  // --- Tạo đơn VTP ---
-  const handleCreateVtpOrder = async () => {
-    if (!selectedOrder || !selectedVtpService) return;
-    setCreatingOrder(true);
-    setVtpError("");
-    try {
-      await apiRequest(`/api/v1/orders/${selectedOrder.id}/vtp?vtpOrderService=${selectedVtpService}`, {
-        method: "POST"
-      });
-      alert("Tạo đơn hàng trên Viettel Post thành công!");
-      setSelectedOrder(null);
-      void loadOrders(pageData.page);
-    } catch (err: any) {
-      setVtpError(err.message);
-    } finally {
-      setCreatingOrder(false);
     }
   };
 
@@ -211,6 +117,7 @@ export default function OrderManagementPage() {
   const getStatusBadge = (status: string) => {
     const styles: Record<string, { bg: string, color: string, label: string }> = {
       PENDING: { bg: "#fef9c3", color: "#854d0e", label: "Chờ xử lý" },
+      INITED: { bg: "#dbeafe", color: "#1eaf23", label: "Đã tạo đơn" },
       SHIPPING: { bg: "#dbeafe", color: "#1e40af", label: "Đang giao" },
       DELIVERED: { bg: "#dcfce7", color: "#166534", label: "Thành công" },
       CANCELED: { bg: "#fee2e2", color: "#991b1b", label: "Đã hủy" },
@@ -218,6 +125,37 @@ export default function OrderManagementPage() {
     };
     const s = styles[status] || { bg: "#f1f5f9", color: "#475569", label: status };
     return <span style={{ padding: "4px 8px", borderRadius: "12px", fontSize: "12px", fontWeight: "500", background: s.bg, color: s.color }}>{s.label}</span>;
+  };
+
+  // --- Hàm map mã trạng thái VTP ra Tiếng Việt ---
+  const getVtpStatusLabel = (statusCode: number | null) => {
+    if (statusCode == null) return "Chưa có cập nhật";
+    
+    const vtpStatusMap: Record<number, string> = {
+      100: "Chờ lấy hàng",
+      101: "Đã tiếp nhận",
+      102: "Đang lấy hàng",
+      103: "Đã lấy hàng",
+      104: "Đang nhập kho",
+      105: "Đã nhập kho",
+      200: "Đang luân chuyển",
+      201: "Đã giao bưu tá",
+      202: "Đang giao hàng",
+      300: "Giao hàng thành công (1 phần)",
+      400: "Chờ xử lý",
+      500: "Đang phát",
+      501: "Giao hàng thành công",
+      503: "Hủy vận đơn",
+      504: "Chuyển hoàn",
+      505: "Đã chuyển hoàn",
+      506: "Đã nhận chuyển hoàn",
+      508: "Phát lại",
+      509: "Chờ chuyển hoàn",
+      550: "Đang chuyển hoàn",
+      [-15]: "Từ chối nhận",
+    };
+
+    return vtpStatusMap[statusCode] || `Mã VTP: ${statusCode}`;
   };
 
   return (
@@ -323,100 +261,26 @@ export default function OrderManagementPage() {
 
             <div style={{ marginTop: "24px" }}>
               <h3 style={{ fontSize: "16px", borderBottom: "2px solid #f59e0b", paddingBottom: "4px", display: "inline-block" }}>Thông tin vận chuyển</h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px", background: "#f8fafc", padding: "16px", borderRadius: "8px", marginTop: "8px" }}>
+              {/* Đã sửa thành 4 cột để chứa thêm trạng thái VTP */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "16px", background: "#f8fafc", padding: "16px", borderRadius: "8px", marginTop: "8px" }}>
                 <div><span style={{ color: "#64748b", fontSize: "13px" }}>Mã vận đơn VTP:</span><br/><strong>{selectedOrder.vtpOrderNumber || "Chưa có"}</strong></div>
                 <div><span style={{ color: "#64748b", fontSize: "13px" }}>Mã dịch vụ:</span><br/><strong>{selectedOrder.vtpServiceId || "N/A"}</strong></div>
-                <div><span style={{ color: "#64748b", fontSize: "13px" }}>Trạng thái:</span><br/>{getStatusBadge(selectedOrder.status)}</div>
+                
+                {/* TRẠNG THÁI HỆ THỐNG */}
+                <div><span style={{ color: "#64748b", fontSize: "13px" }}>Trạng thái (Hệ thống):</span><br/>{getStatusBadge(selectedOrder.status)}</div>
+                
+                {/* TRẠNG THÁI VTP */}
+                <div>
+                  <span style={{ color: "#64748b", fontSize: "13px" }}>Trạng thái (VTP):</span><br/>
+                  <strong style={{ color: selectedOrder.vtpOrderStatus ? "#0f766e" : "#64748b" }}>
+                    {getVtpStatusLabel(selectedOrder.vtpOrderStatus)}
+                  </strong>
+                </div>
+
                 <div><span style={{ color: "#64748b", fontSize: "13px" }}>Tiền thu hộ (COD):</span><br/><strong>{formatMoney(selectedOrder.moneyCollection)}</strong></div>
                 <div><span style={{ color: "#64748b", fontSize: "13px" }}>Tổng cước phí:</span><br/><strong>{formatMoney(selectedOrder.moneyTotalFee)}</strong></div>
                 <div><span style={{ color: "#64748b", fontSize: "13px" }}>Trọng lượng quy đổi:</span><br/><strong>{selectedOrder.exchangeWeight} g</strong></div>
               </div>
-            </div>
-
-            {/* PHẦN TẠO VẬN ĐƠN VTP */}
-            <div style={{ marginTop: "24px", padding: "16px", border: "1px solid #e2e8f0", borderRadius: "8px" }}>
-              <h3 style={{ fontSize: "16px", marginTop: 0 }}>Tạo vận đơn</h3>
-              
-              {selectedOrder.vtpOrderNumber ? (
-                <div style={{ color: "green", fontWeight: "bold" }}>
-                  Đơn hàng này đã được tạo vận đơn với mã: {selectedOrder.vtpOrderNumber}
-                </div>
-              ) : (
-                <>
-                  {/* CHỌN NHÀ VẬN CHUYỂN */}
-                  <div style={{ marginBottom: "16px" }}>
-                    <label style={{ display: "block", marginBottom: "8px", fontWeight: "500" }}>Chọn nhà vận chuyển:</label>
-                    <select 
-                      value={selectedProviderId} 
-                      onChange={(e) => setSelectedProviderId(Number(e.target.value))}
-                      style={{ padding: "8px", borderRadius: "4px", border: "1px solid #cbd5e1", width: "100%", maxWidth: "300px" }}
-                    >
-                      <option value="">-- Chọn nhà vận chuyển --</option>
-                      {providers.filter(p => p.isEnable).map(p => (
-                        <option key={p.id} value={p.id}>{p.name} ({p.code})</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* HIỂN THỊ THÔNG TIN NGƯỜI GỬI KHI CHỌN PROVIDER */}
-                  {selectedProviderId && (() => {
-                    const currentProvider = providers.find(p => p.id === Number(selectedProviderId));
-                    if (!currentProvider) return null;
-                    return (
-                      <div style={{ marginBottom: "16px", padding: "12px", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "6px" }}>
-                        <p style={{ margin: "0 0 8px 0", fontWeight: "bold", color: "#166534" }}>Thông tin người gửi (từ cấu hình):</p>
-                        <p style={{ margin: "0 0 4px 0", fontSize: "14px" }}><strong>Tên:</strong> {currentProvider.senderName || "Chưa cấu hình"}</p>
-                        <p style={{ margin: "0 0 4px 0", fontSize: "14px" }}><strong>SĐT:</strong> {currentProvider.senderPhone || "Chưa cấu hình"}</p>
-                        <p style={{ margin: "0", fontSize: "14px" }}><strong>Địa chỉ:</strong> {currentProvider.senderAddress || "Chưa cấu hình"}</p>
-                      </div>
-                    );
-                  })()}
-
-                  <div style={{ marginBottom: "16px" }}>
-                    <button 
-                      onClick={fetchVtpServices} 
-                      disabled={loadingServices || !selectedProviderId}
-                      style={{ padding: "8px 16px", background: "#3b82f6", color: "white", border: "none", borderRadius: "4px", cursor: (loadingServices || !selectedProviderId) ? "not-allowed" : "pointer" }}
-                    >
-                      {loadingServices ? "Đang lấy dịch vụ..." : "Lấy danh sách dịch vụ"}
-                    </button>
-                  </div>
-
-                  {vtpError && <p style={{ color: "red" }}>{vtpError}</p>}
-
-                  {vtpServices.length > 0 && (
-                    <div style={{ marginBottom: "16px" }}>
-                      <p style={{ fontWeight: "500", marginBottom: "8px" }}>Chọn dịch vụ vận chuyển:</p>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                        {vtpServices.map((svc) => (
-                          <label key={svc.maDvChinh} style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", padding: "8px", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
-                            <input 
-                              type="radio" 
-                              name="vtpService" 
-                              value={svc.maDvChinh}
-                              checked={selectedVtpService === svc.maDvChinh}
-                              onChange={(e) => setSelectedVtpService(e.target.value)}
-                            />
-                            <div>
-                              <strong>{svc.tenDichVu}</strong> ({svc.maDvChinh}) - {formatMoney(svc.giaCuoc)} - {svc.thoiGian}
-                            </div>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {selectedVtpService && (
-                    <button 
-                      onClick={handleCreateVtpOrder} 
-                      disabled={creatingOrder}
-                      style={{ padding: "8px 16px", background: "#10b981", color: "white", border: "none", borderRadius: "4px", cursor: creatingOrder ? "not-allowed" : "pointer", fontWeight: "500" }}
-                    >
-                      {creatingOrder ? "Đang tạo đơn..." : "Tạo đơn ngay"}
-                    </button>
-                  )}
-                </>
-              )}
             </div>
 
             <div style={{ marginTop: "24px", display: "flex", justifyContent: "flex-end" }}>

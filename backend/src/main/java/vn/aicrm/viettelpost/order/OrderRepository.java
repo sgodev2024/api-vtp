@@ -66,13 +66,13 @@ public class OrderRepository {
         );
     }
 
-    public Optional<OrderResponse> findById(UUID tenantId, UUID orderId) {
+        public Optional<OrderResponse> findById(UUID tenantId, UUID orderId) {
         String sql = """
             SELECT 
                 id, tenant_id, order_code, status, shipping_providers_id, total_amount, product_name,
                 receiver_name, receiver_phone, receiver_address,
                 sender_full_name, sender_phone, sender_address,
-                vtp_service_id, vtp_order_number,
+                vtp_service_id, vtp_order_number, vtp_order_status, 
                 money_collection, money_total, money_total_fee, money_fee, money_collection_fee, money_vat,
                 kpi_ht, exchange_weight,
                 receiver_province, receiver_district, receiver_ward, sort_code,
@@ -101,6 +101,7 @@ public class OrderRepository {
             
             rs.getString("vtp_service_id"),
             rs.getString("vtp_order_number"),
+            rs.getObject("vtp_order_status", Integer.class),
             
             rs.getObject("money_collection", Long.class),
             rs.getObject("money_total", Long.class),
@@ -184,7 +185,7 @@ public class OrderRepository {
                 id, tenant_id, order_code, status, shipping_providers_id, total_amount, product_name,
                 receiver_name, receiver_phone, receiver_address,
                 sender_full_name, sender_phone, sender_address,
-                vtp_service_id, vtp_order_number,
+                vtp_service_id, vtp_order_number, vtp_order_status, 
                 money_collection, money_total, money_total_fee, money_fee, money_collection_fee, money_vat,
                 kpi_ht, exchange_weight,
                 receiver_province, receiver_district, receiver_ward, sort_code,
@@ -213,6 +214,7 @@ public class OrderRepository {
             
             rs.getString("vtp_service_id"),
             rs.getString("vtp_order_number"),
+            rs.getObject("vtp_order_status", Integer.class), 
             
             rs.getObject("money_collection", Long.class),
             rs.getObject("money_total", Long.class),
